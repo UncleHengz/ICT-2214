@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Domains</title>
     <style>
         body {
             padding: 20px;
             font-family: Arial, sans-serif;
+            font-size: 15px;
         }
 
         .container {
@@ -23,11 +26,16 @@
             margin-bottom: 20px;
         }
 
+        #allowedDomainsList {
+            max-height: 120px; /* Set a maximum height for the list */
+            overflow-y: auto; /* Enable vertical scroll if needed */
+        }
+
         .domain-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .remove-btn {
@@ -47,13 +55,13 @@
         }
     </style>
 </head>
-<body>
 
+<body>
+    <a href="index.html">Back</a>
     <div class="container">
         <div class="header">
-            <h1 class="mt-4 mb-4">Allowed Domains</h1>
-            <a href="index.html">Back</a>
-            <button class="add-btn">+</button>
+            <p class="h3">Allowed Domains</p>
+            <button class="add-btn">Add Current Domain</button>
         </div>
 
         <div id="allowedDomainsList" class="mt-4">
@@ -66,9 +74,15 @@
                 <span>Example Domain 2</span>
                 <button class="remove-btn">X</button>
             </div>
+            <div class="domain-item">
+                <span>Example Domain 3</span>
+                <button class="remove-btn">X</button>
+            </div>
+            <!-- Additional domains will be scrollable -->
         </div>
     </div>
 
     <script src="domains.js"></script>
 </body>
+
 </html>

@@ -4,10 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
    const loadingProgressElement = document.getElementById('loadingProgress');
    const statusElement = document.getElementById('status');
    const scanButtonElement = document.getElementById('scanButton');
-   const listofDomainsButtonElement = document.getElementById('listOfDomains');
    const containerElement = document.getElementById('container');
 
-   if (!websiteLinkElement || !loadingProgressElement || !statusElement || !scanButtonElement || !listofDomainsButtonElement || !containerElement) {
+   if (!websiteLinkElement || !loadingProgressElement || !statusElement || !scanButtonElement || !containerElement) {
        console.error('One or more required elements not found. Exiting script.');
        return;
    }
@@ -76,29 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
        scanButtonElement.innerText = 'Start';
    }
 
-   // Function to load the next page content in the same popup
-   function loadNextPageContent() {
-       // You can replace 'allowed_domains.html' with the actual file name or path of your next page
-       const nextPageURL = 'allowed_domains.html';
-
-       // Fetch the content from allowed_domains.html
-       fetch(nextPageURL)
-           .then(response => response.text())
-           .then(data => {
-               // Update the content of the element with the ID 'container'
-               containerElement.innerHTML = data;
-
-               // Add any additional logic to manipulate the content if needed
-           })
-           .catch(error => {
-               console.error('Error loading allowed_domains.html:', error);
-           });
-   }
-
-   // "List of domains" button click event
-   listofDomainsButtonElement.addEventListener('click', function () {
-       loadNextPageContent();
-   });
 
    // Populate the website link on extension popup open
    populateWebsiteLink();

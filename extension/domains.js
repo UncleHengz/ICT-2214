@@ -10,8 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event delegation for the Remove button clicks
     allowedDomainsList.addEventListener("click", function (event) {
         var removeButton = event.target.closest('.remove-btn');
-        if (removeButton && confirm("Are you sure you want to remove this domain?")) {
-            removeDomain(removeButton);
+        if (removeButton) {
+            var domainItem = removeButton.closest('.domain-item');
+            var removedDomainText = domainItem.querySelector('span').textContent;
+            if (confirm("Are you sure you want to remove domain '" + removedDomainText + "'?")) {
+                removeDomain(removeButton);
+            }
         }
     });
 

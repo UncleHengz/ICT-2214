@@ -9,12 +9,41 @@
     <style>
         body {
             padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
         }
 
-        .container {
+        #container {
             min-width: 300px;
             max-width: 800px;
-            /* Adjust the max-width based on your preference */
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0; /* Remove default margin for h1 */
+        }
+
+        .custom-btn {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .progress-bar {
+            height: 20px;
         }
     </style>
 </head>
@@ -22,33 +51,28 @@
 <body>
 
     <div id="container">
-        <h1 class="mt-4 mb-4">CatPhishing Dashboard</h1>
+        <div class="header">
+            <p class="h3">CatPhishing Dashboard</p>
+            <a href="allowed_domains.html" class="custom-btn">List of Allowed Domains</a>
+        </div>
 
         <div class="form-group">
             <label for="websiteLink">Website Link:</label>
-            <!-- Set input as readonly -->
             <input type="text" class="form-control" id="websiteLink" readonly>
         </div>
 
-        <!-- Add this button below your existing elements in index.html -->
-        <div class="mt-4">
-            <button class="btn btn-primary" id="listOfDomains">List of Allowed Domains</button>
-        </div>
-
-        <!-- Change the button text to "Stop" initially -->
-        <button class="btn btn-danger" id="scanButton">Stop</button>
+        <button class="custom-btn btn-danger" id="scanButton">Stop</button>
 
         <div class="mt-4">
-            <h2>Loading</h2>
+            <h4>Loading</h4>
             <div class="progress">
                 <div id="loadingProgress" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
                     aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
 
-        <!-- Move the status below the loading progress -->
         <div class="mt-4">
-            <h2>Status</h2>
+            <h4>Status</h4>
             <div id="status" class="alert alert-info" role="alert">
                 Waiting for scan...
             </div>
@@ -56,9 +80,6 @@
     </div>
 
     <script src="script.js"></script>
-    <script src="jquery-3.5.1.slim.min.js"></script>
-    <script src="popper.min.js"></script>
-    <script src="bootstrap.min.js"></script>
 
 </body>
 
