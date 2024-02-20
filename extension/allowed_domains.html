@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domains</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            min-width: 300px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .domain-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .remove-btn {
+            background-color: #ff5757;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="mt-4 mb-4">Allowed Domains</h1>
+            <a href="index.html">Back</a>
+            <button class="add-btn">+</button>
+        </div>
+
+        <div id="allowedDomainsList" class="mt-4">
+            <!-- Display allowed domains here -->
+            <div class="domain-item">
+                <span>Example Domain 1</span>
+                <button class="remove-btn">X</button>
+            </div>
+            <div class="domain-item">
+                <span>Example Domain 2</span>
+                <button class="remove-btn">X</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="domains.js"></script>
+</body>
+</html>
