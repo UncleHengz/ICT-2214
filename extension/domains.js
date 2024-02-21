@@ -1,26 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     var allowedDomainsList = document.getElementById("allowedDomainsList");
     var historyToggle = document.getElementById("historyToggle"); // Access the toggle button
+    var scanButton = document.getElementById("scanButton");
 
-    if (!allowedDomainsList || !historyToggle) {
+    // Checks if buttons exist
+    if (!allowedDomainsList || !historyToggle || !scanButton) {
         console.error("Elements not found.");
         return;
     }
 
     // Load saved settings and domains
-    chrome.storage.local.get(['historyEnabled', 'allowedDomains', 'manualDomains'], function (result) {
+    chrome.storage.local.get(['historyEnabled', 'allowedDomains'], function (result) {
         historyToggle.checked = result.historyEnabled ?? true; // Default to true if undefined
-
-        // Append domains from history
         (result.allowedDomains ?? []).forEach(domain => appendDomainToList(domain));
-
-        // Append manually added domains
-        (result.manualDomains ?? []).forEach(domain => appendDomainToList(domain));
-
-        // Adjust based on the loaded toggle state
-        conditionalGetHistory();
+        conditionalGetHistory(); // Adjust based on the loaded toggle state
     });
 
+    // Checks if history is toggled
     function conditionalGetHistory() {
         if (historyToggle.checked) {
             getUniqueDomainsFromHistory();
@@ -30,19 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Event listener for history toggle button
     historyToggle.addEventListener("change", function () {
-        conditionalGetHistory();
-        // Save the toggle state to storage
-        chrome.storage.local.set({ historyEnabled: historyToggle.checked });
+        if (confirm("Changing this setting may affect your domain list. Are you sure you want to proceed?")) {
+            conditionalGetHistory();
+            // Save the toggle state to storage
+            chrome.storage.local.set({ historyEnabled: historyToggle.checked });
+        } else {
+            // If the user cancels, revert the toggle state
+            historyToggle.checked = !historyToggle.checked;
+        }
     });
 
+    // Clear all entries in domain list
     function clearDomainsList() {
         while (allowedDomainsList.firstChild) {
             allowedDomainsList.removeChild(allowedDomainsList.firstChild);
         }
         console.log("Domains list cleared.");
+        // Also clear the saved domains if history is disabled
+        if (!historyToggle.checked) {
+            chrome.storage.local.set({ allowedDomains: [] });
+        }
     }
 
+    // Event listener to remove domain
     allowedDomainsList.addEventListener("click", function (event) {
         var removeButton = event.target.closest('.remove-btn');
         if (removeButton) {
@@ -54,34 +62,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Function to remove domain 
     function removeDomain(button, domain) {
         button.closest('.domain-item').remove();
         console.log("Domain removed successfully");
+        // Update the list in storage after removal
+        updateStorageAfterRemoval(domain);
+    }
 
-        // Determine if the removed domain was manually added or from history
-        chrome.storage.local.get(['manualDomains'], function (result) {
-            const manualDomains = result.manualDomains ?? [];
-
-            if (manualDomains.includes(domain)) {
-                // Remove the domain from manually added domains
-                chrome.storage.local.set({
-                    manualDomains: manualDomains.filter(d => d !== domain)
-                });
-            } else {
-                // Remove the domain from history (allowedDomains)
-                chrome.storage.local.get(['allowedDomains'], function (result) {
-                    const updatedDomains = (result.allowedDomains ?? []).filter(d => d !== domain);
-                    chrome.storage.local.set({ allowedDomains: updatedDomains });
-                });
-            }
+    // Function to update the chrome storage after removal
+    function updateStorageAfterRemoval(removedDomain) {
+        chrome.storage.local.get(['allowedDomains'], function (result) {
+            const updatedDomains = (result.allowedDomains ?? []).filter(d => d !== removedDomain);
+            chrome.storage.local.set({ allowedDomains: updatedDomains });
         });
     }
 
+    // checks if domain is already in the list
     function isDomainInList(domain) {
         var domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
         return Array.from(domainItems).some(item => item.textContent === domain);
     }
 
+    // Adds domain to the list
     function appendDomainToList(domain) {
         if (!isDomainInList(domain)) {
             var newDomainItem = document.createElement("div");
@@ -91,8 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Retrieve domains from user's history
     function getUniqueDomainsFromHistory() {
-        const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+        const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7; // past 7 days
         const oneWeekAgo = (new Date()).getTime() - microsecondsPerWeek;
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -114,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     });
 
-                    // Save the updated list of domains to allowedDomains
+                    // Save the updated list of domains
                     chrome.storage.local.set({ allowedDomains: Array.from(domainSet) });
                 });
             } else {
@@ -122,4 +126,44 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    // Example function to send domain names to the server
+    function sendDomainsToServer(domains) {
+        fetch('http://127.0.0.1:5000/api/domains', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ domains: domains }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Add event listener for the scan button
+    scanButton.addEventListener("click", function () {
+        // Check if history is allowed
+        if (historyToggle.checked) {
+            // Retrieve the list of domains
+            const domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
+            const domains = Array.from(domainItems).map(item => item.textContent);
+
+            // Perform your scanning logic here
+            sendDomainsToServer(domains);
+            alert("Scanning all domains!");
+        } else {
+            alert("No domain to be scanned!");
+        }
+    });
+
+    function scanAllDomains() {
+        // Add your logic here to scan all domains
+        alert("Scanning all domains!");
+    }
+
 });
