@@ -46,13 +46,13 @@
             cursor: pointer;
         }
 
-        .add-btn {
+        /* .add-btn {
             background-color: #4caf50;
             color: #fff;
             padding: 8px 12px;
             border: none;
             cursor: pointer;
-        }
+        } */
     </style>
 </head>
 
@@ -61,24 +61,15 @@
     <div class="container">
         <div class="header">
             <p class="h3">Allowed Domains</p>
-            <button class="add-btn">Add Current Domain</button>
+            <!-- <button class="add-btn">Add Current Domain</button> -->
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="historyToggle">
+            <label class="custom-control-label" for="historyToggle">Allow Reading History</label>
         </div>
 
         <div id="allowedDomainsList" class="mt-4">
             <!-- Display allowed domains here -->
-            <div class="domain-item">
-                <span>Example Domain 1</span>
-                <button class="remove-btn">X</button>
-            </div>
-            <div class="domain-item">
-                <span>Example Domain 2</span>
-                <button class="remove-btn">X</button>
-            </div>
-            <div class="domain-item">
-                <span>Example Domain 3</span>
-                <button class="remove-btn">X</button>
-            </div>
-            <!-- Additional domains will be scrollable -->
         </div>
     </div>
 

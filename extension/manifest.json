@@ -9,6 +9,8 @@
     "default_title": "CatPhishing Detection"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "history",
+    "storage"
   ]
 }

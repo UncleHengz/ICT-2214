@@ -1,74 +1,125 @@
 document.addEventListener("DOMContentLoaded", function () {
     var allowedDomainsList = document.getElementById("allowedDomainsList");
-    var addButton = document.querySelector(".add-btn");
+    var historyToggle = document.getElementById("historyToggle"); // Access the toggle button
 
-    if (!allowedDomainsList || !addButton) {
+    if (!allowedDomainsList || !historyToggle) {
         console.error("Elements not found.");
         return;
     }
 
-    // Event delegation for the Remove button clicks
+    // Load saved settings and domains
+    chrome.storage.local.get(['historyEnabled', 'allowedDomains', 'manualDomains'], function (result) {
+        historyToggle.checked = result.historyEnabled ?? true; // Default to true if undefined
+
+        // Append domains from history
+        (result.allowedDomains ?? []).forEach(domain => appendDomainToList(domain));
+
+        // Append manually added domains
+        (result.manualDomains ?? []).forEach(domain => appendDomainToList(domain));
+
+        // Adjust based on the loaded toggle state
+        conditionalGetHistory();
+    });
+
+    function conditionalGetHistory() {
+        if (historyToggle.checked) {
+            getUniqueDomainsFromHistory();
+        } else {
+            console.log("Reading history is disabled.");
+            clearDomainsList(); // Call to clear the domains list if toggled off
+        }
+    }
+
+    historyToggle.addEventListener("change", function () {
+        conditionalGetHistory();
+        // Save the toggle state to storage
+        chrome.storage.local.set({ historyEnabled: historyToggle.checked });
+    });
+
+    function clearDomainsList() {
+        while (allowedDomainsList.firstChild) {
+            allowedDomainsList.removeChild(allowedDomainsList.firstChild);
+        }
+        console.log("Domains list cleared.");
+    }
+
     allowedDomainsList.addEventListener("click", function (event) {
         var removeButton = event.target.closest('.remove-btn');
         if (removeButton) {
             var domainItem = removeButton.closest('.domain-item');
             var removedDomainText = domainItem.querySelector('span').textContent;
             if (confirm("Are you sure you want to remove domain '" + removedDomainText + "'?")) {
-                removeDomain(removeButton);
+                removeDomain(removeButton, removedDomainText);
             }
         }
     });
 
-    addButton.addEventListener("click", function () {
-        // Get the current URL from the active tab
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            if (tabs && tabs.length > 0) {
-                var currentDomain = extractDomain(tabs[0].url);
+    function removeDomain(button, domain) {
+        button.closest('.domain-item').remove();
+        console.log("Domain removed successfully");
 
-                // Check if the current domain is already in the list
-                if (isDomainInList(currentDomain)) {
-                    alert("Domain already in the list.");
-                    return;
-                }
+        // Determine if the removed domain was manually added or from history
+        chrome.storage.local.get(['manualDomains'], function (result) {
+            const manualDomains = result.manualDomains ?? [];
 
-                // Create a new domain item
-                var newDomainItem = document.createElement("div");
-                newDomainItem.className = "domain-item";
-                newDomainItem.innerHTML = '<span>' + currentDomain + '</span>' +
-                                          '<button class="remove-btn">X</button>';
-
-                // Append the new domain item to the list
-                allowedDomainsList.appendChild(newDomainItem);
+            if (manualDomains.includes(domain)) {
+                // Remove the domain from manually added domains
+                chrome.storage.local.set({
+                    manualDomains: manualDomains.filter(d => d !== domain)
+                });
             } else {
-                console.error('Unable to get tab URL');
+                // Remove the domain from history (allowedDomains)
+                chrome.storage.local.get(['allowedDomains'], function (result) {
+                    const updatedDomains = (result.allowedDomains ?? []).filter(d => d !== domain);
+                    chrome.storage.local.set({ allowedDomains: updatedDomains });
+                });
             }
         });
-    });
-
-    function removeDomain(button) {
-        var domainItem = button.closest('.domain-item');
-        domainItem.parentNode.removeChild(domainItem);
-        console.log("Domain removed successfully");
     }
 
     function isDomainInList(domain) {
         var domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
-        for (var i = 0; i < domainItems.length; i++) {
-            if (domainItems[i].textContent === domain) {
-                return true;
-            }
-        }
-        return false;
+        return Array.from(domainItems).some(item => item.textContent === domain);
     }
 
-    // Function to extract domain from a URL
-    function extractDomain(url) {
-        var domain;
-        try {
-            domain = new URL(url).hostname;
-        } catch (error) {
-            console.error('Error extracting domain:', error);
+    function appendDomainToList(domain) {
+        if (!isDomainInList(domain)) {
+            var newDomainItem = document.createElement("div");
+            newDomainItem.className = "domain-item";
+            newDomainItem.innerHTML = '<span>' + domain + '</span><button class="remove-btn">X</button>';
+            allowedDomainsList.appendChild(newDomainItem);
         }
-        return domain || url; // Return the full URL if extraction fails
+    }
+
+    function getUniqueDomainsFromHistory() {
+        const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+        const oneWeekAgo = (new Date()).getTime() - microsecondsPerWeek;
+
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            if (tabs && tabs.length > 0) {
+                const currentDomain = new URL(tabs[0].url).hostname;
+
+                chrome.history.search({
+                    'text': '', // Search string is empty to get all history items
+                    'startTime': oneWeekAgo
+                }, function (historyItems) {
+                    const domainSet = new Set(historyItems.map(item => new URL(item.url).hostname));
+
+                    // Remove the current page's domain from the set
+                    domainSet.delete(currentDomain);
+
+                    domainSet.forEach(domain => {
+                        if (!isDomainInList(domain)) {
+                            appendDomainToList(domain);
+                        }
+                    });
+
+                    // Save the updated list of domains to allowedDomains
+                    chrome.storage.local.set({ allowedDomains: Array.from(domainSet) });
+                });
+            } else {
+                console.error('Unable to get current tab information');
+            }
+        });
     }
 });
