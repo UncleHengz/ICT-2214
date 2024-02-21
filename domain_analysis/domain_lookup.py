@@ -2,7 +2,18 @@ import requests
 import dns.resolver
 
 def dns_lookup(domain):
-    result = dns.resolver.resolve(domain, 'A')
+
+    record_types = ['A', 'MX', 'TXT', 'NS', 'SOA']
+    for record_type in record_types:
+        result = dns.resolver.resolve(domain, record_type)
+        # if dns.resolver.NoAnswer:
+        #     print(f"No {record_type} record found for {domain}")
+        #     continue
+        output = []
+        for ex in result:
+            output.append(ex.to_text())
+        print(f"{record_type} Record: {output}")
+    
                 
 # def whois(domain):
 #     url = "https://whois-lookup-service.p.rapidapi.com/v1/getwhois"
