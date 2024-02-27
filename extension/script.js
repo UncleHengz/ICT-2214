@@ -87,21 +87,27 @@ document.addEventListener('DOMContentLoaded', function () {
         statusElement.classList.remove('alert-warning');
         statusElement.classList.add('alert-success');
         updateProgress(100);
-
+    
         // Get the website link
-       const websiteLink = websiteLinkElement.value;
-
-       // Extract the domain from the website link
-       const url = new URL(websiteLink);
-       const domain = url.hostname;
-
-       // Add the domain to the allowed domains list
-       addDomainToAllowedList(domain);
-
+        const websiteLink = websiteLinkElement.value;
+    
+        // Extract the domain from the website link
+        const url = new URL(websiteLink);
+        const domain = url.hostname;
+    
+        // Add the domain to the allowed domains list
+        addDomainToAllowedList(domain);
+    
+        // Save the scan result to storage
+        chrome.storage.local.set({ [domain]: 'Safe' }, function () {
+            console.log('Scan result saved for domain:', domain);
+        });
+    
         scanButtonElement.disabled = false;
         scanning = false;
         scanButtonElement.innerText = 'Start';
     }
+    
 
 
     // Populate the website link on extension popup open

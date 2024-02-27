@@ -1,54 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // DOM elements
     var allowedDomainsList = document.getElementById("allowedDomainsList");
-    var historyToggle = document.getElementById("historyToggle"); // Access the toggle button
+    var historyToggle = document.getElementById("historyToggle");
     var scanButton = document.getElementById("scanButton");
 
-    // Checks if buttons exist
+    // Check if necessary elements are present
     if (!allowedDomainsList || !historyToggle || !scanButton) {
         console.error("Elements not found.");
         return;
     }
 
-    // Load saved settings and domains
-    chrome.storage.local.get(['historyEnabled', 'allowedDomains'], function (result) {
-        historyToggle.checked = result.historyEnabled ?? true; // Default to true if undefined
-        (result.allowedDomains ?? []).forEach(domain => appendDomainToList(domain));
-        conditionalGetHistory(); // Adjust based on the loaded toggle state
+    // Initialize the extension on page load
+    chrome.storage.local.get(['historyEnabled', 'allowedDomains', 'scannedDomains'], function (result) {
+        historyToggle.checked = result.historyEnabled ?? true;
+        (result.allowedDomains ?? []).forEach(domain => appendDomainToList(domain, result.scannedDomains?.[domain]?.status));
+        conditionalGetHistory();
     });
 
-    // Checks if history is toggled
-    function conditionalGetHistory() {
-        if (historyToggle.checked) {
-            getUniqueDomainsFromHistory();
-        } else {
-            console.log("Reading history is disabled.");
-            clearDomainsList(); // Call to clear the domains list if toggled off
+    // Function to append domain to the list
+    function appendDomainToList(domain, scannedStatus) {
+        if (!isDomainInList(domain)) {
+            var newDomainItem = document.createElement("div");
+            newDomainItem.className = "domain-item";
+            newDomainItem.innerHTML = '<span>' + domain + '</span>' +
+                '<span class="scanned-status">' + (scannedStatus || 'Not scanned') + '</span>' +
+                '<button class="remove-btn">X</button>';
+            allowedDomainsList.appendChild(newDomainItem);
         }
     }
 
     // Event listener for history toggle button
     historyToggle.addEventListener("change", function () {
         if (confirm("Changing this setting may affect your domain list. Are you sure you want to proceed?")) {
-            conditionalGetHistory();
-            // Save the toggle state to storage
+            // get history based on toggle state
+            if (historyToggle.checked) {
+                getUniqueDomainsFromHistory();
+            } else {
+                console.log("Reading history is disabled.");
+                // clear domain list
+                clearDomainsList();
+                chrome.storage.local.set({ allowedDomains: [] });
+            }
             chrome.storage.local.set({ historyEnabled: historyToggle.checked });
         } else {
-            // If the user cancels, revert the toggle state
             historyToggle.checked = !historyToggle.checked;
         }
     });
-
-    // Clear all entries in domain list
-    function clearDomainsList() {
-        while (allowedDomainsList.firstChild) {
-            allowedDomainsList.removeChild(allowedDomainsList.firstChild);
-        }
-        console.log("Domains list cleared.");
-        // Also clear the saved domains if history is disabled
-        if (!historyToggle.checked) {
-            chrome.storage.local.set({ allowedDomains: [] });
-        }
-    }
 
     // Event listener to remove domain
     allowedDomainsList.addEventListener("click", function (event) {
@@ -56,47 +53,53 @@ document.addEventListener("DOMContentLoaded", function () {
         if (removeButton) {
             var domainItem = removeButton.closest('.domain-item');
             var removedDomainText = domainItem.querySelector('span').textContent;
+            // remove domain 
             if (confirm("Are you sure you want to remove domain '" + removedDomainText + "'?")) {
-                removeDomain(removeButton, removedDomainText);
+                removeButton.closest('.domain-item').remove();
+                console.log("Domain removed successfully");
+                updateStorageAfterRemoval(removedDomainText);
             }
         }
     });
 
-    // Function to remove domain 
-    function removeDomain(button, domain) {
-        button.closest('.domain-item').remove();
-        console.log("Domain removed successfully");
-        // Update the list in storage after removal
-        updateStorageAfterRemoval(domain);
-    }
-
-    // Function to update the chrome storage after removal
-    function updateStorageAfterRemoval(removedDomain) {
-        chrome.storage.local.get(['allowedDomains'], function (result) {
-            const updatedDomains = (result.allowedDomains ?? []).filter(d => d !== removedDomain);
-            chrome.storage.local.set({ allowedDomains: updatedDomains });
-        });
-    }
-
-    // checks if domain is already in the list
+    // Function to check if domain is already in the list
     function isDomainInList(domain) {
         var domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
         return Array.from(domainItems).some(item => item.textContent === domain);
     }
 
-    // Adds domain to the list
-    function appendDomainToList(domain) {
-        if (!isDomainInList(domain)) {
-            var newDomainItem = document.createElement("div");
-            newDomainItem.className = "domain-item";
-            newDomainItem.innerHTML = '<span>' + domain + '</span><button class="remove-btn">X</button>';
-            allowedDomainsList.appendChild(newDomainItem);
+    // Function to clear domains list
+    function clearDomainsList() {
+        while (allowedDomainsList.firstChild) {
+            allowedDomainsList.removeChild(allowedDomainsList.firstChild);
         }
+        console.log("Domains list cleared.");
     }
 
-    // Retrieve domains from user's history
+    // Function to update storage after domain removal
+    function updateStorageAfterRemoval(removedDomain) {
+        chrome.storage.local.get(['allowedDomains', 'scannedDomains'], function (result) {
+            const updatedDomains = (result.allowedDomains ?? []).filter(d => d !== removedDomain);
+            const updatedScannedStatus = { ...result.scannedDomains };
+            delete updatedScannedStatus[removedDomain];
+
+            chrome.storage.local.set({ allowedDomains: updatedDomains, scannedDomains: updatedScannedStatus });
+        });
+    }
+
+    // Event listener for the scan button
+    scanButton.addEventListener("click", function () {
+        if (historyToggle.checked) {
+            const domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
+            alert("Scanning all domains!");
+        } else {
+            alert("No domain to be scanned!");
+        }
+    });
+
+    // Function to get unique domains from history
     function getUniqueDomainsFromHistory() {
-        const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7; // past 7 days
+        const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
         const oneWeekAgo = (new Date()).getTime() - microsecondsPerWeek;
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -104,21 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 const currentDomain = new URL(tabs[0].url).hostname;
 
                 chrome.history.search({
-                    'text': '', // Search string is empty to get all history items
+                    'text': '',
                     'startTime': oneWeekAgo
                 }, function (historyItems) {
                     const domainSet = new Set(historyItems.map(item => new URL(item.url).hostname));
-
-                    // Remove the current page's domain from the set
                     domainSet.delete(currentDomain);
 
                     domainSet.forEach(domain => {
-                        if (!isDomainInList(domain)) {
-                            appendDomainToList(domain);
-                        }
+                        appendDomainToList(domain);
                     });
 
-                    // Save the updated list of domains
                     chrome.storage.local.set({ allowedDomains: Array.from(domainSet) });
                 });
             } else {
@@ -126,44 +124,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-    // Example function to send domain names to the server
-    function sendDomainsToServer(domains) {
-        fetch('http://127.0.0.1:5000/api/domains', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ domains: domains }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server response:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    // Add event listener for the scan button
-    scanButton.addEventListener("click", function () {
-        // Check if history is allowed
-        if (historyToggle.checked) {
-            // Retrieve the list of domains
-            const domainItems = allowedDomainsList.querySelectorAll('.domain-item span');
-            const domains = Array.from(domainItems).map(item => item.textContent);
-
-            // Perform your scanning logic here
-            sendDomainsToServer(domains);
-            alert("Scanning all domains!");
-        } else {
-            alert("No domain to be scanned!");
-        }
-    });
-
-    function scanAllDomains() {
-        // Add your logic here to scan all domains
-        alert("Scanning all domains!");
-    }
-
 });
