@@ -16,10 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let timeoutIds = [];
 
     // Function to populate the website link
-    function populateWebsiteLink() {
+    function populateWebsiteLink(callback) {
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             if (tabs && tabs.length > 0) {
                 websiteLinkElement.value = tabs[0].url;
+                if (typeof callback === 'function') {
+                    callback(); // Call the callback once the URL is populated
+                }
             } else {
                 console.error('Unable to get tab URL');
             }
@@ -98,23 +101,70 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add the domain to the allowed domains list
         addDomainToAllowedList(domain);
     
-        // Save the scan result to storage
-        chrome.storage.local.set({ [domain]: 'Safe' }, function () {
-            console.log('Scan result saved for domain:', domain);
-        });
-    
         scanButtonElement.disabled = false;
         scanning = false;
         scanButtonElement.innerText = 'Start';
     }
-    
 
+        // Function to update the allowed domains list in the HTML
+    function updateAllowedDomainsList(allowedDomains) {
+        const allowedDomainsList = document.getElementById('allowedDomainsList');
+
+        // Clear existing list items
+        allowedDomainsList.innerHTML = '';
+
+        // Populate the list with allowed domains
+        allowedDomains.forEach(domain => {
+            const listItem = document.createElement('li');
+            listItem.textContent = domain;
+            allowedDomainsList.appendChild(listItem);
+        });
+    }
+
+    // Function to get and update the allowed domains list from storage
+    function updateAllowedDomainsListFromStorage() {
+        chrome.storage.local.get({ allowedDomains: [] }, function (result) {
+            const allowedDomains = result.allowedDomains;
+            updateAllowedDomainsList(allowedDomains);
+        });
+    }
+
+    // Function to check if the domain is in allowedDomains or maliciousDomains
+    function isDomainInLists(domain, allowedDomains, maliciousDomains) {
+        return allowedDomains.includes(domain) || maliciousDomains.includes(domain);
+    }
+    
+    // Populate the website link on extension popup open
+    // populateWebsiteLink();
+    // performScan();
 
     // Populate the website link on extension popup open
-    populateWebsiteLink();
+    populateWebsiteLink(function () {
+        // Check whether to run performScan outside the function
+        const websiteLink = websiteLinkElement.value;
+        if (websiteLink) {
+            try {
+                // Attempt to construct the URL from the input
+                const url = new URL(websiteLink);
+                const domainToCheck = url.hostname;
 
-    // Perform scan on extension popup open
-    performScan();
+                chrome.storage.local.get({ allowedDomains: [], maliciousDomains: [] }, function (result) {
+                    const allowedDomains = result.allowedDomains;
+                    const maliciousDomains = result.maliciousDomains;
+
+                    if (!isDomainInLists(domainToCheck, allowedDomains, maliciousDomains)) {
+                        // If the domain is not in allowedDomains or maliciousDomains, run the scan
+                        performScan();
+                    } else {
+                        completeScan();
+                    }
+                });
+            } catch (error) {
+                console.error('Invalid URL:', websiteLink);
+                // Handle the error, e.g., show a message to the user
+            }
+        }
+    });
 
     // "Start/Stop" button click event
     scanButtonElement.addEventListener('click', function () {
