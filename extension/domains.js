@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
     var allowedDomainsList = document.getElementById("allowedDomainsList");
     var maliciousDomainsList = document.getElementById("maliciousDomainsList");
     var historyToggle = document.getElementById("historyToggle");
-    var scanButton = document.getElementById("scanButton");
+    var scanAllButton = document.getElementById("scanAllButton");
     var tabs = document.querySelectorAll('.tab');
     var tabContents = document.querySelectorAll('.tab-content');
-    var removeButton = document.getElementById("removeButton");
+    var removeAllButton = document.getElementById("removeAllButton");
 
     // Check if necessary elements are present
-    if (!unscannedDomainsList || !allowedDomainsList || !maliciousDomainsList || !historyToggle || !scanButton) {
+    if (!unscannedDomainsList || !allowedDomainsList || !maliciousDomainsList || !historyToggle || !scanAllButton) {
         console.error("Elements not found.");
         return;
     }
@@ -52,15 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
         activeTabContent.classList.add('active');
     }
 
-    // Function to append domain to the list
-    function appendDomainToList(list, domain) {
-        var newDomainItem = document.createElement("div");
-        newDomainItem.className = "domain-item";
-        newDomainItem.innerHTML = '<span>' + domain + '</span>' +
-            '<button class="remove-btn">X</button>';
-        list.appendChild(newDomainItem);
-    }
-
     // Function to check if domain is already in the list
     function isDomainInList(list, domain) {
         var domainItems = list.querySelectorAll('.domain-item span');
@@ -69,13 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to populate domain list, avoiding duplicates
     function populateDomainList(list, domains) {
-        console.log(typeof(domains));
-        // domains && domains.forEach(domain => {
-        //     // Check if the domain already exists in the list
-        //     if (!isDomainInList(list, domain)) {
-        //         appendDomainToList(list, domain);
-        //     }
-        // });
+        // Iterate over each element and call populateDomainList
+        for (let i = 0; i < domains.length; i++) {
+            if (!isDomainInList(list, domains[i])) {
+                var newDomainItem = document.createElement("div");
+                newDomainItem.className = "domain-item";
+                newDomainItem.innerHTML = '<span>' + domains[i] + '</span>' +
+                    '<div class="btn-group">' +
+                    '<button class="btn btn-sm btn-danger remove-btn">Remove</button>' +
+                    '<button class="btn btn-sm btn-primary scan-btn">Scan</button>' +
+                    '</div>';
+                list.appendChild(newDomainItem);
+            }
+        }
     }
 
     // Event listener for history toggle button
@@ -94,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Event listener for the "Remove All Domains" button
-    removeButton.addEventListener("click", function () {
+    removeAllButton.addEventListener("click", function () {
         if (confirm("Are you sure you want to remove all domains?")) {
             clearDomainList(unscannedDomainsList);
             clearDomainList(allowedDomainsList);
@@ -113,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
     [unscannedDomainsList, allowedDomainsList, maliciousDomainsList].forEach(list => {
         list.addEventListener("click", function (event) {
             var removeButton = event.target.closest('.remove-btn');
+            var scanButton = event.target.closest('.scan-btn');
+
             if (removeButton) {
                 var domainItem = removeButton.closest('.domain-item');
                 var removedDomainText = domainItem.querySelector('span').textContent;
@@ -121,6 +120,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     removeButton.closest('.domain-item').remove();
                     console.log("Domain removed successfully");
                     updateStorageAfterRemoval(removedDomainText);
+                }
+            } else if (scanButton) {
+                // scan domain
+                var domainItem = scanButton.closest('.domain-item');
+                var scannedDomainText = domainItem.querySelector('span').textContent;
+                if (confirm("Are you sure you want to scan domain '" + scannedDomainText + "'?")) {
+                    scanDomains(scannedDomainText);
+                    
                 }
             }
         });
@@ -149,14 +156,55 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Event listener for the scan button
-    scanButton.addEventListener("click", function () {
-        if (historyToggle.checked) {
-            const domainItems = unscannedDomainsList.querySelectorAll('.domain-item span');
-            alert("Scanning all domains!");
+    function scanDomains(data) {
+        if (Array.isArray(data)) {
+            // It's an array, call scan-all API
+            fetch('http://127.0.0.1:5000/scan-all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ domains: data }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result.message);
+                // Handle success for scan-all API
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error for scan-all API
+            });
+        } else if (typeof data === 'string') {
+            // It's a string, call scan API
+            fetch('http://127.0.0.1:5000/scan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ domain: data }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result.message);
+                // Handle success for scan API
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error for scan API
+            });
         } else {
-            alert("No domain to be scanned!");
+            console.error('Invalid input type');
+            // Handle invalid input type
         }
+    }
+
+    // Event listener for the scan button
+    scanAllButton.addEventListener("click", function () {
+        // Get the list of unscanned domains
+        const unscannedDomains = Array.from(document.querySelectorAll('#unscannedDomainsList .domain-item span'))
+                                    .map(item => item.textContent);
+        scanDomains(unscannedDomains);
     });
 
     // Function to get unique domains from history
@@ -172,12 +220,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     'text': '',
                     'startTime': oneWeekAgo
                 }, function (historyItems) {
-                    const domainSet = new Set(historyItems.map(item => new URL(item.url).hostname));
-                    domainSet.delete(currentDomain);
-
-                    domainSet.forEach(domain => {
-                        populateDomainList(unscannedDomainsList, domain);
-                    });
+                    const domainSet = historyItems.map(item => new URL(item.url).hostname);
+                    populateDomainList(unscannedDomainsList, domainSet);
 
                     chrome.storage.local.set({ unscannedDomains: Array.from(domainSet) });
                 });

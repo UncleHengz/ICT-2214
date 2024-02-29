@@ -45,25 +45,56 @@ document.addEventListener('DOMContentLoaded', function () {
         scanButtonElement.innerText = 'Start';
     }
 
-    // Function to perform the scan
-    function performScan() {
+    function performScan(domainToScan) {
         scanning = true;
         statusElement.innerHTML = 'Scanning...';
         statusElement.classList.remove('alert-info');
         statusElement.classList.add('alert-warning');
-
+    
         let i = 0;
-        loadingInterval = setInterval(function () {
+        const loadingInterval = setInterval(function () {
             updateProgress(i);
-            i += 10;
+            i += 5;
             if (i > 100) {
                 clearInterval(loadingInterval);
-                completeScan();
+                console.log('Scan still in progress');
+                // Handle the case where the backend is still processing
             }
         }, 1000);
-
+    
         timeoutIds.push(loadingInterval);
+    
+        // Assuming scanEndpoint is the URL of your Flask /scan endpoint
+        const scanEndpoint = 'http://127.0.0.1:5000/scan';
+    
+        // Fetch the data from the Flask API
+        fetch(scanEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ domain: domainToScan }),
+            timeout: 60000, // 60 seconds (adjust as needed)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear the interval as soon as you receive data from the backend
+                clearInterval(loadingInterval);
+                console.log('Scan result:', data);
+                
+                completeScan(data.status);
+            })
+            .catch(error => {
+                console.error('Error during scan:', error);
+                clearInterval(loadingInterval);
+            });
     }
+    
 
     // Function to add a domain to the allowed domains list
     function addDomainToAllowedList(domain) {
@@ -84,11 +115,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to complete the scan
-    function completeScan() {
+    function completeScan(status) {
         timeoutIds.forEach(clearTimeout);
-        statusElement.innerHTML = 'Scan complete. Website is safe!';
-        statusElement.classList.remove('alert-warning');
-        statusElement.classList.add('alert-success');
+        // Handle the data received from the backend as needed
+        if (status === true) {
+            statusElement.innerHTML = 'Safe';
+            statusElement.classList.remove('alert-warning');
+            statusElement.classList.add('alert-success');
+        } else {
+            statusElement.innerHTML = 'Malicious';
+            statusElement.classList.remove('alert-warning');
+            statusElement.classList.add('alert-danger');
+        }
         updateProgress(100);
     
         // Get the website link
@@ -133,10 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function isDomainInLists(domain, allowedDomains, maliciousDomains) {
         return allowedDomains.includes(domain) || maliciousDomains.includes(domain);
     }
-    
-    // Populate the website link on extension popup open
-    // populateWebsiteLink();
-    // performScan();
 
     // Populate the website link on extension popup open
     populateWebsiteLink(function () {
@@ -154,9 +188,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (!isDomainInLists(domainToCheck, allowedDomains, maliciousDomains)) {
                         // If the domain is not in allowedDomains or maliciousDomains, run the scan
-                        performScan();
+                        performScan(websiteLinkElement.value);
                     } else {
-                        completeScan();
+                        statusElement.innerHTML = 'Domain has been scanned!';
+                        updateProgress(100);
+                        scanButtonElement.disabled = false;
+                        scanning = false;
+                        scanButtonElement.innerText = 'Start';
                     }
                 });
             } catch (error) {
@@ -176,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             // If not scanning, start the scan
             scanButtonElement.innerText = 'Stop';
-            performScan();
+            performScan(websiteLinkElement.value);
         }
     });
 });
