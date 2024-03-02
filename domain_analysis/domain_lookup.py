@@ -2,6 +2,20 @@ import requests
 import dns.resolver
 from datetime import datetime
 
+def dns_lookup(domain):
+    record_types = ['A', 'AAAA', 'MX', 'NS', 'TXT', 'SOA', 'CNAME', 'PTR', 'SRV', 'NAPTR', 'CAA']
+    dns_results = {}
+
+    for record_type in record_types:
+        try:
+            result = dns.resolver.resolve(domain, record_type)
+            output = [ex.to_text() for ex in result]
+            dns_results[record_type] = output
+        except dns.resolver.NoAnswer:
+            dns_results[record_type] = []
+
+    return dns_results
+
 def calculate_age(created_date):
     created_date = datetime.strptime(created_date, "%Y-%m-%d %H:%M:%SZ")
     current_date = datetime.utcnow()
@@ -21,17 +35,6 @@ def determine_suspiciousness(age, update_age):
         return 2  # Moderately suspicious
     else:
         return 1  # Less suspicious
-
-def dns_lookup(domain):
-    record_types = ['A', 'AAAA', 'MX', 'NS', 'TXT', 'SOA', 'CNAME', 'PTR', 'SRV', 'NAPTR', 'CAA']
-    for record_type in record_types:
-        try:
-            result = dns.resolver.resolve(domain, record_type)
-            output = [ex.to_text() for ex in result]
-            print(f"{record_type} Record: {output}")
-        except dns.resolver.NoAnswer:
-            print(f"No {record_type} record found for {domain}")
-            continue
 
 def whois(domain):
     url = "https://zozor54-whois-lookup-v1.p.rapidapi.com/"
@@ -81,7 +84,13 @@ def whois(domain):
 
 # Example Usage
 domain = "singaporetech.edu.sg"
-#dns_lookup(domain)
+for key, value in dns_lookup(domain).items():
+    if isinstance(value, dict):
+        print(f"{key}:")
+        for sub_key, sub_value in value.items():
+            print(f"  {sub_key}: {sub_value}")
+    else:
+        print(f"{key}: {value}")
 
 for key, value in whois(domain).items():
     if isinstance(value, dict):
@@ -90,5 +99,3 @@ for key, value in whois(domain).items():
             print(f"  {sub_key}: {sub_value}")
     else:
         print(f"{key}: {value}")
-
-# print(type(whois(domain)["Created"]))
