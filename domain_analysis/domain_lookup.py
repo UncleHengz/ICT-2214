@@ -1,20 +1,32 @@
 import requests
 import dns.resolver
 from datetime import datetime
+from urllib.parse import urlparse
 
-def dns_lookup(domain):
-    record_types = ['A', 'AAAA', 'MX', 'NS', 'TXT', 'SOA', 'CNAME', 'PTR', 'SRV', 'NAPTR', 'CAA']
-    dns_results = {}
+### Just putting this here, might be useful for the plugin implementation part
+# def get_domain_from_url(url):
+#     parsed_url = urlparse(url)
+#     return parsed_url.netloc
 
-    for record_type in record_types:
-        try:
-            result = dns.resolver.resolve(domain, record_type)
-            output = [ex.to_text() for ex in result]
-            dns_results[record_type] = output
-        except dns.resolver.NoAnswer:
-            dns_results[record_type] = []
+# # Example usage:
+# url = "https://singaporetech.edu.sg"
+# test = get_domain_from_url(url)
+# print("Domain:", test)
 
-    return dns_results
+### Might remove cause VirusTotal API DNS records are instant
+# def dns_lookup(domain):
+#     record_types = ['A', 'AAAA', 'MX', 'NS', 'TXT', 'SOA', 'CNAME', 'PTR', 'SRV', 'NAPTR', 'CAA']
+#     dns_results = {}
+
+#     for record_type in record_types:
+#         try:
+#             result = dns.resolver.resolve(domain, record_type)
+#             output = [ex.to_text() for ex in result]
+#             dns_results[record_type] = output
+#         except dns.resolver.NoAnswer:
+#             dns_results[record_type] = []
+
+#     return dns_results
 
 def calculate_age(created_date):
     created_date = datetime.strptime(created_date, "%Y-%m-%d %H:%M:%SZ")
@@ -82,9 +94,64 @@ def whois(domain):
 
     return result
 
+def calculate_suspiciousness(analysis_stats):
+    weights = {
+        "harmless": 0,
+        "malicious": 3,
+        "suspicious": 2,
+        "undetected": 1,
+        "timeout": 0
+    }
+
+    return sum(analysis_stats[category] * weights[category] for category in analysis_stats)
+
+def group_dns_records(last_dns_records):
+    grouped_records = {}
+    
+    for record in last_dns_records:
+        record_type = record.pop('type')
+        if record_type in grouped_records:
+            grouped_records[record_type].append(record)
+        else:
+            grouped_records[record_type] = [record]
+    
+    return grouped_records
+
+def virustotal(domain):
+    url = f"https://www.virustotal.com/api/v3/domains/{domain}"
+    headers = {"x-apikey": "82a2d1a9192167470ad718102b312c5745a9b14ea17c3e0468b03d616ad21dc3"}
+
+    response = requests.get(url, headers=headers)
+    data = response.json()['data']
+
+    analysis = data['attributes']['last_analysis_stats']
+    score = calculate_suspiciousness(analysis)
+
+    dns_records = group_dns_records(data['attributes']['last_dns_records'])
+
+    result = {
+        'Domain': data['id'],
+        'Type': data['type'],
+        'DNS Records': dns_records,
+        'Popularity': data['attributes']['popularity_ranks'],
+        "Analysis Stats": data['attributes']['last_analysis_stats'],
+        "Categories": data['attributes']['categories'],
+        "Analysis Score": score
+    }
+
+    return result
+
 # Example Usage
-domain = "singaporetech.edu.sg"
-for key, value in dns_lookup(domain).items():
+domain = "ambassadordigitalnetworkassisttmarket.blogspot.com"
+# for key, value in dns_lookup(domain).items():
+#     if isinstance(value, dict):
+#         print(f"{key}:")
+#         for sub_key, sub_value in value.items():
+#             print(f"  {sub_key}: {sub_value}")
+#     else:
+#         print(f"{key}: {value}")
+
+for key, value in whois(domain).items():
     if isinstance(value, dict):
         print(f"{key}:")
         for sub_key, sub_value in value.items():
@@ -92,7 +159,7 @@ for key, value in dns_lookup(domain).items():
     else:
         print(f"{key}: {value}")
 
-for key, value in whois(domain).items():
+for key, value in virustotal(domain).items():
     if isinstance(value, dict):
         print(f"{key}:")
         for sub_key, sub_value in value.items():
