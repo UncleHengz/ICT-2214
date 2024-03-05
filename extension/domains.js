@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the extension on page load
     chrome.storage.local.get(['historyEnabled', 'unscannedDomains', 'allowedDomains', 'maliciousDomains'], function (result) {
         historyToggle.checked = result.historyEnabled ?? true;
-        populateDomainList(unscannedDomainsList, result.unscannedDomains);
         populateDomainList(allowedDomainsList, result.allowedDomains);
         populateDomainList(maliciousDomainsList, result.maliciousDomains);
+        populateDomainList(unscannedDomainsList, result.unscannedDomains);
     });
 
     // Event listener for tab switching
