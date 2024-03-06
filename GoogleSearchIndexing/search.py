@@ -1,17 +1,6 @@
-
-# similiarweb api key:0ec16759045a4290800ff27abebc07b6
-
 import requests
-from urllib.parse import urlparse
-def extract_domain(url):
-    parsed_url = urlparse(url)
-    domain = parsed_url.netloc
-    if domain.startswith('www.'):
-        domain = domain[4:]
-    return domain
-
-
 def check_site_google(url):
+
     api_key = "AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU" # google custom search json api key
     cse_id = "a6d5af5008e9e4d57" #custom search engine id
     query = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cse_id}&q={url}"
@@ -42,8 +31,4 @@ def print_dict(d, indent):
  # todo: main thing is to find ranking of site
 if __name__ == '__main__':
     is_indexed, message = check_site_google("https://amaonz.xjijin.com.cn")
-    #can try with other sites
-    #isIndexed is a boolean
-    #message is whether indexed
-
-    print(message)
+    
