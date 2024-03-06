@@ -9,7 +9,7 @@ from firebase_admin import credentials, storage, initialize_app
 
 app = Flask(__name__)
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("phishingapi-8d5c4-firebase-adminsdk-8j7mc-80f102d42f.json")
+cred = credentials.Certificate("phishingapi-8d5c4-firebase-adminsdk-8j7mc-e20d86ac21.json")
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'phishingapi-8d5c4.appspot.com'
 })
@@ -104,15 +104,21 @@ def database_file():
         return jsonify({"error": str(e)})
 @app.route('/Compare')
 def compare_currentlink():
-    link = "placeholder, get from current URL using Extension Unsure on how to do that yet"
-    #link2="http://www.services.israelpost.co.il.semillasalalma.net/a264792eb48972053f90b8a9f61da333/zlatan.php" #For testing only
+    result = []
+    link = "https://www.youtube.com/"
+    link2="ftp://188.128.111.33/IPTV/TV1324/view.html" #For testing only
     with open('./FireBase_Data/ALL-phishing-links.txt','r',encoding='utf-8') as file:
-        result = file.read()
+        for item in file:
+            result.append(item)
         file.close()
-    if link in result:
-        print('gay')
-    reults = 'PAss'
-    return reults
+    results = "Not Phishing"
+    print(result[0])
+    print(link2)
+    for phishing in result:
+        if link == phishing.strip():
+            results = "Phishing"
+
+    return results
 
 
 
