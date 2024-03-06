@@ -207,16 +207,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Function to complete the scan
-    function completeScan(result) {
+    function completeScan(malicious_result) {
         timeoutIds.forEach(clearTimeout);
-        console.log("This is result" + result);
+        console.log("This is result" + malicious_result);
         // Handle the data received from the backend as needed
-        if (result === true) {
+        if (malicious_result === false) {
             statusElement.innerHTML = 'Safe';
             statusElement.classList.remove('alert-warning');
             statusElement.classList.add('alert-success');
             updateProgress(100);
-        } else if (result == false) {
+        } else if (malicious_result == true) {
             statusElement.innerHTML = 'Malicious';
             statusElement.classList.remove('alert-warning');
             statusElement.classList.add('alert-danger');
@@ -236,9 +236,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const domain = url.hostname;
     
         // Add the domain to the allowed domains list
-        if (result == true){
+        if (malicious_result == true){
             addDomainToAllowedList(domain);
-        }else if (result == false){
+        }else if (malicious_result == false){
             addDomainToMaliciousList(domain);
         }else{
             addDomainToUnscannedList(domain);
