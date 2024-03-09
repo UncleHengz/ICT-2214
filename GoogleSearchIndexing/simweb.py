@@ -50,7 +50,7 @@ filtDict ={
     "SearchTerms":[] # From TopKeywords
 }
 
-print(result["CountryRank"]) # Check data
+# print("Checking sample : " + str(result["CountryRank"])) # Check data
 
 filtDict["SiteName"]= result["SiteName"]
 
@@ -80,4 +80,4 @@ filtDict["CountryCount"] = countryCount
 for i in result["TopKeywords"]:
     filtDict["SearchTerms"].append(i["Name"])
 
-# print(pretty_print_dict(filtDict))
+print(pretty_print_dict(filtDict))
