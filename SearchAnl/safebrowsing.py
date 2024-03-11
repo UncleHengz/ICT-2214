@@ -1,47 +1,47 @@
 import requests
-import json
 
-#TODO fix code
+def check_url_safe(api_key, url):
+    # Google Safe Browsing API endpoint
+    endpoint = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
 
-API_KEY = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
-API_URL = 'https://safebrowsing.googleapis.com/v4/threatMatches:find'
-
-def check_url(url):
+    # Parameters for the API request
     payload = {
         "client": {
-            "clientId": "your_client_id",
-            "clientVersion": "1.0.0"
+            "clientId": "my_safeBrowsing_checker",
+            "clientVersion": "1.0"
         },
         "threatInfo": {
-            "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "THREAT_TYPE_UNSPECIFIED"],
-            "platformTypes": ["ANY_PLATFORM"],
-            "threatEntryTypes": ["URL"],
-            "threatEntries": [{"url": url}]
+            "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING","THREAT_TYPE_UNSPECIFIED","UNWANTED_SOFTWARE","POTENTIALLY_HARMFUL_APPLICATION"],
+            "platformTypes": ["PLATFORM_TYPE_UNSPECIFIED","WINDOWS", "LINUX","ANDROID","OSX","IOS","ANY_PLATFORM","ALL_PLATFORMS","CHROME"],
+            "threatEntryTypes": ["URL","THREAT_ENTRY_TYPE_UNSPECIFIED","EXECUTABLE"],
+            "threatEntries": [
+                {"url": url}
+            ]
         }
     }
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer {}".format(API_KEY)
-    }
+    # Complete URL with the API key
+    params = {'key': api_key}
 
-    response = requests.post(API_URL, headers=headers, json=payload)
-    if response.status_code == 200:
-        data = response.json()
-        if 'matches' in data:
-            # URL is malicious
-            return True
+    try:
+        # Make the POST request to the Safe Browsing API
+        response = requests.post(endpoint, params=params, json=payload)
+        response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
+        result = response.json()
+
+        # Improved handling for empty results
+        if 'matches' in result:
+            print(f"Threats found for {url}:")
+            for threat in result['matches']:
+                print(f"- {threat['threatType']}")
         else:
-            # URL is safe
-            return False
-    else:
-        # Handle error response
-        print("Error:", response.status_code)
-        return False
+            print(f"No threats found for {url}.")
 
-# Example usage
-url_to_check = "https://www.google.com"
-if check_url(url_to_check):
-    print("The URL is malicious")
-else:
-    print("The URL is safe")
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")
+    except Exception as err:
+        print(f"An error occurred: {err}")
+
+api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
+url_tocheck = 'http://www.asterisk.com'  # Replace with the URL you want to check
+check_url_safe(api_key, url_tocheck)
