@@ -1,5 +1,5 @@
 import requests
-import dns.resolver
+#import dns.resolver
 from datetime import datetime
 from urllib.parse import urlparse
 import re
@@ -235,7 +235,7 @@ def virustotal(domain):
     return result
 
 # Example Usage
-domain = "afasfadf.com"
+domain = "amaonz.xjijin.com.cn"
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):

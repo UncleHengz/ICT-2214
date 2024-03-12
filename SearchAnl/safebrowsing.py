@@ -52,5 +52,5 @@ api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 url_tocheck = 'https://www.singaporetech.edu.sg/careernexus/jobs'  # Replace with the URL you want to check
 
 for i in test_array:
-    check_url_safe(api_key, str("http://www."+i))
+    check_url_safe(api_key,i)
 
