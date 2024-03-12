@@ -1,5 +1,11 @@
 import requests
 
+
+test_array= []
+with open("./SearchAnl/testsites.txt") as my_file:
+    for line in my_file:
+        test_array.append(line)
+
 def check_url_safe(api_key, url):
     # Google Safe Browsing API endpoint
     endpoint = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
@@ -43,5 +49,8 @@ def check_url_safe(api_key, url):
         print(f"An error occurred: {err}")
 
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
-url_tocheck = 'http://www.asterisk.com'  # Replace with the URL you want to check
-check_url_safe(api_key, url_tocheck)
+url_tocheck = 'https://www.singaporetech.edu.sg/careernexus/jobs'  # Replace with the URL you want to check
+
+for i in test_array:
+    check_url_safe(api_key, str("http://www."+i))
+
