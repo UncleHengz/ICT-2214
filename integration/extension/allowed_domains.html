@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Domains</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+        }
+
+        .container {
+            min-width: 300px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .scan-btn,
+        .remove-btn {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #allowedDomainsList,
+        #allowedDomainsListMalicious {
+            max-height: 120px;
+            /* Set a maximum height for the list */
+            overflow-y: auto;
+            /* Enable vertical scroll if needed */
+        }
+
+        .domain-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .remove-btn {
+            background-color: #ff5757;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tabs {
+            margin-top: 20px;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #007bff;
+        }
+
+        .tab-content {
+            display: none;
+            max-height: 150px;
+            /* Set a fixed height for the container */
+            overflow-y: auto;
+            /* Enable vertical scroll if needed */
+            margin-top: 10px;
+            /* Add margin for better appearance */
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html">Back</a>
+    <div class="container">
+        <div class="header">
+            <p class="h3">Allowed Domains</p>
+            <div class="buttons-container">
+                <button class="btn btn-primary scan-btn" id="scanAllButton">Scan All Domains</button>
+                <button class="btn btn-danger remove-btn" id="removeAllButton">Remove All Domains</button>
+            </div>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="historyToggle">
+            <label class="custom-control-label" for="historyToggle">Allow Reading History</label>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="unscannedTab">Unscanned</div>
+            <div class="tab" data-tab="allowedTab">Allowed</div>
+            <div class="tab" data-tab="maliciousTab">Malicious</div>
+        </div>
+
+        <div class="tab-content active" id="unscannedTabContent">
+            <div id="unscannedDomainsList" class="mt-4">
+                <!-- Display allowed domains here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="allowedTabContent">
+            <div id="allowedDomainsList" class="mt-4">
+                <!-- Display allowed domains here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="maliciousTabContent">
+            <div id="maliciousDomainsList" class="mt-4">
+                <!-- Display malicious domains here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="domains.js"></script>
+</body>
+
+</html>
