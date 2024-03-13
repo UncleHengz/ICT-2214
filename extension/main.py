@@ -9,20 +9,24 @@ abort_signal_received = False
 
 def database_analysis(received_domain):
     phishing_links = []
-    # link = "https://www.youtube.com/"
-    # link="ftp://188.128.111.33/IPTV/TV1324/view.html" #For testing only
-    # received_domain = link
     with open('ALL-phishing-links.txt','r',encoding='utf-8') as file:
         for item in file:
             phishing_links.append(item.strip())
         file.close()
     is_malicious = False
-    # for phishing in result:
-    #     if received_domain == phishing.strip():
-    #         result = "Phishing"
-    if received_domain in phishing_links:
+    #Code for the link extraction and comparison start
+    reqs = requests.get(received_domain)
+    soup = BeautifulSoup(reqs.text, 'html.parser')
+    urls = []
+    for link in soup.find_all('a'):
+        urls.append(link.get('href'))
+    match = list(set(phishing_links) & set(urls))
+    #Code for link extraction and comparison end
+    if received_domain in phishing_links or match: #Added or operator to ensure if the links on the site is phishing then its malicious as well
         is_malicious = True # malicious
     return is_malicious
+
+
 
 @app.route('/scan-all', methods=['POST'])
 def scan_all_domains():

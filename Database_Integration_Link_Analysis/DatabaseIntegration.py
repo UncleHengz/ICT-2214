@@ -2,6 +2,7 @@ from flask import Flask, request, send_file, jsonify
 import requests
 import os
 import tarfile
+from bs4 import BeautifulSoup
 import firebase_admin
 from firebase_admin import credentials, storage, initialize_app
 
@@ -120,6 +121,25 @@ def compare_currentlink():
 
     return results
 
+@app.route('/CompareExtractedLink')
+def compare_extractlink():
+    result = []
+    with open('./FireBase_Data/ALL-phishing-links.txt','r',encoding='utf-8') as file:
+        for item in file:
+            result.append(item.strip())
+        file.close()
+    results = "Not Phishing"
+    reqs = requests.get("https://www.youtube.com/") #testing
+    soup = BeautifulSoup(reqs.text, 'html.parser')
+    urls = [] #For collation of all links in page
+    test = ['ftp://188.128.111.33/IPTV/TV1324/view.html'] #Test for phishing
+    for link in soup.find_all('a'):
+        urls.append(link.get('href'))
+    match = list(set(result) & set(urls))
+
+    if match:
+        print('Phishing')
+    return match
 
 
 if __name__ == '__main__':
