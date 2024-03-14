@@ -165,44 +165,51 @@ def virustotal(domain):
     headers = {"x-apikey": "82a2d1a9192167470ad718102b312c5745a9b14ea17c3e0468b03d616ad21dc3"}
 
     response = requests.get(url, headers=headers)
-    data = response.json()['data']
-
-    analysis = data['attributes']['last_analysis_stats']
-
-    whois_data = parse_whois(data['attributes']['whois'])
-    whois_dates = parse_whois_dates(whois_data)
-
-    categories = data['attributes']['categories']
-    print(categories)
+    if 'error' in response.json():
+        return f"An error occurred: {response.json()['error']['message']}"
     
+    else:
+        data = response.json()['data']
 
-    age = None
-    update_age = None
+        analysis = data['attributes']['last_analysis_stats']
 
-    for key, value in whois_dates.items():
-        for pattern in creation_patterns:
-            if re.match(pattern, key):
-                age = calculate_age(parse_date(value))
-                created_date = parse_date(value)
-                break
-        for pattern in update_patterns:
-            if re.match(pattern, key):
-                update_age = calculate_update_age(parse_date(value), created_date)
-                break
+        if 'whois' not in data['attributes']:
+            return "Site does not exist"
 
-    suspiciousness = determine_suspiciousness(age, update_age) + calculate_suspiciousness(analysis) + categorize_threat(categories)
+        whois_data = parse_whois(data['attributes']['whois'])
+        whois_dates = parse_whois_dates(whois_data)
 
-    dns_records = group_dns_records(data['attributes']['last_dns_records'])
+        categories = data['attributes']['categories']
+        print(categories)
+        
 
-    result = {
-        'Domain': data['id'],
-        'Type': data['type'],
-        'DNS Records': dns_records,
-        'Whois Dates': whois_dates,
-        'Popularity': data['attributes']['popularity_ranks'],
-        "Analysis Stats": data['attributes']['last_analysis_stats'],
-        "Categories": categories,
-        "Suspiciousness": suspiciousness
-    }
+        age = None
+        update_age = None
 
-    return result
+        for key, value in whois_dates.items():
+            for pattern in creation_patterns:
+                if re.match(pattern, key):
+                    age = calculate_age(parse_date(value))
+                    created_date = parse_date(value)
+                    break
+            for pattern in update_patterns:
+                if re.match(pattern, key):
+                    update_age = calculate_update_age(parse_date(value), created_date)
+                    break
+
+        suspiciousness = determine_suspiciousness(age, update_age) + calculate_suspiciousness(analysis) + categorize_threat(categories)
+
+        dns_records = group_dns_records(data['attributes']['last_dns_records'])
+
+        result = {
+            'Domain': data['id'],
+            'Type': data['type'],
+            'DNS Records': dns_records,
+            'Whois Dates': whois_dates,
+            'Popularity': data['attributes']['popularity_ranks'],
+            "Analysis Stats": data['attributes']['last_analysis_stats'],
+            "Categories": categories,
+            "Suspiciousness": suspiciousness
+        }
+
+        return result
