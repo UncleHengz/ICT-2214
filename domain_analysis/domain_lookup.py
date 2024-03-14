@@ -104,11 +104,13 @@ def calculate_suspiciousness(analysis_stats):
         "undetected": 1,
         "timeout": 0
     }
+    if analysis_stats is None:
+        return 0
 
     return sum(analysis_stats[category] * weights[category] for category in analysis_stats)
 
 def categorize_threat(categories):
-    threat_keywords = ['phish', 'fraud', 'scam', 'malware', 'ransomware', 'spyware']  # Add more keywords as needed
+    threat_keywords = ['phish', 'fraud', 'scam', 'malware', 'ransomware', 'spyware', 'susp', 'illegal']  # Add more keywords as needed
     for category in categories.values():
         for keyword in threat_keywords:
             if re.search(keyword, category, re.IGNORECASE):
@@ -166,6 +168,11 @@ def parse_date(date_str):
 
     try:
         return datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S%z').isoformat()
+    except ValueError:
+        pass
+
+    try:
+        return datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%fZ').isoformat()
     except ValueError:
         pass
 
@@ -230,24 +237,36 @@ def virustotal(domain):
         whois_dates = parse_whois_dates(whois_data)
 
         categories = data['attributes']['categories']
-        print(categories)
-        
 
         age = None
         update_age = None
 
         for key, value in whois_dates.items():
+            pattern_matched = False  # Flag to track if any pattern matched
             for pattern in creation_patterns:
                 if re.match(pattern, key):
                     age = calculate_age(parse_date(value))
                     created_date = parse_date(value)
+                    pattern_matched = True
                     break
+            if not pattern_matched:  # If no pattern matched, break
+                break
+            
+            pattern_matched = False  # Reset flag for the next loop
+            
             for pattern in update_patterns:
                 if re.match(pattern, key):
                     update_age = calculate_update_age(parse_date(value), created_date)
+                    pattern_matched = True
                     break
+            if not pattern_matched:  # If no pattern matched, break
+                break
 
-        suspiciousness = determine_suspiciousness(age, update_age) + calculate_suspiciousness(analysis) + categorize_threat(categories)
+        age_sus = determine_suspiciousness(age, update_age)
+        analysis_sus = calculate_suspiciousness(analysis)
+        cat_sus = categorize_threat(categories)
+
+        suspiciousness = age_sus + analysis_sus + cat_sus
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
 
@@ -265,29 +284,57 @@ def virustotal(domain):
         return result
 
 # Example Usage
-domain = ['facebook.com', 'google.com', 'example.com', 'singaporetech.edu.sg', 'ntu.edu.sg', "https://2021-free-robux-generator.000webhostapp.com",
-    "https://alerta208.000webhostapp.com",
-    "https://elisesnaturals.com",
-    "https://heyrhdlcs.weebly.com",
-    "https://hipotecario00011111.000webhostapp.com",
-    "https://poin-kredivo.com/index1.html",
-    "https://pressandpack.com/fixed/meine/iM78ElUHGSp8iXYq8/meine.Anmelden.php?cgi_auth=MjnDUqyBRxbKsJPG3T7VUqqYt8xZHvqBIeujiggfhyNLk92zGZwC1kVy99uInSkjcN5z5jHS2gfeoPIwDqSEoE8NbvvQnRJ450InmY7ywKXArOcGFu9",
-    "https://reportegrupal12.000webhostapp.com",
-    "http://srnbc-card.com.y8uet5y.cn",
-    "https://vvpaes-me-index.aqkrdf.cn",
-    "https://vvpaes-me-index.axiild.cn",
-    "https://vvpaes-me-index.beogqu.cn",
-    "https://vvpaes-me-index.bxdvpv.cn",
-    "https://vvpaes-me-index.cqsvgi.cn",
-    "https://vvpaes-me-index.daxdqc.cn",
-    "https://vvpaes-me-index.dezpcv.cn",
-    "https://vvpaes-me-index.dlicdq.cn",
-    "https://vvpaes-me-index.dlofmk.cn",
-    "https://vvpaes-me-index.dowixy.cn",
-    "https://vvpaes-me-index.ebzhzm.cn"]
+# domain = [
+#     "imo.net.au",
+#     "shortifyme.co",
+#     "existential.audio",
+#     "aave.com",
+#     "app.aave.com",
+#     "androidauthority.com",
+#     "cognitivzen.com",
+#     "denisemortati.com",
+#     "discordstatus.com",
+#     "share.hsforms.com",
+#     "indcomleasing.com",
+#     "portal.indcomleasing.com",
+#     "www.indcomleasing.com",
+#     "outlook.live.com",
+#     "magloft.com",
+#     "nvidia.com",
+#     "forms.office.com",
+#     "pitch.com",
+#     "signin.quicken.com",
+#     "sakthivel.com",
+#     "online1.snapsurveys.com",
+#     "trustmary.com",
+#     "form.trustmary.com",
+#     "widget.trustmary.com",
+#     "weareindy.com",
+#     "da.gd",
+#     "han.gl",
+#     "enovation.ie",
+#     "ipfs.io",
+#     "ipfs.subutai.io",
+#     "ftp.jaist.ac.jp",
+#     "clover.co.jp",
+#     "lp.vp4.me",
+#     "stats.sender.net",
+#     "voicemod.net",
+#     "westandsons.co.nz",
+#     "zenodo.org",
+#     "aliexpress.us",
+#     "degree37.io",
+#     "quicksign.fr",
+#     "forms.onepagecrm.com",
+#     "osky.com.au",
+#     "claritysecure.claritycrm.com",
+#     "injective.talis.art",
+#     "mailsuite.com",
+#     "mailtrack.io",
+#     "haproxy-vip.quicksign.fr"
+# ]
     
-# domain = "https://alerta208.000webhostapp.com"
-# print(get_domain_from_url(domain))
+domain = "online1.snapsurveys.com"
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):
@@ -297,33 +344,37 @@ domain = ['facebook.com', 'google.com', 'example.com', 'singaporetech.edu.sg', '
 #     else:
 #         print(f"{key}: {value}")
 
-# def print_result(result):
-#     if isinstance(result, str):
-#         print(result)
-#     elif isinstance(result, dict):
-#         for key, value in result.items():
-#             if isinstance(value, dict):
-#                 print(f"{key}:")
-#                 for sub_key, sub_value in value.items():
-#                     print(f"  {sub_key}: {sub_value}")
-#             else:
-#                 print(f"{key}: {value}")
-#     else:
-#         print("Unknown result type")
-
 def print_result(result):
-    if isinstance(result, dict):
-        if 'Categories' in result:
-            print(f"Categories: {result['Categories']}")
-        if 'Suspiciousness' in result:
-            print(f"Suspiciousness: {result['Suspiciousness']}")
-    elif isinstance(result, str):
+    if isinstance(result, str):
         print(result)
+    elif isinstance(result, dict):
+        for key, value in result.items():
+            if isinstance(value, dict):
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    print(f"  {sub_key}: {sub_value}")
+            else:
+                print(f"{key}: {value}")
     else:
         print("Unknown result type")
 
-for i in range(len(domain)):
-    result = virustotal(domain[i])
-    print_result(result)
-# result = virustotal(domain)
-# print_result(result)        
+result = virustotal(domain)
+print_result(result)        
+
+# def print_result(result):
+#     if isinstance(result, dict):
+#         if 'Domain' in result:
+#             print(f"Domain: {result['Domain']}")
+#         if 'Categories' in result:
+#             print(f"Categories: {result['Categories']}")
+#         if 'Suspiciousness' in result:
+#             print(f"Suspiciousness: {result['Suspiciousness']}")
+#     elif isinstance(result, str):
+#         print(result)
+#     else:
+#         print("Unknown result type")
+
+# for i in range(len(domain)):
+#     result = virustotal(domain[i])
+#     print_result(result)
+        

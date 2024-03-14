@@ -59,10 +59,13 @@ def calculate_suspiciousness(analysis_stats):
         "timeout": 0
     }
 
+    if analysis_stats is None:
+        return 0
+
     return sum(analysis_stats[category] * weights[category] for category in analysis_stats)
 
 def categorize_threat(categories):
-    threat_keywords = ['phish', 'fraud', 'scam', 'malware', 'ransomware', 'spyware']  # Add more keywords as needed
+    threat_keywords = ['phish', 'fraud', 'scam', 'malware', 'ransomware', 'spyware', 'illegal', 'susp']  # Add more keywords as needed
     for category in categories.values():
         for keyword in threat_keywords:
             if re.search(keyword, category, re.IGNORECASE):
@@ -123,6 +126,11 @@ def parse_date(date_str):
     except ValueError:
         pass
 
+    try:
+        return datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%fZ').isoformat()
+    except ValueError:
+        pass
+
     # If the date format is not recognized, return the original string
     return date_str
 
@@ -168,6 +176,7 @@ def virustotal(domain):
     headers = {"x-apikey": "82a2d1a9192167470ad718102b312c5745a9b14ea17c3e0468b03d616ad21dc3"}
 
     response = requests.get(url, headers=headers)
+
     if 'error' in response.json():
         return f"An error occurred: {response.json()['error']['message']}"
     
@@ -183,24 +192,36 @@ def virustotal(domain):
         whois_dates = parse_whois_dates(whois_data)
 
         categories = data['attributes']['categories']
-        print(categories)
-        
 
         age = None
         update_age = None
 
         for key, value in whois_dates.items():
+            pattern_matched = False  # Flag to track if any pattern matched
             for pattern in creation_patterns:
                 if re.match(pattern, key):
                     age = calculate_age(parse_date(value))
                     created_date = parse_date(value)
+                    pattern_matched = True
                     break
+            if not pattern_matched:  # If no pattern matched, break
+                break
+            
+            pattern_matched = False  # Reset flag for the next loop
+            
             for pattern in update_patterns:
                 if re.match(pattern, key):
                     update_age = calculate_update_age(parse_date(value), created_date)
+                    pattern_matched = True
                     break
+            if not pattern_matched:  # If no pattern matched, break
+                break
 
-        suspiciousness = determine_suspiciousness(age, update_age) + calculate_suspiciousness(analysis) + categorize_threat(categories)
+        age_sus = determine_suspiciousness(age, update_age)
+        analysis_sus = calculate_suspiciousness(analysis)
+        cat_sus = categorize_threat(categories)
+
+        suspiciousness = age_sus + analysis_sus + cat_sus
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
 
