@@ -35,22 +35,29 @@ def check_url_safe(api_key, url):
         response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
         result = response.json()
 
-        # Improved handling for empty results
+        # Check if any threats were found
         if 'matches' in result:
             print(f"Threats found for {url}:")
             for threat in result['matches']:
                 print(f"- {threat['threatType']}")
+            return False, "Threats found"  # Indicates threats were found, URL is not safe
         else:
             print(f"No threats found for {url}.")
+            return True, "No threats found"  # Indicates no threats were found, URL is safe
 
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")
+        return False, f"HTTP error occurred: {http_err}"  # Indicates an error occurred, status of URL is uncertain
     except Exception as err:
         print(f"An error occurred: {err}")
+        return False, f"An error occurred: {err}"  # Indicates an error occurred, status of URL is uncertain
+
 
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 
-# can have a file containing malicious links to check which links got issue 
-for i in test_array:
-    check_url_safe(api_key,i)
+if __name__=="__main__":    
+    # can have a file containing malicious links to check which links got issue 
+    for i in test_array:
+        check_url_safe(api_key,i)
+
 

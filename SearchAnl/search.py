@@ -1,34 +1,26 @@
 import requests
+
 def check_site_google(url):
+    api_key = "AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU"  # Directly using the API key
+    cse_id = "a6d5af5008e9e4d57"  # Direct use of the CSE ID
 
-    api_key = "AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU" # google custom search json api key
-    cse_id = "a6d5af5008e9e4d57" #custom search engine id
     query = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cse_id}&q={url}"
-    response = requests.get(query)
-    results = response.json()
-    print(results["items"])
-    for i in results["items"]:
-        print("_________")
-        for x in i:
 
-            print(x,":",i[x])
+    try:
+        response = requests.get(query)
+        response.raise_for_status()  # Raises an exception for 4XX and 5XX errors
+        results = response.json()
 
-    # Check if there are any search results
-    if results.get("searchInformation") and int(results.get("searchInformation").get("totalResults", 0)) > 0:
-        return True, ("The site is indexed by Google. Total = " + str(int(results.get("searchInformation").get("totalResults"))) +" results found")
-    else:
-        return False, "The site is not indexed by Google."
-
-def print_dict(d, indent):
-    for key, value in d.items():
-        print(' ' * indent + str(key) + ':', end=' ')
-        if isinstance(value, dict):
-            print()  # Print a newline if the value is a dictionary
-            print_dict(value, indent + 4)  # Recursively print the nested dictionary with increased indentation
+        total_results = int(results.get("searchInformation", {}).get("totalResults", 0))
+        if total_results > 0:
+            return True, f"The site is indexed by Google. Total = {total_results} results found"
         else:
-            print(value)  # Print the value
+            return False, "The site is not indexed by Google."
+    except requests.exceptions.RequestException as e:
+        # Catch all requests exceptions
+        return False, f"Request error occurred: {e}"
 
- # todo: main thing is to find ranking of site
-if __name__ == '__main__':
-    is_indexed, message = check_site_google("https://amaonz.xjijin.com.cn")
-    
+if __name__ == "__main__":
+    url_to_check = "https://amaonz.xjijin.com.cn"
+    is_indexed, message = check_site_google(url_to_check)
+    print(message)
