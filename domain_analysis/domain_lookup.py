@@ -20,6 +20,9 @@ def get_domain_from_url(url):
     domain_parts = parsed_url.netloc.split('.')
     if domain_parts[0].startswith("www"):
         return '.'.join(domain_parts[1:])
+    else:
+        domain = '.'.join(domain_parts[0:])
+        return domain
 
 # Regular expression patterns for matching creation and update dates
 creation_patterns = [r'(?i)(create[d]?[ ]?date|creat[ion]?)[ ]?[:]?[\s\-/:]*']
@@ -262,7 +265,29 @@ def virustotal(domain):
         return result
 
 # Example Usage
-domain = "www.singaporetech.edu.sg/admissions/undergraduate/matriculation"
+domain = ['facebook.com', 'google.com', 'example.com', 'singaporetech.edu.sg', 'ntu.edu.sg', "https://2021-free-robux-generator.000webhostapp.com",
+    "https://alerta208.000webhostapp.com",
+    "https://elisesnaturals.com",
+    "https://heyrhdlcs.weebly.com",
+    "https://hipotecario00011111.000webhostapp.com",
+    "https://poin-kredivo.com/index1.html",
+    "https://pressandpack.com/fixed/meine/iM78ElUHGSp8iXYq8/meine.Anmelden.php?cgi_auth=MjnDUqyBRxbKsJPG3T7VUqqYt8xZHvqBIeujiggfhyNLk92zGZwC1kVy99uInSkjcN5z5jHS2gfeoPIwDqSEoE8NbvvQnRJ450InmY7ywKXArOcGFu9",
+    "https://reportegrupal12.000webhostapp.com",
+    "http://srnbc-card.com.y8uet5y.cn",
+    "https://vvpaes-me-index.aqkrdf.cn",
+    "https://vvpaes-me-index.axiild.cn",
+    "https://vvpaes-me-index.beogqu.cn",
+    "https://vvpaes-me-index.bxdvpv.cn",
+    "https://vvpaes-me-index.cqsvgi.cn",
+    "https://vvpaes-me-index.daxdqc.cn",
+    "https://vvpaes-me-index.dezpcv.cn",
+    "https://vvpaes-me-index.dlicdq.cn",
+    "https://vvpaes-me-index.dlofmk.cn",
+    "https://vvpaes-me-index.dowixy.cn",
+    "https://vvpaes-me-index.ebzhzm.cn"]
+    
+# domain = "https://alerta208.000webhostapp.com"
+# print(get_domain_from_url(domain))
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):
@@ -272,19 +297,33 @@ domain = "www.singaporetech.edu.sg/admissions/undergraduate/matriculation"
 #     else:
 #         print(f"{key}: {value}")
 
+# def print_result(result):
+#     if isinstance(result, str):
+#         print(result)
+#     elif isinstance(result, dict):
+#         for key, value in result.items():
+#             if isinstance(value, dict):
+#                 print(f"{key}:")
+#                 for sub_key, sub_value in value.items():
+#                     print(f"  {sub_key}: {sub_value}")
+#             else:
+#                 print(f"{key}: {value}")
+#     else:
+#         print("Unknown result type")
+
 def print_result(result):
-    if isinstance(result, str):
+    if isinstance(result, dict):
+        if 'Categories' in result:
+            print(f"Categories: {result['Categories']}")
+        if 'Suspiciousness' in result:
+            print(f"Suspiciousness: {result['Suspiciousness']}")
+    elif isinstance(result, str):
         print(result)
-    elif isinstance(result, dict):
-        for key, value in result.items():
-            if isinstance(value, dict):
-                print(f"{key}:")
-                for sub_key, sub_value in value.items():
-                    print(f"  {sub_key}: {sub_value}")
-            else:
-                print(f"{key}: {value}")
     else:
         print("Unknown result type")
 
-result = virustotal(domain)
-print_result(result)        
+for i in range(len(domain)):
+    result = virustotal(domain[i])
+    print_result(result)
+# result = virustotal(domain)
+# print_result(result)        

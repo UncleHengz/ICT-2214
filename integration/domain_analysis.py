@@ -20,6 +20,9 @@ def get_domain_from_url(url):
     domain_parts = parsed_url.netloc.split('.')
     if domain_parts[0].startswith("www"):
         return '.'.join(domain_parts[1:])
+    else:
+        domain = '.'.join(domain_parts[0:])
+        return domain
 
 # Regular expression patterns for matching creation and update dates
 creation_patterns = [r'(?i)(create[d]?[ ]?date|creat[ion]?)[ ]?[:]?[\s\-/:]*']
