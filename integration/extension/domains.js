@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var tabs = document.querySelectorAll('.tab');
     var tabContents = document.querySelectorAll('.tab-content');
     var removeAllButton = document.getElementById("removeAllButton");
+    // Select the loading modal
+    var loadingModal = document.getElementById('loadingModal');
 
+    
     // Check if necessary elements are present
     if (!unscannedDomainsList || !allowedDomainsList || !maliciousDomainsList || !historyToggle || !scanAllButton) {
         console.error("Elements not found.");
@@ -172,11 +175,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(result => {
                 console.log(result.message);
-                // Handle success for scan-all API
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Handle error for scan-all API
             });
         } else if (typeof data === 'string') {
             // It's a string, call scan API
@@ -189,26 +190,60 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result.message);
-                // Handle success for scan API
+                console.log(result.results);
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Handle error for scan API
             });
         } else {
             console.error('Invalid input type');
             // Handle invalid input type
         }
     }
+    
 
     // Event listener for the scan button
     scanAllButton.addEventListener("click", function () {
+        // Show the loading modal
+        loadingModal.style.display = 'block';
+
         // Get the list of unscanned domains
         const unscannedDomains = Array.from(document.querySelectorAll('#unscannedDomainsList .domain-item span'))
                                     .map(item => item.textContent);
         scanDomains(unscannedDomains);
     });
+
+    // Function to send an abort signal to the server
+    function abortScan() {
+        fetch('http://127.0.0.1:5000/abort-scan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        }).then(response => {
+            if (response.ok) {
+                console.log('Abort signal sent successfully');
+            } else {
+                console.error('Failed to send abort signal');
+            }
+        }).catch(error => {
+            console.error('Error sending abort signal:', error);
+        });
+    }
+
+    // Get the close button element
+    var closeButton = document.querySelector('#loadingModal .close');
+
+    // Add an event listener to the close button
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            // Check if the modal exists and is a Bootstrap modal
+            loadingModal.style.display = 'none';
+            abortScan();
+        });
+    }
+
 
     // Function to get unique domains from history
     function getUniqueDomainsFromHistory() {

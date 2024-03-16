@@ -9,18 +9,52 @@ CORS(app)
 # Flag to check if an abort signal has been received
 abort_signal_received = False
 
+def checklist_scan(domain):
+    abort_signal_received = False
+    is_malicious = False
+    
+    if domain and not abort_signal_received:
+        database_result = None
+        domain_result = None
+        phishing_checklist_dict = {}
+        
+        while(database_result == None and domain_result == None):
+            if abort_signal_received:
+                print("Scan aborted by user")
+                abort_signal_received = True
+                return jsonify({'scan_result': 'aborted'}), 200
+            
+            # # Perform domain analysis
+            if (not domain_result):
+                domain_result = virustotal(domain)
+            
+            # # Perform database analysis
+            if (not database_result):
+                database_result = database_analysis(domain)
+                phishing_checklist_dict["Database"] = database_result 
+                is_malicious = database_result
+                print(is_malicious)
+                
+    return is_malicious
+
 @app.route('/scan-all', methods=['POST'])
 def scan_all_domains():
     if request.method == 'POST':
         data = request.get_json()
         received_domains = data.get('domains', [])
 
-        print("Scanned Domains:")
-        for domain in received_domains:
-            print(domain)
+        results = {}
+        
+        try:
+            for domain in received_domains:
+                is_malicious = checklist_scan(domain)
+                results[domain] = is_malicious
+        except RequestTimeout:
+            # Handle request timeout here
+            return jsonify({'error': 'Request timed out'}), 408
 
-        return jsonify({'message': 'Domains processed successfully'})
-
+        return jsonify({'results': results})
+    
 @app.route('/scan', methods=['OPTIONS', 'POST'])
 def scan_domain():
     global abort_signal_received
@@ -30,40 +64,13 @@ def scan_domain():
 
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
         received_domain = data.get('domain', None)
-        
-        abort_signal_received = False
-        is_malicious = False
+        is_malicious = checklist_scan(received_domain)
 
-        if received_domain and not abort_signal_received:
-            print("Scanned Domain:", received_domain)
-
-            database_result = None
-            domain_result = None
-            phishing_checklist_dict = {}
-            
-            while(database_result == None and domain_result == None):
-                if abort_signal_received:
-                    print("Scan aborted by user")
-                    abort_signal_received = True
-                    return jsonify({'scan_result': 'aborted'}), 200
-                
-                # # Perform domain analysis
-                if (not domain_result):
-                    domain_result = virustotal(received_domain)
-                
-                # # Perform database analysis
-                if (not database_result):
-                    database_result = database_analysis(received_domain)
-                    phishing_checklist_dict["Database"] = database_result 
-                    is_malicious = database_result
-                    print(is_malicious)
-                    
-            # Returning a JSON response with a 'status' key
-            return jsonify({'scan_result': is_malicious}), 200
-        else:
-            return jsonify({'error': 'No domain provided in the request'}), 400
+        # Returning a JSON response with a 'status' key
+        return jsonify({'scan_result': is_malicious}), 200
+    else:
+        return jsonify({'error': 'No domain provided in the request'}), 400
 
 
 @app.route('/abort-scan', methods=['OPTIONS', 'POST'])

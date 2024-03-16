@@ -17,7 +17,7 @@ def generative_ai():
   genai.configure(api_key=GOOGLE_API_KEY)
 
   model = genai.GenerativeModel('gemini-pro')
-  response = model.generate_content("Is this site a phishing site, there is 71 harmless, 18 undetected and 1 malicious?", stream=True)
+  response = model.generate_content("This domain is facebook.com. Does it belong to this category computers_electronics_and_technology/social_networks_and_online_communities? Yes or no. Why?", stream=True)
 
   for chunk in response:
     print(chunk.text)
@@ -86,5 +86,5 @@ def create_pdf_report():
     print(f"PDF Report created successfully at: {file_path}")
 
 if __name__ == "__main__":
-  # generative_ai()
-  create_pdf_report()
+  generative_ai()
+  # create_pdf_report()
