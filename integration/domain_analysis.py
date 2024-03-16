@@ -3,7 +3,6 @@ from datetime import datetime
 from urllib.parse import urlparse
 import re
 
-### Just putting this here, might be useful for the plugin implementation part
 def get_domain_from_url(url):
     parsed_url = urlparse(url)
     if parsed_url.netloc == '':
