@@ -67,7 +67,7 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
     for i in SimWebJSON["TopCountryShares"]:
         filtDict["TopCountryShares"].append(i["CountryCode"])
 
-    filtDict["TotalVists"] = SimWebJSON.get("Engagements", {}).get("Visits", 0)
+    filtDict["TotalVisits"] = SimWebJSON.get("Engagements", {}).get("Visits", 0)
 
     filtDict["Category"] = SimWebJSON.get("Category", "")
 
@@ -90,4 +90,6 @@ if __name__ == "__main__":
     result = similarGet("http://hindhosiery.com/office/Super-Nice-Office365/off/index.php")
     filtDict=filteredDict(result)
 
-    print(pretty_print_dict(filtDict))
+    #print(pretty_print_dict(filtDict))
+    # print(filtDict.keys())
+    print(filtDict["TotalVisits"])
