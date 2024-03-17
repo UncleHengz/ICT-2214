@@ -1,13 +1,7 @@
 import requests
+from listMake import list_Maker
 
-testfilepath="./SearchAnl/testsites.txt"
-
-def list_Maker_safeBrowsing(myFilePath): 
-    sites_array= []
-    with open(myFilePath) as my_file:
-        for line in my_file:
-            sites_array.append(line)
-    return sites_array
+testfilepath="./SearchAnl/safebrowsetestsites.txt"
 
 def check_url_safe(api_key, url):
     # Google Safe Browsing API endpoint
@@ -67,7 +61,7 @@ def check_url_safe(api_key, url):
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 
 if __name__=="__main__":    
-    for i in list_Maker_safeBrowsing(testfilepath):
+    for i in list_Maker(testfilepath):
         check_url_safe(api_key,i)
 
 
