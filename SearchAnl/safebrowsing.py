@@ -1,11 +1,15 @@
 import requests
 from listMake import list_Maker
+import json
+import os
+from file_sanitizer import sanitize_filename
 
-testfilepath="./SearchAnl/safebrowsetestsites.txt"
+testfilepath="./SearchAnl/text/safebrowsetestsites.txt"
 
 def check_url_safe(api_key, url):
     # Google Safe Browsing API endpoint
     endpoint = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
+    base_dir = ".\SearchAnl\LocalJson\GoogleSafeBrowsing"  # Base directory for storing JSON files
 
     # Parameters for the API request
     payload = {
@@ -30,6 +34,17 @@ def check_url_safe(api_key, url):
         response = requests.post(endpoint, params=params, json=payload)
         response.raise_for_status()
         result = response.json()
+
+                # Create the directory if it doesn't exist
+        os.makedirs(base_dir, exist_ok=True)
+
+        # Construct file path with sanitized file name
+        file_name = sanitize_filename(f"{url.replace('http://', '').replace('https://', '')}.json")
+        file_path = os.path.join(base_dir, file_name)
+        
+        #Store Json
+        with open(file_path, "w") as json_file:
+            json.dump(result, json_file, indent=4)
 
         unique_threats = set()  # Use a set to store unique threats
 

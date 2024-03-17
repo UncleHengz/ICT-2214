@@ -1,0 +1,76 @@
+{
+    "matches": [
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "WINDOWS",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "LINUX",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "OSX",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "ANY_PLATFORM",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "ALL_PLATFORMS",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "CHROME",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "ANDROID",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        },
+        {
+            "threatType": "SOCIAL_ENGINEERING",
+            "platformType": "IOS",
+            "threat": {
+                "url": "https://testsafebrowsing.appspot.com/s/phishing.html\n"
+            },
+            "cacheDuration": "300s",
+            "threatEntryType": "URL"
+        }
+    ]
+}

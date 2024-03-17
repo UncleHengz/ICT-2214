@@ -1,17 +1,33 @@
 import requests
-import math
+import os
+import json
+import statistics
 from listMake import list_Maker
-sum=0
-count=0
+from file_sanitizer import sanitize_filename
+
+
 def check_site_google(url):
     api_key = "AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU"  # Directly using the API key
     cse_id = "a6d5af5008e9e4d57"  # Direct use of the CSE ID
     query = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cse_id}&q={url}"
+    base_dir = ".\SearchAnl\LocalJson\GoogleCustomSearch"  # Base directory for storing JSON files
 
     try:
         response = requests.get(query)
         response.raise_for_status()  # Raises an exception for 4XX and 5XX errors
         results = response.json()
+
+        # Create the directory if it doesn't exist
+        os.makedirs(base_dir, exist_ok=True)
+
+        # Construct file path with sanitized file name
+        file_name = sanitize_filename(f"{url.replace('http://', '').replace('https://', '')}.json")
+        file_path = os.path.join(base_dir, file_name)
+        
+        #Store Json
+        with open(file_path, "w") as json_file:
+            json.dump(results, json_file, indent=4)
+
         total_results = int(results.get("searchInformation", {}).get("totalResults", 0))
         if total_results > 0:
             return (True, total_results)
@@ -23,14 +39,14 @@ def check_site_google(url):
 
 if __name__ == "__main__":
     # url_to_check = "http://fb.com"
-    test_phishing_sites=list_Maker("./SearchAnl/phishing_links_real_sample.txt")
+    test_phishing_sites=list_Maker("./SearchAnl/text/phishing_links_rate_limit.txt")
     # is_indexed, num_Results = check_site_google(url_to_check)
     count = len(test_phishing_sites)
+    results_Array=[]
     for i, link in enumerate(test_phishing_sites):
         print("Iter: ", i)
         is_indexed, num_Results = check_site_google(link)
-        sum+=num_Results
-    avg = sum/count
-    print(avg)
-    
+        results_Array.append(num_Results)
+print(statistics.median(results_Array))
+
 
