@@ -5,7 +5,7 @@ try:
 except ImportError as err:
     print(f"Failed to import required modules {err}")
 
-user_agents_list = [
+user_agents_list = [ #allows going through 403 error
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
@@ -33,8 +33,8 @@ def similarGet(website):
         resp.raise_for_status()
         return False
 
-if __name__ == "__main__":
-    result = similarGet("https://www.cats.com")
+def filteredDict(SimWebJSON): #input is the output from similarGet()
+    
     filtDict = {
         "SiteName": "",
         "TopCountryShares": [],
@@ -48,28 +48,34 @@ if __name__ == "__main__":
         "SearchTerms": []
     }
 
-    filtDict["SiteName"] = result["SiteName"]
+    filtDict["SiteName"] = SimWebJSON["SiteName"]
 
-    for i in result["TopCountryShares"]:
+    for i in SimWebJSON["TopCountryShares"]:
         filtDict["TopCountryShares"].append(i["CountryCode"])
 
-    filtDict["TotalVists"] = result.get("Engagements", {}).get("Visits", 0)
+    filtDict["TotalVists"] = SimWebJSON.get("Engagements", {}).get("Visits", 0)
 
-    filtDict["Category"] = result.get("Category", "")
+    filtDict["Category"] = SimWebJSON.get("Category", "")
 
-    filtDict["GlobalRank"] = result.get("GlobalRank", 0)
+    filtDict["GlobalRank"] = SimWebJSON.get("GlobalRank", 0)
 
-    filtDict["HQCountry"] = result.get("CountryRank", {}).get("CountryCode", "")
+    filtDict["HQCountry"] = SimWebJSON.get("CountryRank", {}).get("CountryCode", "")
 
-    filtDict["CountryRank"] = result.get("CountryRank", {}).get("Rank", 0)
+    filtDict["CountryRank"] = SimWebJSON.get("CountryRank", {}).get("Rank", 0)
 
-    filtDict["TrafficSources"] = result.get("TrafficSources", {})
+    filtDict["TrafficSources"] = SimWebJSON.get("TrafficSources", {})
 
-    countryCount = len(result.get("Countries", []))
+    countryCount = len(SimWebJSON.get("Countries", []))
 
     filtDict["CountryCount"] = countryCount
 
-    for i in result.get("TopKeywords", []):
+    for i in SimWebJSON.get("TopKeywords", []):
         filtDict["SearchTerms"].append(i.get("Name", ""))
+    return filtDict
+
+
+if __name__ == "__main__":
+    result = similarGet("https://www.blogspot.com")
+    filtDict=filteredDict(result)
 
     print(pretty_print_dict(filtDict))

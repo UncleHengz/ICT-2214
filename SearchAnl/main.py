@@ -1,6 +1,9 @@
 from search import check_site_google
 from safebrowsing import check_url_safe
+from safebrowsing import list_Maker_safeBrowsing
 from simweb import similarGet
+from simweb import filteredDict
+from simweb import pretty_print_dict
 
 def assess_phishing_risk(url):
     # Assuming you've set your API key globally or within the safebrowsing.py module
