@@ -18,23 +18,27 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Elements not found.");
         return;
     }
-      
+
     chrome.storage.local.get(null, function(result) {
         console.log('Contents of chrome.storage.local:', result);
     });
 
-    // Initialize the extension on page load
-    chrome.storage.local.get(['historyEnabled', 'unscannedDomains', 'allowedDomains', 'maliciousDomains'], function (result) {
+    chrome.storage.local.get(['historyEnabled'], function(result) {
         historyToggle.checked = result.historyEnabled ?? true;
         if (historyToggle.checked == true){
-            getUniqueDomainsFromHistory();
-        }
-        populateDomainList(allowedDomainsList, result.allowedDomains);
-        populateDomainList(maliciousDomainsList, result.maliciousDomains);
-        populateDomainList(unscannedDomainsList, result.unscannedDomains);
-    });
+            getUniqueDomainsFromHistory(function(domainSet) {
+                // Do something with domainSet here
+                console.log(domainSet);
+                // Initialize the extension on page load
+                chrome.storage.local.get(['unscannedDomains', 'allowedDomains', 'maliciousDomains'], function (result) {
+                    populateDomainList(allowedDomainsList, result.allowedDomains);
+                    populateDomainList(maliciousDomainsList, result.maliciousDomains);
+                    populateDomainList(unscannedDomainsList, result.unscannedDomains);
+                });
+            });
 
-    console.log(allowedDomainsList);
+        }
+    });
 
     // Event listener for tab switching
     tabs.forEach(function (tab) {
@@ -90,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // get history based on toggle state
             if (historyToggle.checked) {
                 getUniqueDomainsFromHistory();
+                window.location.reload();
             } else {
                 console.log("Reading history is disabled.");
             }
@@ -346,30 +351,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
-    // Function to get unique domains from history 1 week ago
-    function getUniqueDomainsFromHistory() {
+    function getUniqueDomainsFromHistory(callback) {
         const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
         const oneWeekAgo = (new Date()).getTime() - microsecondsPerWeek;
-
+    
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             if (tabs && tabs.length > 0) {
                 const currentDomain = new URL(tabs[0].url).hostname;
-
+    
                 chrome.history.search({
                     'text': '',
                     'startTime': oneWeekAgo
                 }, function (historyItems) {
-                    const domainSet = historyItems.map(item => new URL(item.url).hostname);
-                    populateDomainList(unscannedDomainsList, domainSet);
-
-                    chrome.storage.local.set({ unscannedDomains: Array.from(domainSet) });
+                    chrome.storage.local.get({ allowedDomains: [], maliciousDomains: [] }, function (result) {
+                        const allowedDomains = result.allowedDomains;
+                        const maliciousDomains = result.maliciousDomains;
+                        
+                        const domainSet = historyItems
+                            .map(item => new URL(item.url).hostname)
+                            .filter(domain => !allowedDomains.includes(domain) && !maliciousDomains.includes(domain));
+    
+                        chrome.storage.local.set({ unscannedDomains: Array.from(domainSet) });
+    
+                        if (typeof callback === 'function') {
+                            callback(domainSet);
+                        }
+                    });
                 });
             } else {
                 console.error('Unable to get current tab information');
             }
         });
     }
+    
+
 });
 
 // Add an event listener for the 'unload' event
