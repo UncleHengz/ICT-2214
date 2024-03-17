@@ -84,29 +84,28 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
     return filtDict
 
 def SussyChecker(SimDict): # take the filteredDict as input
-    Suspicious = False
+    Suspicious = 0
 
     if SimDict["TotalVisits"]==0: #check total visits recorded , if not tracked, could be not well known site
-        Suspicious = True
+        Suspicious +=1
 
-    if type(SimDict["GlobalRank"]['Rank'])==None: #if trackable, the type will be int instead of none
-        Suspicious = True
+    if (SimDict["GlobalRank"]['Rank'] is None) or (SimDict["CountryRank"] is None):  #if trackable, the type will be int instead of none
+        Suspicious +=1
+
+    if SimDict["HQCountry"] is None: #if traceable should be a string instead
+        Suspicious +=1
 
     trafficTracker=0 # used to track the percentage of traffic from a specific media , if untrackable , might have chance of being phising site as not well known 
     for i in SimDict["TrafficSources"]:
         trafficTracker+=SimDict["TrafficSources"][i]
         if trafficTracker==0:
-            Suspicious = True
-        else:
-            Suspicious = False
-
-
+            Suspicious +=1
 
     return Suspicious
 
 if __name__ == "__main__":
     result = similarGet("http://hindhosiery.com/office/Super-Nice-Office365/off/index.php")
     filtDict=filteredDict(result)
-    # print(pretty_print_dict(filtDict))
+    print(pretty_print_dict(filtDict))
     # print(filtDict["Category"])
-    print(filtDict.keys())
+    # print(filtDict.keys())
