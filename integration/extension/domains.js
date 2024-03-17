@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Select the loading modal
     var loadingModal = document.getElementById('loadingModal');
 
-    
+    var scanningInProgress = false;
+
     // Check if necessary elements are present
     if (!unscannedDomainsList || !allowedDomainsList || !maliciousDomainsList || !historyToggle || !scanAllButton) {
         console.error("Elements not found.");
@@ -25,6 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the extension on page load
     chrome.storage.local.get(['historyEnabled', 'unscannedDomains', 'allowedDomains', 'maliciousDomains'], function (result) {
         historyToggle.checked = result.historyEnabled ?? true;
+        if (historyToggle.checked == true){
+            getUniqueDomainsFromHistory();
+        }
         populateDomainList(allowedDomainsList, result.allowedDomains);
         populateDomainList(maliciousDomainsList, result.maliciousDomains);
         populateDomainList(unscannedDomainsList, result.unscannedDomains);
@@ -65,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to populate domain list, avoiding duplicates
     function populateDomainList(list, domains) {
-        console.log(domains);
         // Iterate over each element and call populateDomainList
         for (let i = 0; i < domains.length; i++) {
             if (!isDomainInList(list, domains[i])) {
@@ -132,12 +135,94 @@ document.addEventListener("DOMContentLoaded", function () {
                 var domainItem = scanButton.closest('.domain-item');
                 var scannedDomainText = domainItem.querySelector('span').textContent;
                 if (confirm("Are you sure you want to scan domain '" + scannedDomainText + "'?")) {
-                    scanDomains(scannedDomainText);
-                    
+                    // Show the loading modal
+                    loadingModal.style.display = 'block';
+
+                    var scanStatus = document.getElementById("scan_status");
+                    var scanningMessage = document.getElementById("scanningMessage");
+                    // Call scanDomains, which returns a promise
+                    scanDomains(scannedDomainText)
+                    .then(domain_result => {
+                        // console.log(domain_result);
+                        if (domain_result != null) {
+                            scanStatus.textContent = 'Scan Completed';
+                            scanningMessage.textContent = scannedDomainText + " [" + domain_result + "]";
+                            completeScan(domain_result, scannedDomainText);
+                        } else {
+                            scanStatus.textContent = 'Scan Failed';
+                            scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText;
+                        }
+                    })
+                    .catch(error => {
+                        // console.error('Error:', error);
+                        // Handle the error, such as showing an error message
+                        // Check if the spinner element exists
+                        scanStatus.textContent = 'Scan Failed';
+                        scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText;
+                    });
                 }
             }
         });
     });
+
+    function completeScan(domain_result, domain_name){
+        console.log("Complete scan result" + domain_result);
+        if (domain_result == false){
+            addDomainToAllowedList(domain_name);
+        }else{
+            addDomainToMaliciousList(domain_name);
+        }
+    }
+
+    // Function to add a domain to the allowed domains list
+    function addDomainToAllowedList(domain) {
+        // Retrieve the existing list of allowed domains from storage
+        chrome.storage.local.get({ allowedDomains: [], unscannedDomains: [] }, function (result) {
+            const allowedDomains = result.allowedDomains;
+            const unscannedDomains = result.unscannedDomains;
+
+            // Remove the domain from unscannedDomains if it exists
+            const updatedUnscannedDomains = unscannedDomains.filter(unscannedDomain => unscannedDomain !== domain);
+
+            // Add the new domain to the list if it doesn't already exist
+            if (!allowedDomains.includes(domain)) {
+                allowedDomains.push(domain);
+
+                // Save the updated lists back to storage
+                chrome.storage.local.set({
+                    allowedDomains: allowedDomains,
+                    unscannedDomains: updatedUnscannedDomains
+                }, function () {
+                    console.log('Domain added to allowed list:', domain);
+                });
+            }
+        });
+    }
+
+    // Function to add a domain to the malicious domains list
+    function addDomainToMaliciousList(domain) {
+        // Retrieve the existing list of malicious domains from storage
+        chrome.storage.local.get({ maliciousDomains: [], unscannedDomains: [] }, function (result) {
+            const maliciousDomains = result.maliciousDomains;
+            const unscannedDomains = result.unscannedDomains;
+
+            // Remove the domain from unscannedDomains if it exists
+            const updatedUnscannedDomains = unscannedDomains.filter(unscannedDomain => unscannedDomain !== domain);
+
+            // Add the new domain to the list if it doesn't already exist
+            if (!maliciousDomains.includes(domain)) {
+                maliciousDomains.push(domain);
+
+                // Save the updated lists back to storage
+                chrome.storage.local.set({
+                    maliciousDomains: maliciousDomains,
+                    unscannedDomains: updatedUnscannedDomains
+                }, function () {
+                    console.log('Domain added to malicious list:', domain);
+                });
+            }
+        });
+    }
 
     // Function to clear domain list
     function clearDomainList(list) {
@@ -164,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function scanDomains(data) {
         if (Array.isArray(data)) {
+            scanningInProgress = true;
             // It's an array, call scan-all API
             fetch('http://127.0.0.1:5000/scan-all', {
                 method: 'POST',
@@ -174,14 +260,19 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result.message);
+                console.log(result.results);
+                scanningInProgress = false;
+                return result.results;
             })
             .catch(error => {
                 console.error('Error:', error);
+                scanningInProgress = false;
+                return null;
             });
         } else if (typeof data === 'string') {
+            scanningInProgress = true;
             // It's a string, call scan API
-            fetch('http://127.0.0.1:5000/scan', {
+            return fetch('http://127.0.0.1:5000/scan', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -191,13 +282,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(result => {
                 console.log(result.results);
+                scanningInProgress = false;
+                return result.results;
             })
             .catch(error => {
                 console.error('Error:', error);
+                scanningInProgress = false;
+                return null;
             });
         } else {
             console.error('Invalid input type');
             // Handle invalid input type
+            scanningInProgress = false;
+            return null;
         }
     }
     
@@ -240,12 +337,17 @@ document.addEventListener("DOMContentLoaded", function () {
         closeButton.addEventListener('click', function() {
             // Check if the modal exists and is a Bootstrap modal
             loadingModal.style.display = 'none';
-            abortScan();
+            if (scanningInProgress){
+                abortScan();
+            }else{
+                window.location.reload();
+            }
+            
         });
     }
 
 
-    // Function to get unique domains from history
+    // Function to get unique domains from history 1 week ago
     function getUniqueDomainsFromHistory() {
         const microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
         const oneWeekAgo = (new Date()).getTime() - microsecondsPerWeek;
@@ -268,4 +370,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+});
+
+// Add an event listener for the 'unload' event
+window.addEventListener('unload', function(event) {
+    // Perform actions when the plugin screen is closed
+    console.log('Plugin screen is closed');
+    // You can perform additional actions here
+    abortScan();
 });

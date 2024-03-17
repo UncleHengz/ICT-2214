@@ -88,6 +88,11 @@
             display: block;
         }
 
+        .custom-modal {
+            background-color: #333; /* Change to your desired darker color */
+            color: #fff; /* Text color */
+        }
+
     </style>
 </head>
 
@@ -131,22 +136,22 @@
         </div>
         <div class="modal" id="loadingModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+                <div class="modal-content custom-modal">
                     <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only" id="scan_status">Loading...</span>
                         </div>
-                        <p class="ml-2">Scanning all domains...</p>
+                        <p class="ml-2" id="scanningMessage">Scanning all domains...</p>
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
+                
     </div>
 
-    <script src="bootstrap.min.js"></script>
     <script src="domains.js"></script>
 </body>
 
