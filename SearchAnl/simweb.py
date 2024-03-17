@@ -52,13 +52,12 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
     filtDict = {
         "SiteName": "",
         "TopCountryShares": [],
-        "TotalVists": 0,
+        "TotalVisits": 0,
         "Category": "",
         "GlobalRank": 0,
         "HQCountry": "",
         "CountryRank": 0,
         "TrafficSources": {},
-        "CountryCount": 0,
         "SearchTerms": []
     }
 
@@ -81,15 +80,33 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
 
     for i in SimWebJSON.get("TopKeywords", []):
         filtDict["SearchTerms"].append(i.get("Name", ""))
+
     return filtDict
 
-def SussyChecker(SimDict):
-    return
+def SussyChecker(SimDict): # take the filteredDict as input
+    Suspicious = False
+
+    if SimDict["TotalVisits"]==0: #check total visits recorded , if not tracked, could be not well known site
+        Suspicious = True
+
+    if type(SimDict["GlobalRank"]['Rank'])==None: #if trackable, the type will be int instead of none
+        Suspicious = True
+
+    trafficTracker=0 # used to track the percentage of traffic from a specific media , if untrackable , might have chance of being phising site as not well known 
+    for i in SimDict["TrafficSources"]:
+        trafficTracker+=SimDict["TrafficSources"][i]
+        if trafficTracker==0:
+            Suspicious = True
+        else:
+            Suspicious = False
+
+
+
+    return Suspicious
 
 if __name__ == "__main__":
     result = similarGet("http://hindhosiery.com/office/Super-Nice-Office365/off/index.php")
     filtDict=filteredDict(result)
-
-    #print(pretty_print_dict(filtDict))
-    # print(filtDict.keys())
-    print(filtDict["TotalVisits"])
+    # print(pretty_print_dict(filtDict))
+    # print(filtDict["Category"])
+    print(filtDict.keys())
