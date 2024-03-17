@@ -222,8 +222,12 @@ def virustotal(domain):
 
     response = requests.get(url, headers=headers)
 
+    # Initialize Malicious (boolean)
+    malicious = False
+
     if 'error' in response.json():
-        return f"An error occurred: {response.json()['error']['message']}"
+        result = {'malicious': malicious}
+        return f"An error occurred: {response.json()['error']['message']}", result
     
     else:
         data = response.json()['data']
@@ -231,7 +235,8 @@ def virustotal(domain):
         analysis = data['attributes']['last_analysis_stats']
 
         if 'whois' not in data['attributes']:
-            return "Site does not exist"
+            result = {'malicious': malicious}
+            return "Site does not exist" , result
 
         whois_data = parse_whois(data['attributes']['whois'])
         whois_dates = parse_whois_dates(whois_data)
@@ -267,6 +272,8 @@ def virustotal(domain):
         cat_sus = categorize_threat(categories)
 
         suspiciousness = age_sus + analysis_sus + cat_sus
+        if suspiciousness >= 1000:
+            malicious = True
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
 
@@ -278,7 +285,8 @@ def virustotal(domain):
             'Popularity': data['attributes']['popularity_ranks'],
             "Analysis Stats": data['attributes']['last_analysis_stats'],
             "Categories": categories,
-            "Suspiciousness": suspiciousness
+            "Suspiciousness": suspiciousness,
+            "Malicious": malicious
         }
 
         return result
@@ -334,7 +342,7 @@ def virustotal(domain):
 #     "haproxy-vip.quicksign.fr"
 # ]
     
-domain = "online1.snapsurveys.com"
+domain = "something.com"
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):
@@ -344,22 +352,24 @@ domain = "online1.snapsurveys.com"
 #     else:
 #         print(f"{key}: {value}")
 
-def print_result(result):
-    if isinstance(result, str):
-        print(result)
-    elif isinstance(result, dict):
-        for key, value in result.items():
-            if isinstance(value, dict):
-                print(f"{key}:")
-                for sub_key, sub_value in value.items():
-                    print(f"  {sub_key}: {sub_value}")
-            else:
-                print(f"{key}: {value}")
-    else:
-        print("Unknown result type")
+# def print_result(result):
+#     if isinstance(result, str):
+#         print(result)
+#     elif isinstance(result, dict):
+#         for key, value in result.items():
+#             if isinstance(value, dict):
+#                 print(f"{key}:")
+#                 for sub_key, sub_value in value.items():
+#                     print(f"  {sub_key}: {sub_value}")
+#             else:
+#                 print(f"{key}: {value}")
+#     else:
+#         print("Unknown result type")
 
-result = virustotal(domain)
-print_result(result)        
+# result = virustotal(domain)
+# print_result(result)        
+
+print(virustotal(domain)["Malicious"])
 
 # def print_result(result):
 #     if isinstance(result, dict):

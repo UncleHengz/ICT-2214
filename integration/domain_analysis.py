@@ -3,7 +3,6 @@ from datetime import datetime
 from urllib.parse import urlparse
 import re
 
-### Just putting this here, might be useful for the plugin implementation part
 def get_domain_from_url(url):
     parsed_url = urlparse(url)
     if parsed_url.netloc == '':
@@ -177,8 +176,12 @@ def virustotal(domain):
 
     response = requests.get(url, headers=headers)
 
+    # Initialize Malicious (boolean)
+    malicious = False
+
     if 'error' in response.json():
-        return f"An error occurred: {response.json()['error']['message']}"
+        result = {'malicious': malicious}
+        return f"An error occurred: {response.json()['error']['message']}", result
     
     else:
         data = response.json()['data']
@@ -186,7 +189,8 @@ def virustotal(domain):
         analysis = data['attributes']['last_analysis_stats']
 
         if 'whois' not in data['attributes']:
-            return "Site does not exist"
+            result = {'malicious': malicious}
+            return "Site does not exist" , result
 
         whois_data = parse_whois(data['attributes']['whois'])
         whois_dates = parse_whois_dates(whois_data)
@@ -222,6 +226,8 @@ def virustotal(domain):
         cat_sus = categorize_threat(categories)
 
         suspiciousness = age_sus + analysis_sus + cat_sus
+        if suspiciousness >= 1000:
+            malicious = True
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
 
@@ -233,7 +239,8 @@ def virustotal(domain):
             'Popularity': data['attributes']['popularity_ranks'],
             "Analysis Stats": data['attributes']['last_analysis_stats'],
             "Categories": categories,
-            "Suspiciousness": suspiciousness
+            "Suspiciousness": suspiciousness,
+            "Malicious": malicious
         }
 
         return result

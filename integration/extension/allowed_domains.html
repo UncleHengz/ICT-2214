@@ -87,6 +87,12 @@
         .tab-content.active {
             display: block;
         }
+
+        .custom-modal {
+            background-color: #333; /* Change to your desired darker color */
+            color: #fff; /* Text color */
+        }
+
     </style>
 </head>
 
@@ -96,7 +102,7 @@
         <div class="header">
             <p class="h3">Allowed Domains</p>
             <div class="buttons-container">
-                <button class="btn btn-primary scan-btn" id="scanAllButton">Scan All Domains</button>
+                <button class="btn btn-primary scan-btn" id="scanAllButton" data-toggle="modal" data-target="#loadingModal">Scan All Domains</button>
                 <button class="btn btn-danger remove-btn" id="removeAllButton">Remove All Domains</button>
             </div>
         </div>
@@ -128,9 +134,26 @@
                 <!-- Display malicious domains here -->
             </div>
         </div>
+        <div class="modal" id="loadingModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content custom-modal">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="scan_status">Loading...</span>
+                        </div>
+                        <p class="ml-2" id="scanningMessage">Scanning all domains...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+                
     </div>
 
     <script src="domains.js"></script>
 </body>
+
 
 </html>

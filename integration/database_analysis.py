@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 def fetch_and_parse_content(url):
     try:
@@ -18,6 +19,14 @@ def fetch_and_parse_content(url):
         except requests.RequestException as e:
             print(f"Failed to fetch content for {url}: {e}")
             return None
+        
+# Function to extract domain name from URL
+def extract_domain(url):
+    parsed_url = urlparse(url)
+    if parsed_url.netloc:
+        return parsed_url.netloc.split(':')[0]  # Remove port number if present
+    else:
+        return None
 
 def database_analysis(received_domain):
     phishing_links = []
@@ -26,15 +35,20 @@ def database_analysis(received_domain):
             phishing_links.append(item.strip())
         file.close()
     is_malicious = False
+    
     #Code for the link extraction and comparison start
-    # reqs = requests.get(received_domain)
-    # soup = BeautifulSoup(reqs.text, 'html.parser')
     soup = fetch_and_parse_content(received_domain)
     urls = []
     for link in soup.find_all('a'):
         urls.append(link.get('href'))
-    match = list(set(phishing_links) & set(urls))
+    # Extract domain names and filter unique ones
+    unique_domains = set(filter(None, map(extract_domain, urls)))
+
+    # Comparison with phishing links database
+    match = list(set(phishing_links) & set(unique_domains))
     #Code for link extraction and comparison end
     if received_domain in phishing_links or match: #Added or operator to ensure if the links on the site is phishing then its malicious as well
         is_malicious = True # malicious
     return is_malicious
+
+

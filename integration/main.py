@@ -1,82 +1,78 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from domain_analysis import *
 from database_analysis import *
+from domain_analysis import *
 
 app = Flask(__name__)
 CORS(app)
 
-# Flag to check if an abort signal has been received
-abort_signal_received = False
+stop_scan = False
 
-@app.route('/scan-all', methods=['POST'])
-def scan_all_domains():
-    if request.method == 'POST':
-        data = request.get_json()
-        received_domains = data.get('domains', [])
+def check_abort_scan():
+    global stop_scan
+    return stop_scan
 
-        print("Scanned Domains:")
-        for domain in received_domains:
-            print(domain)
-
-        return jsonify({'message': 'Domains processed successfully'})
-
-@app.route('/scan', methods=['OPTIONS', 'POST'])
-def scan_domain():
-    global abort_signal_received
-    if request.method == 'OPTIONS':
-        # Handle the preflight request
-        return '', 204
-
-    if request.method == 'POST':
-        data = request.get_json()
-        print(data)
-        received_domain = data.get('domain', None)
+# Function to perform domain analysis
+def checklist_scan(domain):
+    is_malicious = False
+    global stop_scan
+    stop_scan = False
+    
+    if domain:
+        database_result = None
+        domain_result = None
+        phishing_checklist_dict = {}
         
-        abort_signal_received = False
-        is_malicious = False
-
-        if received_domain and not abort_signal_received:
-            print("Scanned Domain:", received_domain)
-
-            database_result = None
-            domain_result = None
-            phishing_checklist_dict = {}
+        while(database_result == None and domain_result == None):
+            if (stop_scan):
+                break
             
-            while(database_result == None and domain_result == None):
-                if abort_signal_received:
-                    print("Scan aborted by user")
-                    abort_signal_received = True
-                    return jsonify({'scan_result': 'aborted'}), 200
+            # # Perform domain analysis
+            if (not domain_result):
+                domain_result = virustotal(domain)
+            
+            # # Perform database analysis
+            if (not database_result):
+                database_result = database_analysis(domain)
+                phishing_checklist_dict["Database"] = database_result 
+                is_malicious = database_result
+                print(is_malicious)
                 
-                # # Perform domain analysis
-                if (not domain_result):
-                    domain_result = virustotal(received_domain)
-                
-                # # Perform database analysis
-                if (not database_result):
-                    database_result = database_analysis(received_domain)
-                    phishing_checklist_dict["Database"] = database_result 
-                    is_malicious = database_result
-                    print(is_malicious)
-                    
-            # Returning a JSON response with a 'status' key
-            return jsonify({'scan_result': is_malicious}), 200
-        else:
-            return jsonify({'error': 'No domain provided in the request'}), 400
+    return is_malicious
 
-
-@app.route('/abort-scan', methods=['OPTIONS', 'POST'])
-def abort_scan():
+# Route for scanning all domains
+@app.route('/scan-all', methods=['POST', 'OPTIONS'])
+def scan_all_domains():
     if request.method == 'OPTIONS':
-        # Handle the preflight request
-        return '', 204
+        return '', 204  # Respond with no content for OPTIONS requests
+    global stop_scan
+    stop_scan = False
+    data = request.get_json()
+    received_domains = data.get('domains', [])
+    results = {}
+    for domain in received_domains:
+        if (check_abort_scan()):
+            break
+        is_malicious = checklist_scan(domain)
+        results[domain] = is_malicious
+    return jsonify({'results': results}), 200
 
-    global abort_signal_received
-    # Set the abort signal flag to True
-    abort_signal_received = True
-    return jsonify({'scan_result': 'abort signal received'}), 200
+# Route for scanning a single domain
+@app.route('/scan', methods=['POST', 'OPTIONS'])
+def scan_domain():
+    if request.method == 'OPTIONS':
+        return '', 204  # Respond with no content for OPTIONS requests
+    data = request.get_json()
+    received_domain = data.get('domain', None)
+    is_malicious = checklist_scan(received_domain)
+    return jsonify({'results': is_malicious}), 200
 
-	
+# Route for aborting the scan
+@app.route('/abort-scan', methods=['POST', 'OPTIONS'])
+def abort_scan():
+    global stop_scan
+    stop_scan = True
+    return jsonify({'message': 'Stop signal received'}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
