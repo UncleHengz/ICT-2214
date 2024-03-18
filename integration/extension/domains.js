@@ -36,7 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     populateDomainList(unscannedDomainsList, result.unscannedDomains);
                 });
             });
-
+        }else{
+            chrome.storage.local.get(['unscannedDomains', 'allowedDomains', 'maliciousDomains'], function (result) {
+                populateDomainList(allowedDomainsList, result.allowedDomains);
+                populateDomainList(maliciousDomainsList, result.maliciousDomains);
+                populateDomainList(unscannedDomainsList, result.unscannedDomains);
+            });
         }
     });
 
@@ -145,18 +150,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     var scanStatus = document.getElementById("scan_status");
                     var scanningMessage = document.getElementById("scanningMessage");
+                    var spinner = document.querySelector('.spinner-border');
                     // Call scanDomains, which returns a promise
                     scanDomains(scannedDomainText)
                     .then(domain_result => {
                         // console.log(domain_result);
                         if (domain_result != null) {
                             scanStatus.textContent = 'Scan Completed';
-                            scanningMessage.textContent = scannedDomainText + " [" + domain_result + "]";
-                            completeScan(domain_result, scannedDomainText);
+                            var resultText = domain_result ? 'Malicious' : 'Safe';
+                            scanningMessage.textContent = scannedDomainText + " [" + resultText + "]";
+                            completeScan({ [scannedDomainText]: domain_result});
                         } else {
                             scanStatus.textContent = 'Scan Failed';
                             scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText;
                         }
+                        // Hide the spinner
+                        spinner.style.display = 'none';
                     })
                     .catch(error => {
                         // console.error('Error:', error);
@@ -170,39 +179,51 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function completeScan(domain_result, domain_name){
-        console.log("Complete scan result" + domain_result);
-        if (domain_result == false){
-            addDomainToAllowedList(domain_name);
-        }else{
-            addDomainToMaliciousList(domain_name);
-        }
+    function completeScan(domainResults) {
+        console.log("Complete scan results:", domainResults);
+        (async () => {
+            for (const [domain, result] of Object.entries(domainResults)) {
+                if (!Boolean(result)) {
+                    await addDomainToAllowedList(domain);
+                } else {
+                    addDomainToMaliciousList(domain);
+                }
+            }
+        })();
     }
+    
 
     // Function to add a domain to the allowed domains list
     function addDomainToAllowedList(domain) {
-        // Retrieve the existing list of allowed domains from storage
-        chrome.storage.local.get({ allowedDomains: [], unscannedDomains: [] }, function (result) {
-            const allowedDomains = result.allowedDomains;
-            const unscannedDomains = result.unscannedDomains;
+        console.log(domain);
+        return new Promise((resolve, reject) => {
+            // Retrieve the existing list of allowed domains from storage
+            chrome.storage.local.get({ allowedDomains: [], unscannedDomains: [] }, function (result) {
+                const allowedDomains = result.allowedDomains;
+                const unscannedDomains = result.unscannedDomains;
 
-            // Remove the domain from unscannedDomains if it exists
-            const updatedUnscannedDomains = unscannedDomains.filter(unscannedDomain => unscannedDomain !== domain);
+                // Remove the domain from unscannedDomains if it exists
+                const updatedUnscannedDomains = unscannedDomains.filter(unscannedDomain => unscannedDomain !== domain);
 
-            // Add the new domain to the list if it doesn't already exist
-            if (!allowedDomains.includes(domain)) {
-                allowedDomains.push(domain);
-
-                // Save the updated lists back to storage
-                chrome.storage.local.set({
-                    allowedDomains: allowedDomains,
-                    unscannedDomains: updatedUnscannedDomains
-                }, function () {
-                    console.log('Domain added to allowed list:', domain);
-                });
-            }
+                // Add the new domain to the list if it doesn't already exist
+                if (!allowedDomains.includes(domain)) {
+                    allowedDomains.push(domain);
+                    console.log(allowedDomains);
+                    // Save the updated lists back to storage
+                    chrome.storage.local.set({
+                        allowedDomains: allowedDomains,
+                        unscannedDomains: updatedUnscannedDomains
+                    }, function () {
+                        console.log('Domain added to allowed list:', domain);
+                        resolve(); // Resolve the promise once the storage operation is completed
+                    });
+                } else {
+                    resolve(); // Resolve the promise if the domain already exists
+                }
+            });
         });
     }
+
 
     // Function to add a domain to the malicious domains list
     function addDomainToMaliciousList(domain) {
@@ -256,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (Array.isArray(data)) {
             scanningInProgress = true;
             // It's an array, call scan-all API
-            fetch('http://127.0.0.1:5000/scan-all', {
+            return fetch('http://127.0.0.1:5000/scan-all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -265,7 +286,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result.results);
                 scanningInProgress = false;
                 return result.results;
             })
@@ -312,7 +332,38 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get the list of unscanned domains
         const unscannedDomains = Array.from(document.querySelectorAll('#unscannedDomainsList .domain-item span'))
                                     .map(item => item.textContent);
-        scanDomains(unscannedDomains);
+
+        const spinner = document.querySelector('.spinner-border');
+        const scanStatus = document.getElementById("scan_status");
+        const scanningMessage = document.getElementById("scanningMessage");
+
+        scanDomains(unscannedDomains)
+        .then(domain_result => {
+            console.log(domain_result);
+
+            var message = '';
+            const domainResults = {}; // Initialize an empty object to store domain results
+            // Loop through the results and concatenate into the message
+            for (const [domain, result] of Object.entries(domain_result)) {
+                const resultText = result ? 'Malicious' : 'Safe';
+                message += `${domain} [${resultText}] <br/>`;
+                domainResults[domain] = result; // Store the result in the dictionary
+            }
+            completeScan(domainResults);
+            scanStatus.textContent = "Scan Completed";
+            scanningMessage.innerHTML = message;
+            // Hide the spinner
+            spinner.style.display = 'none';
+
+
+        })
+        .catch(error => {
+            console.error(error);
+            scanStatus.textContent = 'Scan Failed';
+            scanningMessage.textContent = "Failed to scan all domains";
+            // Hide the spinner
+            spinner.style.display = 'none';
+        });
     });
 
     // Function to send an abort signal to the server
@@ -357,7 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             if (tabs && tabs.length > 0) {
-                const currentDomain = new URL(tabs[0].url).hostname;
+                // const currentDomain = new URL(tabs[0].url).hostname;
     
                 chrome.history.search({
                     'text': '',
@@ -367,10 +418,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         const allowedDomains = result.allowedDomains;
                         const maliciousDomains = result.maliciousDomains;
                         
-                        const domainSet = historyItems
+                        const domainSet = [...new Set(historyItems
                             .map(item => new URL(item.url).hostname)
-                            .filter(domain => !allowedDomains.includes(domain) && !maliciousDomains.includes(domain));
-    
+                            .filter(domain => !allowedDomains.includes(domain) && !maliciousDomains.includes(domain)))];
+
                         chrome.storage.local.set({ unscannedDomains: Array.from(domainSet) });
     
                         if (typeof callback === 'function') {

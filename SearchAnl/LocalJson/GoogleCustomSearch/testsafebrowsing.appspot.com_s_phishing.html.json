@@ -1,0 +1,831 @@
+{
+    "kind": "customsearch#search",
+    "url": {
+        "type": "application/json",
+        "template": "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json"
+    },
+    "queries": {
+        "request": [
+            {
+                "title": "Google Custom Search - https://testsafebrowsing.appspot.com/s/phishing.html",
+                "totalResults": "296",
+                "searchTerms": "https://testsafebrowsing.appspot.com/s/phishing.html",
+                "count": 10,
+                "startIndex": 1,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "a6d5af5008e9e4d57"
+            }
+        ],
+        "nextPage": [
+            {
+                "title": "Google Custom Search - https://testsafebrowsing.appspot.com/s/phishing.html",
+                "totalResults": "296",
+                "searchTerms": "https://testsafebrowsing.appspot.com/s/phishing.html",
+                "count": 10,
+                "startIndex": 11,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "a6d5af5008e9e4d57"
+            }
+        ]
+    },
+    "context": {
+        "title": "Seeker"
+    },
+    "searchInformation": {
+        "searchTime": 0.152653,
+        "formattedSearchTime": "0.15",
+        "totalResults": "296",
+        "formattedTotalResults": "296"
+    },
+    "items": [
+        {
+            "kind": "customsearch#result",
+            "title": "testsafebrowsing",
+            "htmlTitle": "<b>testsafebrowsing</b>",
+            "link": "https://testsafebrowsing.appspot.com/",
+            "displayLink": "testsafebrowsing.appspot.com",
+            "formattedUrl": "https://testsafebrowsing.appspot.com/",
+            "htmlFormattedUrl": "https://testsafebrowsing.appspot.com/"
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "malware - How to checkout my Google Safebrowsing lookup code is ...",
+            "htmlTitle": "malware - How to checkout my Google Safebrowsing lookup code is ...",
+            "link": "https://stackoverflow.com/questions/51849139/how-to-checkout-my-google-safebrowsing-lookup-code-is-correct-with-a-valid-url",
+            "displayLink": "stackoverflow.com",
+            "snippet": "Aug 14, 2018 ... ... test URLs at https://testsafebrowsing.appspot.com/. If you're looking for real phishing ... E.G. for testsafebrowsing.appspot.com/s/unwanted.html\u00a0...",
+            "htmlSnippet": "Aug 14, 2018 <b>...</b> ... <b>test</b> URLs at <b>https</b>://<b>testsafebrowsing</b>.<b>appspot</b>.com/. If you&#39;re looking for real <b>phishing</b> ... E.G. for <b>testsafebrowsing</b>.<b>appspot.com/s</b>/unwanted.<b>html</b>&nbsp;...",
+            "cacheId": "N-8SHHST870J",
+            "formattedUrl": "https://stackoverflow.com/.../how-to-checkout-my-google-safebrowsing-lo...",
+            "htmlFormattedUrl": "https://stackoverflow.com/.../how-to-checkout-my-google-safebrowsing-lo...",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQYl7zuT3cw_BBRAyhdQEbQuBgqdNHXKHIYKL8S8ly8x9L_XA9sdwSmiHs",
+                        "width": "225",
+                        "height": "225"
+                    }
+                ],
+                "qapage": [
+                    {
+                        "image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+                        "primaryimageofpage": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+                        "name": "How to checkout my Google Safebrowsing lookup code is correct with a valid URL 'hit'?",
+                        "description": "I am planning on using the Google Safebrowsing API to vet incoming URLs in my app. There are a few steps to get through prior to discovering if a URL has malware, etc though: Create a combination of"
+                    }
+                ],
+                "question": [
+                    {
+                        "image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a",
+                        "upvotecount": "1",
+                        "answercount": "1",
+                        "name": "How to checkout my Google Safebrowsing lookup code is correct with a valid URL 'hit'?",
+                        "datecreated": "2018-08-14T20:16:35",
+                        "text": "I am planning on using the Google Safebrowsing API to vet incoming URLs in my app. There are a few steps to get through prior to discovering if a URL has malware, etc though: Create a combination...",
+                        "url": "Share"
+                    }
+                ],
+                "answer": [
+                    {
+                        "upvotecount": "2",
+                        "commentcount": "1",
+                        "text": "You probably want to start with the official test URLs at https://testsafebrowsing.appspot.com/. If you're looking for real phishing sites (which may or may not be on the Safe Browsing list...",
+                        "datecreated": "2018-08-14T20:57:14",
+                        "url": "Share"
+                    }
+                ],
+                "person": [
+                    {
+                        "name": "user1561108"
+                    },
+                    {
+                        "name": "Fran\u00e7ois Marier"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+                        "og:type": "website",
+                        "twitter:card": "summary",
+                        "twitter:title": "How to checkout my Google Safebrowsing lookup code is correct with a valid URL 'hit'?",
+                        "og:site_name": "Stack Overflow",
+                        "twitter:domain": "stackoverflow.com",
+                        "viewport": "width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0",
+                        "twitter:description": "I am planning on using the Google Safebrowsing API to vet incoming URLs in my app. There are a few steps to get through prior to discovering if a URL has malware, etc though:\r\nCreate a combination of",
+                        "og:url": "https://stackoverflow.com/questions/51849139/how-to-checkout-my-google-safebrowsing-lookup-code-is-correct-with-a-valid-url"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Can't close fullscreen \"Deceptive site ahead\" warning | Vivaldi Forum",
+            "htmlTitle": "Can&#39;t close fullscreen &quot;Deceptive site ahead&quot; warning | Vivaldi Forum",
+            "link": "https://forum.vivaldi.net/topic/61110/can-t-close-fullscreen-deceptive-site-ahead-warning",
+            "displayLink": "forum.vivaldi.net",
+            "snippet": "May 14, 2021 ... I could reproduce the effect in a new window by visiting https://testsafebrowsing.appspot.com/s/phishing.html and restarting the browser\u00a0...",
+            "htmlSnippet": "May 14, 2021 <b>...</b> I could reproduce the effect in a new window by visiting <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b> and restarting the browser&nbsp;...",
+            "cacheId": "Z4mideEcgw0J",
+            "formattedUrl": "https://forum.vivaldi.net/.../can-t-close-fullscreen-deceptive-site-ahead-warn...",
+            "htmlFormattedUrl": "https://forum.vivaldi.net/.../can-t-close-fullscreen-deceptive-site-ahead-warn...",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTykt9yRmq-yKG6uaJeykrymGkHfbK6PPX8muXUut06ej44rktnETgAUsdF",
+                        "width": "303",
+                        "height": "166"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://forum.vivaldi.net/assets/uploads/files/1621037887004-4e834367-eafb-4179-90c6-b5c5ae21a766-image.png",
+                        "theme-color": "#ffffff",
+                        "og:type": "article",
+                        "article:published_time": "2021-05-15T00:24:49.534Z",
+                        "article:section": "Archive",
+                        "og:image:width": "1895",
+                        "og:site_name": "Vivaldi Forum",
+                        "og:image:url": "https://forum.vivaldi.net/assets/uploads/files/1621037887004-4e834367-eafb-4179-90c6-b5c5ae21a766-image.png",
+                        "og:title": "Can't close fullscreen \"Deceptive site ahead\" warning",
+                        "og:image:height": "1042",
+                        "title": "Can't close fullscreen \"Deceptive site ahead\" warning",
+                        "og:description": "I'm not sure how it appeared, but when switching to a different window, the \"Deceptive site ahead\" message popped up. There was nothing else visible for the ...",
+                        "msapplication-badge": "frequency=30; polling-uri=https://forum.vivaldi.net/sitemap.xml",
+                        "article:modified_time": "2021-05-16T21:33:55.272Z",
+                        "viewport": "width=device-width, initial-scale=1.0",
+                        "apple-mobile-web-app-capable": "yes",
+                        "mobile-web-app-capable": "yes",
+                        "content-type": "text/html; charset=UTF-8",
+                        "og:url": "https://forum.vivaldi.net/topic/61110/can-t-close-fullscreen-deceptive-site-ahead-warning"
+                    }
+                ],
+                "comment": [
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "nulano",
+                        "text": "I'm not sure how it appeared, but when switching to a different window, the \"Deceptive site ahead\" message popped up. There was nothing else visible for the window, no tabs, no address bar,...",
+                        "datepublished": "2021-05-15T00:24:49.534Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "Ayespy",
+                        "text": "@nulano Are you able to browse normally at all at present? And do you have any tabs or sessions that you are particularly attached to?",
+                        "datepublished": "2021-05-15T00:46:42.677Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "nulano",
+                        "text": "@ayespy I was able to recover my session by unplugging the ethernet cable and restarting Vivaldi, then closing the tab before reconnecting to the internet.",
+                        "datepublished": "2021-05-15T05:50:07.027Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "Ayespy",
+                        "text": "@nulano But did that get rid of it, or will it come back?",
+                        "datepublished": "2021-05-15T06:24:07.762Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/sgunhouse/c696cb2e1b7c2baa3cbefa4c19de4b1d_square.png",
+                        "author": "sgunhouse",
+                        "text": "@ayespy '\"Will it come back?\" It seems like he uses Continue from previous session rather than a saved session, so it won't come back until he visits another phishing site while in full-screen...",
+                        "datepublished": "2021-05-15T07:22:06.629Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "author": "Pathduck",
+                        "text": "@nulano Well, pyfound.blogspot.com is not a deceptive site or doing phishing. From what I can tell it's the official news blog from the Python Software Foundation. It's even linked from the...",
+                        "datepublished": "2021-05-15T09:43:18.369Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "nulano",
+                        "text": "'\"Will it come back?\" It seems like he uses Continue from previous session rather than a saved session, so it won't come back until he visits another phishing site while in full-screen mode....",
+                        "datepublished": "2021-05-15T17:36:44.764Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/ayespy/eDnN1a66HEuP6qKa.png",
+                        "author": "Ayespy",
+                        "text": "@nulano So the problem here is, when the Google \"deceptive site ahead\" popup takes over the UI, Vivaldi does not have a convenient way to dismiss it.",
+                        "datepublished": "2021-05-15T17:40:00.780Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "datemodified": "2021-05-15T18:19:33.732Z",
+                        "author": "Pathduck",
+                        "text": "@nulano said in Can't close fullscreen \"Deceptive site ahead\" warning: Searching the web, it looks like Google's Safebrowsing system marked the blogspot domain as phishing for all websites...",
+                        "datepublished": "2021-05-15T18:18:49.564Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "author": "nulano",
+                        "text": "@pathduck said in Can't close fullscreen \"Deceptive site ahead\" warning: But before you do that it would be very interesting to know how you managed to get in a state where the Vivaldi UI could...",
+                        "datepublished": "2021-05-16T20:40:31.841Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "author": "nulano",
+                        "text": "Around this time I made a copy of the Session and Tabs files, but I'm not sure if that would be helpful to analyze this. Looking at them with a hex editor, I can see both the blog and test...",
+                        "datepublished": "2021-05-16T20:49:14.090Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "author": "Pathduck",
+                        "text": "@nulano Thanks for trying to explain in detail how it might have happened and I'm sure it actually did trigger a bug in some way. Maybe due to a complex combination of multiple windows, hibernating...",
+                        "datepublished": "2021-05-16T20:55:43.325Z"
+                    },
+                    {
+                        "image": "https://login.vivaldi.net/profile/avatar/Pathduck/YgNM9xpRJ2bC3Tph.jpeg",
+                        "author": "Pathduck",
+                        "text": "@nulano Oh and I just thought of one thing, since you said you use a lot of tabs: If the Vivaldi UI process crashes somehow, because of an Out-Of-Memory situation for example, you will end...",
+                        "datepublished": "2021-05-16T21:16:25.388Z"
+                    },
+                    {
+                        "author": "nulano",
+                        "text": "@pathduck I'm familiar with the impossibility of fixing a bug without a way to reproduce it... I could have tried to find a way to reproduce it earlier (especially as it affected the new window...",
+                        "datepublished": "2021-05-16T21:23:00.963Z"
+                    },
+                    {
+                        "author": "nulano",
+                        "text": "@pathduck I'm on Windows 10 64-bit version 2004 with Vivaldi regularly using 8-12GB of the 16GB available (not sure how much commit it uses of the 48GB available), but IIRC it was on the low...",
+                        "datepublished": "2021-05-16T21:33:55.272Z"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://forum.vivaldi.net/assets/uploads/files/1621037887004-4e834367-eafb-4179-90c6-b5c5ae21a766-image.png"
+                    }
+                ],
+                "listitem": [
+                    {
+                        "item": "Home",
+                        "name": "Home",
+                        "position": "0"
+                    },
+                    {
+                        "item": "Desktop",
+                        "name": "Desktop",
+                        "position": "1"
+                    },
+                    {
+                        "item": "Archive",
+                        "name": "Archive",
+                        "position": "2"
+                    },
+                    {
+                        "item": "https://forum.vivaldi.net/topic/61110.rss",
+                        "name": "Can't close fullscreen \"Deceptive site ahead\" warning",
+                        "position": "3"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Lookup api return empty",
+            "htmlTitle": "Lookup api return empty",
+            "link": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "displayLink": "groups.google.com",
+            "snippet": "... testsafebrowsing[.]appspot.com/s/phishing.html\"}, {\"url\": \"http://testsafebrowsing[.]appspot.com/s/phishing.html?abc\"}, {\"url\": \"http://testsafebrowsing[.]\u00a0...",
+            "htmlSnippet": "... <b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>?abc&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]&nbsp;...",
+            "cacheId": "SbipipAfzaMJ",
+            "formattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "htmlFormattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "application-name": "Google Groups",
+                        "referrer": "origin",
+                        "apple-mobile-web-app-status-bar-style": "black",
+                        "msapplication-tap-highlight": "no",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "apple-mobile-web-app-capable": "yes",
+                        "apple-mobile-web-app-title": "Google Groups",
+                        "mobile-web-app-capable": "yes"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue ...",
+            "htmlTitle": "[Bug] <b>Phishing</b> &amp; malware pages are not always blocked \u00b7 Issue ...",
+            "link": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "displayLink": "github.com",
+            "snippet": "Mar 6, 2020 ... Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site\u00a0...",
+            "htmlSnippet": "Mar 6, 2020 <b>...</b> Steps to reproduce Open Fenix, and access http://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html website</b>. Expected behavior A &quot;deceptive site&nbsp;...",
+            "cacheId": "MBQDt-925QMJ",
+            "formattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "htmlFormattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTA2dZ03Xn8lpOWoD3ZRejZe-Jb46RIIcmM8ez9ziKnev8DjDkrA2mMaiM",
+                        "width": "318",
+                        "height": "159"
+                    }
+                ],
+                "softwaresourcecode": [
+                    {
+                        "author": "mozilla-mobile",
+                        "name": "fenix"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "octolytics-url": "https://collector.github.com/github/collect",
+                        "apple-itunes-app": "app-id=1477376905, app-argument=https://github.com/_view_fragments/issues/show/mozilla-mobile/fenix/9026/issue_layout",
+                        "og:image": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
+                        "twitter:card": "summary_large_image",
+                        "og:image:width": "1200",
+                        "theme-color": "#1e2327",
+                        "og:site_name": "GitHub",
+                        "hovercard-subject-tag": "issue:576989966",
+                        "turbo-body-classes": "logged-out env-production page-responsive",
+                        "html-safe-nonce": "a79de62c85ca220795ad3eafb0091d1ec010c9ee04242f7da8179777aa2e5241",
+                        "expected-hostname": "github.com",
+                        "og:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
+                        "browser-errors-url": "https://api.github.com/_private/browser/errors",
+                        "octolytics-dimension-user_login": "mozilla-mobile",
+                        "hostname": "github.com",
+                        "twitter:site": "@github",
+                        "browser-stats-url": "https://api.github.com/_private/browser/stats",
+                        "route-pattern": "/_view_fragments/issues/show/:user_id/:repository/:id/issue_layout(.:format)",
+                        "visitor-payload": "eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDMDdCOjNFNzE6MUQ1NkJEODoyQjNGRTNDOjY1RDUzQTUyIiwidmlzaXRvcl9pZCI6IjkxMzcxNzk5NzM0NDIxNTcxMzkiLCJyZWdpb25fZWRnZSI6ImlhZCIsInJlZ2lvbl9yZW5kZXIiOiJpYWQifQ==",
+                        "github-keyboard-shortcuts": "repository,issues,copilot",
+                        "octolytics-dimension-repository_id": "126314606",
+                        "octolytics-dimension-repository_network_root_nwo": "mozilla-mobile/fenix",
+                        "twitter:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
+                        "og:image:alt": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
+                        "og:type": "object",
+                        "og:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
+                        "visitor-hmac": "df7674950d57b08b0b9b81b040032f3d3d83fffec9dc033bd5b6636e8a9aa9f3",
+                        "og:image:height": "600",
+                        "turbo-cache-control": "no-preview",
+                        "route-action": "issue_layout",
+                        "request-id": "C07B:3E71:1D56BD8:2B3FE3C:65D53A52",
+                        "analytics-location": "/<user-name>/<repo-name>/voltron/issues_fragments/issue_layout",
+                        "color-scheme": "light dark",
+                        "octolytics-dimension-repository_is_fork": "false",
+                        "go-import": "github.com/mozilla-mobile/fenix git https://github.com/mozilla-mobile/fenix.git",
+                        "twitter:image:src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
+                        "octolytics-dimension-user_id": "22351667",
+                        "octolytics-dimension-repository_public": "true",
+                        "fb:app_id": "1401488693436528",
+                        "octolytics-dimension-repository_network_root_id": "126314606",
+                        "octolytics-dimension-repository_nwo": "mozilla-mobile/fenix",
+                        "viewport": "width=device-width",
+                        "twitter:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A &quot;deceptive site issue&quot; page is opened. Actual behavior The page ...",
+                        "og:author:username": "lobontiumira",
+                        "route-controller": "voltron_issues_fragments",
+                        "current-catalog-service-hash": "81bb79d38c15960b92d99bca9288a9108c7a47b18f2423d0f6438c5b7bcd2114",
+                        "og:url": "https://github.com/mozilla-mobile/fenix/issues/9026"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Beware from Gologin Anti-detect Browser | BlackHatWorld",
+            "htmlTitle": "Beware from Gologin Anti-detect Browser | BlackHatWorld",
+            "link": "https://www.blackhatworld.com/seo/beware-from-gologin-anti-detect-browser.1428322/",
+            "displayLink": "www.blackhatworld.com",
+            "snippet": "Aug 8, 2022 ... ... phishing link in the first place? - https://testsafebrowsing.appspot.com/s/phishing.html. How is it even connected? I'm pretty sure they are\u00a0...",
+            "htmlSnippet": "Aug 8, 2022 <b>...</b> ... <b>phishing</b> link in the first place? - <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>. How is it even connected? I&#39;m pretty sure they are&nbsp;...",
+            "cacheId": "RqY-pbM9330J",
+            "formattedUrl": "https://www.blackhatworld.com/.../beware-from-gologin-anti-detect-browse...",
+            "htmlFormattedUrl": "https://www.blackhatworld.com/.../beware-from-gologin-anti-detect-browse...",
+            "pagemap": {
+                "person": [
+                    {
+                        "jobtitle": "Newbie",
+                        "name": "eeio",
+                        "url": "https://www.blackhatworld.com/members/eeio.1421386/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1212/1212041.jpg?1674416321",
+                        "jobtitle": "Elite Member",
+                        "name": "Trust WorkShop",
+                        "url": "https://www.blackhatworld.com/members/trust-workshop.1212041/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1638/1638322.jpg?1660068725",
+                        "jobtitle": "Newbie",
+                        "name": "Paprika23",
+                        "url": "https://www.blackhatworld.com/members/paprika23.1638322/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/658/658642.jpg?1705413389",
+                        "jobtitle": "Elite Member",
+                        "name": "Yes",
+                        "url": "https://www.blackhatworld.com/members/yes.658642/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/738/738045.jpg?1630104555",
+                        "jobtitle": "Regular Member",
+                        "name": "miloice",
+                        "url": "https://www.blackhatworld.com/members/miloice.738045/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/336/336256.jpg?1547629121",
+                        "jobtitle": "Jr. VIP",
+                        "name": "hipster9",
+                        "url": "https://www.blackhatworld.com/members/hipster9.336256/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/954/954017.jpg?1465161834",
+                        "jobtitle": "Regular Member",
+                        "name": "0xxi3",
+                        "url": "https://www.blackhatworld.com/members/0xxi3.954017/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1502/1502158.jpg?1654423680",
+                        "jobtitle": "Junior Member",
+                        "name": "JollyRock",
+                        "url": "https://www.blackhatworld.com/members/jollyrock.1502158/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1430/1430761.jpg?1663067196",
+                        "jobtitle": "Junior Member",
+                        "name": "01010010",
+                        "url": "https://www.blackhatworld.com/members/01010010.1430761/"
+                    },
+                    {
+                        "jobtitle": "Newbie",
+                        "name": "normandiks",
+                        "url": "https://www.blackhatworld.com/members/normandiks.1661365/"
+                    },
+                    {
+                        "jobtitle": "Newbie",
+                        "name": "sodapop27",
+                        "url": "https://www.blackhatworld.com/members/sodapop27.1664805/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1632/1632739.jpg?1663752784",
+                        "jobtitle": "Jr. VIP",
+                        "name": "Surfinite",
+                        "url": "https://www.blackhatworld.com/members/surfinite.1632739/"
+                    },
+                    {
+                        "jobtitle": "Newbie",
+                        "name": "can1020",
+                        "url": "https://www.blackhatworld.com/members/can1020.1390482/"
+                    },
+                    {
+                        "jobtitle": "Registered Member",
+                        "name": "blue4ocean",
+                        "url": "https://www.blackhatworld.com/members/blue4ocean.1677550/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1396/1396928.jpg?1613771650",
+                        "jobtitle": "Regular Member",
+                        "name": "dillywilly",
+                        "url": "https://www.blackhatworld.com/members/dillywilly.1396928/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1638/1638353.jpg?1695377494",
+                        "jobtitle": "Registered Member",
+                        "name": "Ropelyn",
+                        "url": "https://www.blackhatworld.com/members/ropelyn.1638353/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/1616/1616504.jpg?1695722290",
+                        "jobtitle": "Regular Member",
+                        "name": "Robert_Grey_X",
+                        "url": "https://www.blackhatworld.com/members/robert_grey_x.1616504/"
+                    },
+                    {
+                        "image": "https://www.blackhatworld.com/data/avatars/m/906/906192.jpg?1515590210",
+                        "jobtitle": "Jr. VIP",
+                        "name": "444444",
+                        "url": "https://www.blackhatworld.com/members/444444.906192/"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "theme-color": "#000000",
+                        "og:type": "website",
+                        "twitter:title": "Beware from Gologin Anti-detect Browser",
+                        "og:site_name": "BlackHatWorld",
+                        "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
+                        "twitter:description": "I have been a long-time user of the Gologin browser however, today, I encountered some serious issues with the app, and I decided to shift to some other app instead as the issues are very serious...",
+                        "apple-mobile-web-app-title": "BlackHatWorld",
+                        "og:title": "Beware from Gologin Anti-detect Browser",
+                        "og:url": "https://www.blackhatworld.com/seo/beware-from-gologin-anti-detect-browser.1428322/",
+                        "og:description": "I have been a long-time user of the Gologin browser however, today, I encountered some serious issues with the app, and I decided to shift to some other app instead as the issues are very serious.\n\n1. When I open any profile on the Gologin app, it shows me a phishing warning straightaway for the..."
+                    }
+                ],
+                "comment": [
+                    {
+                        "text": "I swithced to another software too. I experined the same thing with their canvas feature and pixelscan. I did the check after having one of my acc banned.",
+                        "datepublished": "2022-08-08T16:14:54+0100"
+                    },
+                    {
+                        "datemodified": "2022-08-08T16:27:58+0100",
+                        "text": "As per your screenshot, the antivirus is AVG. AVG antivirus is itself a virus !!! Years ago I worked for Norton, AVG, Symantec technical support(s) : Keep the hell away from AVG. And moreover...",
+                        "datepublished": "2022-08-08T16:19:22+0100"
+                    },
+                    {
+                        "text": "I had experience with different antidetects. for the past few years, the team has been using gologin and dolphin, dolphin is also good, but if you read the news, all their logs were in the...",
+                        "datepublished": "2022-08-09T19:11:07+0100"
+                    },
+                    {
+                        "text": "Can\u2019t attest to those claims but I believe a rep of their\u2019s (@Robert_Grey_X) was perma banned today for spammed ads and shit posting on a competitor\u2019s BST. \u2705 Dolphin{anty} - a modern...",
+                        "datepublished": "2022-08-09T19:15:57+0100"
+                    },
+                    {
+                        "text": "Well I dont know about gologin, but my browser23 that i was selling in marketplace bhw , upon license key activation was getting picked up by some antivirus too. Today antivirus picks up any...",
+                        "datepublished": "2022-08-09T22:21:52+0100"
+                    },
+                    {
+                        "text": "Raj Kesu said: As per your screenshot, the antivirus is AVG. AVG antivirus is itself a virus !!! Years ago I worked for Norton, AVG, Symantec technical support(s) : Keep the hell away from...",
+                        "datepublished": "2022-08-10T10:30:19+0100"
+                    },
+                    {
+                        "text": "hipster9 said: Yes, I am not saying AVG is the best. My main concern here is how did I even get a warning for this phishing link in the first place? - https://testsafebrowsing.appspot.com/s/phishin...",
+                        "datepublished": "2022-08-10T10:55:39+0100"
+                    },
+                    {
+                        "text": "I don't think that it is a virus, but they are 100% sketchy I checked their software, and they are still using Chromium 100 which is not good, they also have workers who comes here with accounts...",
+                        "datepublished": "2022-08-10T12:08:27+0100"
+                    },
+                    {
+                        "text": "0xxi3 said: If you're in doubt, check Virustotal They've building a community for many years now and you can find someinteresting insights. According to this user, the page you're referring...",
+                        "datepublished": "2022-08-13T10:37:01+0100"
+                    },
+                    {
+                        "text": "When I looked at their homepage for the first time I knew it was just a shady software trying to make money from gullible people. I never signed up or installed it on my PC.",
+                        "datepublished": "2022-08-13T11:22:44+0100"
+                    },
+                    {
+                        "text": "Hey, I am currently using Gologin but after reading all this, what other anti-detect software would you recommend?",
+                        "datepublished": "2022-10-09T09:45:48+0100"
+                    },
+                    {
+                        "text": "Hmm this is interesting to me also In theory could an untrustworthy antidetect browser intercept and decrypt traffic? Thank you for pixelscan I had not known this before normandiks said: Hey,...",
+                        "datepublished": "2022-10-19T23:25:45+0100"
+                    },
+                    {
+                        "text": "In defense of gologin, I can say that the request that is sent is completely safe (it would even be strange to add the word \"phishing\" to the phishing link). This is a link to the anti-phishing...",
+                        "datepublished": "2022-10-26T04:58:50+0100"
+                    },
+                    {
+                        "text": "Hi, what are you using instead of GoLogin?",
+                        "datepublished": "2022-11-17T09:08:06+0000"
+                    },
+                    {
+                        "text": "I like to use Incogniton and adspower",
+                        "datepublished": "2022-11-17T15:51:46+0000"
+                    },
+                    {
+                        "text": "Robert_Grey_X said: Hello, dear BHW users! I accidentally came across this old post and remember at the time of this post (2022y) we were in the active development stage. At this time, some...",
+                        "datepublished": "2023-09-18T18:15:48+0100"
+                    },
+                    {
+                        "text": "It looks like the work of your competitors",
+                        "datepublished": "2023-09-18T21:24:34+0100"
+                    },
+                    {
+                        "text": "I remembered that I was banned for trying 3 times to upvote a post that violated the forum rules. Admin gave me arrest like in prison.",
+                        "datepublished": "2023-09-18T21:41:46+0100"
+                    },
+                    {
+                        "text": "Robert_Grey_X said: I remembered that I was banned for trying 3 times to upvote a post that violated the forum rules. Admin gave me arrest like in prison. Click to expand... why dont you just...",
+                        "datepublished": "2024-02-02T21:45:05+0000"
+                    }
+                ],
+                "listitem": [
+                    {
+                        "item": "Home",
+                        "name": "Home",
+                        "position": "1"
+                    },
+                    {
+                        "item": "Forums",
+                        "name": "Forums",
+                        "position": "2"
+                    },
+                    {
+                        "item": "BlackHatWorld",
+                        "name": "BlackHatWorld",
+                        "position": "3"
+                    },
+                    {
+                        "item": "BlackHat Lounge",
+                        "name": "BlackHat Lounge",
+                        "position": "4"
+                    },
+                    {
+                        "item": "Home",
+                        "name": "Home",
+                        "position": "1"
+                    },
+                    {
+                        "item": "Forums",
+                        "name": "Forums",
+                        "position": "2"
+                    },
+                    {
+                        "item": "BlackHatWorld",
+                        "name": "BlackHatWorld",
+                        "position": "3"
+                    },
+                    {
+                        "item": "BlackHat Lounge",
+                        "name": "BlackHat Lounge",
+                        "position": "4"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "webrisk/README.md at master \u00b7 google/webrisk \u00b7 GitHub",
+            "htmlTitle": "webrisk/README.md at master \u00b7 google/webrisk \u00b7 GitHub",
+            "link": "https://github.com/google/webrisk/blob/master/README.md",
+            "displayLink": "github.com",
+            "snippet": "For testing the blocklists, you can use the following URLs: Phishing / Social Engineering: https://testsafebrowsing.appspot.com/s/phishing.html; Malware: https\u00a0...",
+            "htmlSnippet": "For <b>testing</b> the blocklists, you can use the following URLs: <b>Phishing</b> / Social Engineering: <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>; Malware: <b>https</b>&nbsp;...",
+            "cacheId": "yi-vPNBcUIkJ",
+            "formattedUrl": "https://github.com/google/webrisk/blob/master/README.md",
+            "htmlFormattedUrl": "https://github.com/google/webrisk/blob/master/README.md",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTZZzDgnPZ9UgQqSNZ2_1nPZkq4GOHHZpB10P7kCDKm5dnsS1ErPiKSCHo",
+                        "width": "318",
+                        "height": "159"
+                    }
+                ],
+                "softwaresourcecode": [
+                    {
+                        "author": "google",
+                        "name": "webrisk",
+                        "text": "Web Risk Client App | Container & Go Web Risk is the enterprise version of Google's Safe Browsing API that protects 5 Billion devices globally from dangerous URLs including phishing, malware,..."
+                    }
+                ],
+                "metatags": [
+                    {
+                        "octolytics-url": "https://collector.github.com/github/collect",
+                        "apple-itunes-app": "app-id=1477376905, app-argument=https://github.com/google/webrisk/blob/master/README.md",
+                        "og:image": "https://opengraph.githubassets.com/ab9e5b8848b1669da54905f0af18425b6bc3a9dec9d4a0f5e84c271324e0d83c/google/webrisk",
+                        "twitter:card": "summary_large_image",
+                        "og:image:width": "1200",
+                        "theme-color": "#1e2327",
+                        "og:site_name": "GitHub",
+                        "hovercard-subject-tag": "repository:212156006",
+                        "turbo-body-classes": "logged-out env-production page-responsive",
+                        "html-safe-nonce": "6d3137a029d7666ab328b6d3e720223efff33151cc7a80358d065a7cbb53b2cf",
+                        "expected-hostname": "github.com",
+                        "og:description": "Contribute to google/webrisk development by creating an account on GitHub.",
+                        "browser-errors-url": "https://api.github.com/_private/browser/errors",
+                        "octolytics-dimension-user_login": "google",
+                        "hostname": "github.com",
+                        "twitter:site": "@github",
+                        "browser-stats-url": "https://api.github.com/_private/browser/stats",
+                        "route-pattern": "/:user_id/:repository/blob/*name(/*path)",
+                        "visitor-payload": "eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJBNUZBOjdGRDQ6QzRBMjlBOjExQkE0QjU6NjVERDI4QTUiLCJ2aXNpdG9yX2lkIjoiNjc0MDE1NTY4NDcwODIzMTMzMyIsInJlZ2lvbl9lZGdlIjoiaWFkIiwicmVnaW9uX3JlbmRlciI6ImlhZCJ9",
+                        "github-keyboard-shortcuts": "repository,source-code,file-tree,copilot",
+                        "octolytics-dimension-repository_id": "212156006",
+                        "octolytics-dimension-repository_network_root_nwo": "google/webrisk",
+                        "twitter:title": "webrisk/README.md at master \u00b7 google/webrisk",
+                        "og:image:alt": "Contribute to google/webrisk development by creating an account on GitHub.",
+                        "og:type": "object",
+                        "og:title": "webrisk/README.md at master \u00b7 google/webrisk",
+                        "visitor-hmac": "8c47133fc7eff03a34223a2c5eda7f8b1799716a60b1c70055a4a26af7aa4c5a",
+                        "og:image:height": "600",
+                        "turbo-cache-control": "no-preview",
+                        "route-action": "show",
+                        "request-id": "A5FA:7FD4:C4A29A:11BA4B5:65DD28A5",
+                        "analytics-location": "/<user-name>/<repo-name>/blob/show",
+                        "color-scheme": "light dark",
+                        "octolytics-dimension-repository_is_fork": "false",
+                        "go-import": "github.com/google/webrisk git https://github.com/google/webrisk.git",
+                        "twitter:image:src": "https://opengraph.githubassets.com/ab9e5b8848b1669da54905f0af18425b6bc3a9dec9d4a0f5e84c271324e0d83c/google/webrisk",
+                        "octolytics-dimension-user_id": "1342004",
+                        "octolytics-dimension-repository_public": "true",
+                        "fb:app_id": "1401488693436528",
+                        "octolytics-dimension-repository_network_root_id": "212156006",
+                        "octolytics-dimension-repository_nwo": "google/webrisk",
+                        "viewport": "width=device-width",
+                        "twitter:description": "Contribute to google/webrisk development by creating an account on GitHub.",
+                        "route-controller": "blob",
+                        "current-catalog-service-hash": "82c569b93da5c18ed649ebd4c2c79437db4611a6a1373e805a3cb001c64130b7",
+                        "og:url": "https://github.com/google/webrisk/blob/master/README.md"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://opengraph.githubassets.com/ab9e5b8848b1669da54905f0af18425b6bc3a9dec9d4a0f5e84c271324e0d83c/google/webrisk"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "SOAR Content Package for URLScan.io",
+            "htmlTitle": "SOAR Content Package for URLScan.io",
+            "link": "https://exchange.xforce.ibmcloud.com/api/hub/extensionsNew/19a2480c7e3a6595aaa170318645f29d/README.pdf",
+            "displayLink": "exchange.xforce.ibmcloud.com",
+            "snippet": "May 16, 2022 ... 'https://testsafebrowsing.appspot.com/s/phishing.html',. 'request': {. 'url': 'https://testsafebrowsing.appspot.com/s/phishing.html',. 'method\u00a0...",
+            "htmlSnippet": "May 16, 2022 <b>...</b> &#39;<b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>&#39;,. &#39;request&#39;: {. &#39;url&#39;: &#39;<b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>&#39;,. &#39;method&nbsp;...",
+            "cacheId": "ltDIkWJDerYJ",
+            "formattedUrl": "https://exchange.xforce.ibmcloud.com/api/hub/.../README.pdf",
+            "htmlFormattedUrl": "https://exchange.xforce.ibmcloud.com/api/hub/.../README.pdf",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQLgiNqRrxI-vqc1xoKofVsUIsqSr7Shg8dFk1MFL1IjZ5vgt7rxo8UFv4",
+                        "width": "269",
+                        "height": "188"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "moddate": "D:20220516172941+00'00'",
+                        "creator": "Chromium",
+                        "creationdate": "D:20220516172941+00'00'",
+                        "producer": "Skia/PDF m80"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "x-raw-image:///68b6363845e15692a1781ceb904b51e287d104e8ad79b4d611fee2bae1ad55bc"
+                    }
+                ]
+            },
+            "mime": "application/pdf",
+            "fileFormat": "PDF/Adobe Acrobat"
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Warning when going on M.Lichess.org \u2022 page 2/3 \u2022 Lichess ...",
+            "htmlTitle": "Warning when going on M.Lichess.org \u2022 page 2/3 \u2022 Lichess ...",
+            "link": "https://lichess.org/forum/lichess-feedback/warning-when-going-on-mlichessorg?page=2",
+            "displayLink": "lichess.org",
+            "snippet": "Aug 21, 2020 ... Lichess uses HTTPS. HTTPS uses certificates. In the Lichess certificate ... testsafebrowsing.appspot.com/s/phishing.html. +1 -1 laugh thinking",
+            "htmlSnippet": "Aug 21, 2020 <b>...</b> Lichess uses <b>HTTPS</b>. <b>HTTPS</b> uses certificates. In the Lichess certificate ... <b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>. +1 -1 laugh thinking",
+            "cacheId": "GnuTtwaDjxcJ",
+            "formattedUrl": "https://lichess.org/forum/lichess.../warning-when-going-on-mlichessorg?...2",
+            "htmlFormattedUrl": "https://lichess.org/forum/lichess.../warning-when-going-on-mlichessorg?...2",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "theme-color": "#2e2a24",
+                        "og:type": "website",
+                        "twitter:card": "summary",
+                        "twitter:title": "Warning when going on M.Lichess.org",
+                        "og:site_name": "lichess.org",
+                        "twitter:site": "@lichess",
+                        "viewport": "width=device-width,initial-scale=1,viewport-fit=cover",
+                        "twitter:description": "@mayukh0401, you can't access the site at all because according to Google its on this SSHTML or something like that and it won't open it unless of cours\u2026",
+                        "og:title": "Warning when going on M.Lichess.org",
+                        "google": "notranslate",
+                        "og:url": "https://lichess.org/forum/lichess-feedback/warning-when-going-on-mlichessorg?page=2",
+                        "og:description": "@mayukh0401, you can't access the site at all because according to Google its on this SSHTML or something like that and it won't open it unless of cours\u2026"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Google Safe Browsing",
+            "htmlTitle": "Google Safe Browsing",
+            "link": "https://safebrowsing.google.com/",
+            "displayLink": "safebrowsing.google.com",
+            "snippet": "A history of safety. Safe Browsing launched in 2005 to protect users across the web from phishing attacks, and has evolved to give users tools to help protect\u00a0...",
+            "htmlSnippet": "A history of safety. Safe Browsing launched in 2005 to protect users across the <b>web</b> from <b>phishing</b> attacks, and has evolved to give users tools to help protect&nbsp;...",
+            "cacheId": "A1OZljAMxqoJ",
+            "formattedUrl": "https://safebrowsing.google.com/",
+            "htmlFormattedUrl": "https://safebrowsing.google.com/",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "og:image": "safebrowsing.google.com/images/share.png",
+                        "viewport": "initial-scale=1, minimum-scale=1, width=device-width",
+                        "og:title": "Google Safe Browsing",
+                        "og:description": "Making the world\u2019s information safely accessible."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "safebrowsing.google.com/images/share.png"
+                    }
+                ]
+            }
+        }
+    ]
+}

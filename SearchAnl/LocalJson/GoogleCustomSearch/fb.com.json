@@ -1,0 +1,455 @@
+{
+    "kind": "customsearch#search",
+    "url": {
+        "type": "application/json",
+        "template": "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json"
+    },
+    "queries": {
+        "request": [
+            {
+                "title": "Google Custom Search - https://fb.com",
+                "totalResults": "3690000000",
+                "searchTerms": "https://fb.com",
+                "count": 10,
+                "startIndex": 1,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "a6d5af5008e9e4d57"
+            }
+        ],
+        "nextPage": [
+            {
+                "title": "Google Custom Search - https://fb.com",
+                "totalResults": "3690000000",
+                "searchTerms": "https://fb.com",
+                "count": 10,
+                "startIndex": 11,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "a6d5af5008e9e4d57"
+            }
+        ]
+    },
+    "context": {
+        "title": "Seeker"
+    },
+    "searchInformation": {
+        "searchTime": 0.231702,
+        "formattedSearchTime": "0.23",
+        "totalResults": "3690000000",
+        "formattedTotalResults": "3,690,000,000"
+    },
+    "items": [
+        {
+            "kind": "customsearch#result",
+            "title": "Facebook - log in or sign up",
+            "htmlTitle": "<b>Facebook</b> - log in or sign up",
+            "link": "https://www.facebook.com/",
+            "displayLink": "www.facebook.com",
+            "snippet": "Create an account or log into Facebook. Connect with friends, family and other people you know. Share photos and videos, send messages and get updates.",
+            "htmlSnippet": "Create an account or log into <b>Facebook</b>. Connect with friends, family and other people you know. Share photos and videos, send messages and get updates.",
+            "cacheId": "QanOc4elti0J",
+            "formattedUrl": "https://www.facebook.com/",
+            "htmlFormattedUrl": "https://www.facebook.com/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR4_xb5KPGzXJ-zsjpILub8QNwhZXq7fYb_F1VRFoTcUJMpxUuHEZ3ztqs",
+                        "width": "225",
+                        "height": "225"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "og:image": "https://www.facebook.com/images/fb_icon_325x325.png",
+                        "theme-color": "#3b5998",
+                        "og:type": "website",
+                        "og:site_name": "Facebook",
+                        "viewport": "user-scalable=no,initial-scale=1,maximum-scale=1",
+                        "og:title": "Facebook - log in or sign up",
+                        "og:url": "https://www.facebook.com/",
+                        "og:description": "Create an account or log into Facebook. Connect with friends, family and other people you know. Share photos and videos, send messages and get updates."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://www.facebook.com/images/fb_icon_325x325.png"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Facebook Business Manager",
+            "htmlTitle": "<b>Facebook</b> Business Manager",
+            "link": "https://business.facebook.com/",
+            "displayLink": "business.facebook.com",
+            "snippet": "With Meta Business Suite and Business Manager, you can create ads and manage your accounts in one place. Login and be directed to the right Facebook tool...",
+            "htmlSnippet": "With Meta Business Suite and Business Manager, you can create ads and manage your accounts in one place. Login and be directed to the right <b>Facebook</b> tool...",
+            "cacheId": "eAlXY7kEaiUJ",
+            "formattedUrl": "https://business.facebook.com/",
+            "htmlFormattedUrl": "https://business.facebook.com/",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "fb4b_pixel_events": "ViewContent",
+                        "og:image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.8562-6/104621072_650351285551930_5671839628686440004_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=f537c7&_nc_ohc=roCGMexrDcoAX_RFhfL&_nc_ht=scontent-ord5-2.xx&oh=00_AfBeN4L51mfuvn8Irddyz6D3hMQxt1VwF-VrnlQufB1tUA&oe=65FC8899",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "fb4b_version": "v3",
+                        "og:title": "Login and Access Meta Business Suite and Business Manager",
+                        "og:description": "With Meta Business Suite and Business Manager, you can create ads and manage your accounts in one place. Login and be directed to the right Facebook tool for you."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.8562-6/104621072_650351285551930_5671839628686440004_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=f537c7&_nc_ohc=roCGMexrDcoAX_RFhfL&_nc_ht=scontent-ord5-2.xx&oh=00_AfBeN4L51mfuvn8Irddyz6D3hMQxt1VwF-VrnlQufB1tUA&oe=65FC8899"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Meta for Developers",
+            "htmlTitle": "Meta for Developers",
+            "link": "https://developers.facebook.com/",
+            "displayLink": "developers.facebook.com",
+            "snippet": "Code to connect people with Facebook for Developers. Explore AI, business tools, gaming, open source, publishing, social hardware, social integration,\u00a0...",
+            "htmlSnippet": "Code to connect people with <b>Facebook</b> for Developers. Explore AI, business tools, gaming, open source, publishing, social hardware, social integration,&nbsp;...",
+            "cacheId": "YqT11RPkXrkJ",
+            "formattedUrl": "https://developers.facebook.com/",
+            "htmlFormattedUrl": "https://developers.facebook.com/",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "og:image": "https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/96406897_653650008814540_3069312070718586880_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=Sn00NVfVHLUAX8IDhDJ&_nc_ht=scontent-lax3-1.xx&oh=00_AfAM_UnRyEAWG6xuYuDvu42KjsOeXdltrP3vm8Jsb5BKGQ&oe=6611B069",
+                        "fb:app_id": "113869198637480",
+                        "og:type": "website",
+                        "twitter:card": "summary",
+                        "og:site_name": "Meta for Developers",
+                        "twitter:site:id": "63359297",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "og:title": "Meta for Developers",
+                        "og:locale": "en_US",
+                        "og:url": "https://developers.facebook.com/",
+                        "og:description": "Code to connect people with Facebook for Developers. Explore AI, business tools, gaming, open source, publishing, social hardware, social integration, and virtual reality. Learn about Facebook\u2019s global programs to educate and connect developers."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/96406897_653650008814540_3069312070718586880_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=Sn00NVfVHLUAX8IDhDJ&_nc_ht=scontent-lax3-1.xx&oh=00_AfAM_UnRyEAWG6xuYuDvu42KjsOeXdltrP3vm8Jsb5BKGQ&oe=6611B069"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Log into Facebook",
+            "htmlTitle": "Log into <b>Facebook</b>",
+            "link": "https://www.facebook.com/login.php/",
+            "displayLink": "www.facebook.com",
+            "snippet": "Log into Facebook to start sharing and connecting with your friends, family, and people you know.",
+            "htmlSnippet": "Log into <b>Facebook</b> to start sharing and connecting with your friends, family, and people you know.",
+            "cacheId": "j0A5ZsypiDgJ",
+            "formattedUrl": "https://www.facebook.com/login.php/",
+            "htmlFormattedUrl": "https://www.facebook.com/login.php/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQxZuZBfde_wYbmhCA7nGwfGF76zf22NUAkoDXZ4dVjl9HPmvPyHTE-OP1P",
+                        "width": "391",
+                        "height": "129"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "og:site_name": "Facebook",
+                        "og:locale:alternate": "www",
+                        "og:locale": "en_US",
+                        "og:url": "https://www.facebook.com/login.php/"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Introduction to the Advertising Standards | Transparency Center",
+            "htmlTitle": "Introduction to the Advertising Standards | Transparency Center",
+            "link": "https://transparency.fb.com/policies/ad-standards/",
+            "displayLink": "transparency.fb.com",
+            "snippet": "Facebook Community Standards \u00b7 NEXT \u00b7 Other policies \u00b7 Transparency Center \u00b7 POLICIES \u00b7 Facebook Community Standards \u00b7 Instagram Community Guidelines \u00b7 Other\u00a0...",
+            "htmlSnippet": "<b>Facebook</b> Community Standards &middot; NEXT &middot; Other policies &middot; Transparency Center &middot; POLICIES &middot; <b>Facebook</b> Community Standards &middot; Instagram Community Guidelines &middot; Other&nbsp;...",
+            "cacheId": "e2-vW_NaQCUJ",
+            "formattedUrl": "https://transparency.fb.com/policies/ad-standards/",
+            "htmlFormattedUrl": "https://transparency.fb.com/policies/ad-standards/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRaehRiegq2Gl7ZjWBlZ_8j4Prn0NmdhisQ37ApRmJEjjpp5410HgFcxRoD",
+                        "width": "310",
+                        "height": "163"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "og:image": "https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/s_dzh-nO-ax.png",
+                        "og:type": "website",
+                        "og:image:width": "2400",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "og:title": "Introduction to the Advertising Standards | Transparency Center",
+                        "og:image:height": "1260",
+                        "og:image:type": "image/jpeg",
+                        "og:url": "https://transparency.fb.com/policies/ad-standards/",
+                        "og:description": "The Advertising Standards outline what is and isn't allowed on Meta."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/s_dzh-nO-ax.png"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Financials - Meta",
+            "htmlTitle": "Financials - Meta",
+            "link": "https://investor.fb.com/financials/",
+            "displayLink": "investor.fb.com",
+            "snippet": "Some of the information or materials made available on this website may contain forward-looking statements. Statements including words such as \"believe,\"\u00a0...",
+            "htmlSnippet": "Some of the information or materials made available on this website may contain forward-looking statements. Statements including words such as &quot;believe,&quot;&nbsp;...",
+            "cacheId": "9gNa-0V7Dc0J",
+            "formattedUrl": "https://investor.fb.com/financials/",
+            "htmlFormattedUrl": "https://investor.fb.com/financials/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD-_VQn9mv22wyuHpIsWAgm2mSzQ6hUBJMTIKKIuPEyMOrjzYIkGObkWI",
+                        "width": "250",
+                        "height": "200"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://s21.q4cdn.com/399680738/files/design/2022/Meta_Symbol_PositivePrimary_RGB-(2).png",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "twitter:image": "https://s21.q4cdn.com/399680738/files/design/2022/Meta_Symbol_PositivePrimary_RGB-(1).png"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://s21.q4cdn.com/399680738/files/design/2022/Meta_Symbol_PositivePrimary_RGB-(2).png"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Facebook Community Standards | Transparency Center",
+            "htmlTitle": "<b>Facebook</b> Community Standards | Transparency Center",
+            "link": "https://transparency.fb.com/policies/community-standards/",
+            "displayLink": "transparency.fb.com",
+            "snippet": "Every day, people use Facebook to share their experiences, connect with friends and family, and build communities. It's a service for more than 2 billion people\u00a0...",
+            "htmlSnippet": "Every day, people use <b>Facebook</b> to share their experiences, connect with friends and family, and build communities. It&#39;s a service for more than 2 billion people&nbsp;...",
+            "cacheId": "gdYZgjcyvy4J",
+            "formattedUrl": "https://transparency.fb.com/policies/community-standards/",
+            "htmlFormattedUrl": "https://transparency.fb.com/policies/community-standards/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRaehRiegq2Gl7ZjWBlZ_8j4Prn0NmdhisQ37ApRmJEjjpp5410HgFcxRoD",
+                        "width": "310",
+                        "height": "163"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "referrer": "origin-when-crossorigin",
+                        "og:image": "https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/s_dzh-nO-ax.png",
+                        "og:type": "website",
+                        "og:image:width": "2400",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "og:title": "Facebook Community Standards | Transparency Center",
+                        "og:image:height": "1260",
+                        "og:image:type": "image/jpeg",
+                        "og:url": "https://transparency.fb.com/policies/community-standards/",
+                        "og:description": "The Facebook Community Standards outline what is and isn't allowed on Facebook."
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://static.xx.fbcdn.net/rsrc.php/v3/yc/r/s_dzh-nO-ax.png"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Engineering at Meta - Engineering at Meta Blog",
+            "htmlTitle": "Engineering at Meta - Engineering at Meta Blog",
+            "link": "https://engineering.fb.com/",
+            "displayLink": "engineering.fb.com",
+            "snippet": "footer-fb-engineering. Engineering at Meta. Like. footer-fbopensource. Meta Open ... Facebook through cookies. Learn more, including about available controls\u00a0...",
+            "htmlSnippet": "footer-<b>fb</b>-engineering. Engineering at Meta. Like. footer-fbopensource. Meta Open ... <b>Facebook</b> through cookies. Learn more, including about available controls&nbsp;...",
+            "cacheId": "cIgtop6ZghsJ",
+            "formattedUrl": "https://engineering.fb.com/",
+            "htmlFormattedUrl": "https://engineering.fb.com/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTEB-lRM3bhSQuLLk1oRiPX-RzyZgx8bNmKWKOiT6HeBgVyGywRC6JYlCFj",
+                        "width": "290",
+                        "height": "174"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://engineering.fb.com/wp-content/themes/code-fb-com/img/default_feature.jpg",
+                        "fb:app_id": "1425766027653270",
+                        "og:type": "website",
+                        "og:site_name": "Engineering at Meta",
+                        "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no",
+                        "apple-mobile-web-app-capable": "yes",
+                        "apple-mobile-web-app-title": "Engineering at Meta - Engineering at Meta Blog",
+                        "og:title": "Engineering at Meta",
+                        "mobile-web-app-capable": "yes",
+                        "og:locale": "en_US",
+                        "og:url": "https://engineering.fb.com/",
+                        "og:description": "Engineering at Meta Blog"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://engineering.fb.com/wp-content/themes/code-fb-com/img/default_feature.jpg"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Meta Rights Manager",
+            "htmlTitle": "Meta Rights Manager",
+            "link": "https://rightsmanager.fb.com/",
+            "displayLink": "rightsmanager.fb.com",
+            "snippet": "Rights Manager is a video, audio and image-matching tool that we developed for rights holders of all sizes.",
+            "htmlSnippet": "Rights Manager is a video, audio and image-matching tool that we developed for rights holders of all sizes.",
+            "cacheId": "LM-4LHGtxKsJ",
+            "formattedUrl": "https://rightsmanager.fb.com/",
+            "htmlFormattedUrl": "https://rightsmanager.fb.com/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRKd9AUkHnpbA5Kg0OaTDpA-o0EfbRxOXXOosRTJyzwa28wcPSv0V4P9Hi1",
+                        "width": "310",
+                        "height": "163"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "msapplication-tilecolor": "#ffffff",
+                        "og:image": "https://rightsmanager.fb.com/wp-content/uploads/2023/01/facebook-share.jpg",
+                        "theme-color": "#ffffff",
+                        "og:type": "website",
+                        "og:image:width": "1200",
+                        "twitter:card": "summary_large_image",
+                        "twitter:title": "Meta Rights Manager",
+                        "og:site_name": "Meta Rights Manager",
+                        "og:title": "Meta Rights Manager",
+                        "og:image:height": "630",
+                        "og:image:type": "image/jpeg",
+                        "msapplication-tileimage": "https://rightsmanager.fb.com/wp-content/themes/meta-rights-manager-v2/assets/favicon/mstile-150x150.png",
+                        "og:description": "Rights Manager is a video, audio and image-matching tool that we developed for rights holders of all sizes.",
+                        "article:publisher": "https://www.facebook.com/Meta/",
+                        "twitter:image": "https://rightsmanager.fb.com/wp-content/uploads/2023/01/twitter-share.jpg",
+                        "twitter:site": "@meta",
+                        "article:modified_time": "2023-02-17T03:44:28+00:00",
+                        "viewport": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+                        "twitter:description": "Rights Manager is a video, audio and image-matching tool that we developed for rights holders of all sizes.",
+                        "og:locale": "en_US",
+                        "og:url": "https://rightsmanager.fb.com/",
+                        "format-detection": "telephone=no"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://rightsmanager.fb.com/wp-content/uploads/2023/01/facebook-share.jpg"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Introducing the New Ray-Ban | Meta Smart Glasses | Meta",
+            "htmlTitle": "Introducing the New Ray-Ban | Meta Smart Glasses | Meta",
+            "link": "https://about.fb.com/news/2023/09/new-ray-ban-meta-smart-glasses/",
+            "displayLink": "about.fb.com",
+            "snippet": "Sep 27, 2023 ... ... ) not found. Download File: https://about.fb.com/wp-content/uploads/2023/09/SuperNova_Header.mp4?_=1. 00:00. 00:00. 00:00. Takeaways. In\u00a0...",
+            "htmlSnippet": "Sep 27, 2023 <b>...</b> ... ) not found. Download File: <b>https</b>://about.<b>fb</b>.<b>com</b>/wp-content/uploads/2023/09/SuperNova_Header.mp4?_=1. 00:00. 00:00. 00:00. Takeaways. In&nbsp;...",
+            "cacheId": "H762BBkHQuMJ",
+            "formattedUrl": "https://about.fb.com/news/2023/09/new-ray-ban-meta-smart-glasses/",
+            "htmlFormattedUrl": "https://about.fb.com/news/2023/09/new-ray-ban-meta-smart-glasses/",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTG2Ky2t9CZqq3zQ-nKQgNSBLgMnd2ObmKFw8XrGIZ218jVFPRqaJybs1o",
+                        "width": "300",
+                        "height": "168"
+                    }
+                ],
+                "imageobject": [
+                    {
+                        "image": "https://about.fb.com/wp-content/uploads/2023/09/04_Looks_1-carousel.jpg?fit=960%2C836"
+                    },
+                    {
+                        "image": "https://about.fb.com/wp-content/uploads/2023/09/04_Looks_3-carousel.jpg?fit=960%2C836"
+                    },
+                    {
+                        "image": "https://about.fb.com/wp-content/uploads/2023/09/04_Looks_2-carousel.jpg?fit=960%2C836"
+                    },
+                    {
+                        "image": "https://about.fb.com/wp-content/uploads/2023/09/04_Looks_4-carousel.jpg?fit=960%2C836"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://about.fb.com/wp-content/uploads/2023/09/SuperNova_Social-Share.jpg?w=1200",
+                        "og:type": "article",
+                        "article:published_time": "2023-09-27T18:08:18+00:00",
+                        "og:image:width": "1024",
+                        "twitter:card": "summary_large_image",
+                        "og:site_name": "Meta",
+                        "og:title": "Introducing the New Ray-Ban | Meta Smart Glasses | Meta",
+                        "og:image:height": "576",
+                        "twitter:label1": "Written by",
+                        "twitter:label2": "Est. reading time",
+                        "msapplication-tileimage": "https://about.fb.com/wp-content/uploads/2021/10/meta-favicon.png?fit=16%2C16",
+                        "og:description": "In partnership with EssilorLuxottica, we\u2019re launching a new generation of Ray-Ban Meta smart glasses, available for pre-order now.",
+                        "twitter:image": "https://about.fb.com/wp-content/uploads/2023/09/SuperNova_Social-Share.jpg?w=1200",
+                        "twitter:data1": "Meta",
+                        "twitter:data2": "5 minutes",
+                        "article:modified_time": "2023-10-03T20:45:44+00:00",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "og:locale": "en_US",
+                        "og:url": "https://about.fb.com/news/2023/09/new-ray-ban-meta-smart-glasses/"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://about.fb.com/wp-content/uploads/2023/09/SuperNova_Social-Share.jpg?w=1200"
+                    }
+                ]
+            }
+        }
+    ]
+}
