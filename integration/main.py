@@ -32,6 +32,18 @@ def malicious_calculation(phishing_checklist):
         return True # malicious 
     else:
         return False # not malicious
+
+def ssl_analysis(domain):
+    os.chdir("sslchecker")
+    command = ["scrapy", "crawl", "ssl_spider", "-a", f"url={domain}"]
+    
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        # Access stdout and stderr
+        stdout = result.stdout
+        print("Standard Output:", stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
     
 # Function to perform domain analysis
 def checklist_scan(domain):
@@ -64,25 +76,24 @@ def checklist_scan(domain):
         phishing_checklist['database_result'] = result
 
         # Perform SSL Cert analysis
-        result = False
-        # result = ssl_analysis(domain)
+        result = ssl_analysis(domain)
         if result is None or check_abort_scan():
             return None
         phishing_checklist['cert_result'] = result
 
-        # Perform Content analysis
-        result = False
-        # result = content_analysis(domain)
-        if result is None or check_abort_scan():
-            return None
-        phishing_checklist['content_result'] = result
+        # # Perform Content analysis
+        # result = False
+        # # result = content_analysis(domain)
+        # if result is None or check_abort_scan():
+        #     return None
+        # phishing_checklist['content_result'] = result
         
-        # Perform Search Engine analysis
-        result = False
-        # result = search_engine_analysis(domain)
-        if result is None or check_abort_scan():
-            return None
-        phishing_checklist['search_engine'] = result
+        # # Perform Search Engine analysis
+        # result = False
+        # # result = search_engine_analysis(domain)
+        # if result is None or check_abort_scan():
+        #     return None
+        # phishing_checklist['search_engine'] = result
                 
         is_malicious = malicious_calculation(phishing_checklist)   
         

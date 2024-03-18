@@ -9,7 +9,7 @@ def check_site_google(url):
     site_search = "site:" + url
 
     cse_id = "a6d5af5008e9e4d57"  # Direct use of the CSE ID
-    query = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cse_id}&q={url}"
+    query = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={cse_id}&q={site_search}"
 
     try:
         response = requests.get(query)
@@ -17,6 +17,7 @@ def check_site_google(url):
         results = response.json()
         
         total_results = int(results.get("searchInformation", {}).get("totalResults",0))
+        
         return total_results
 
     except Exception as err:
