@@ -97,15 +97,18 @@ def SussyChecker(SimDict): # take the filteredDict as input
 
     trafficTracker=0 # used to track the percentage of traffic from a specific media , if untrackable , might have chance of being phising site as not well known 
     for i in SimDict["TrafficSources"]:
-        trafficTracker+=SimDict["TrafficSources"][i]
-        if trafficTracker==0:
-            Suspicious +=1
+        if (SimDict["TrafficSources"][i] is None):
+            Suspicious+=1
+        else:    
+            trafficTracker+=SimDict["TrafficSources"][i]
+            if trafficTracker==0:
+                Suspicious +=1
 
     return Suspicious
 
 if __name__ == "__main__":
-    result = similarGet("http://hindhosiery.com/office/Super-Nice-Office365/off/index.php")
+    result = similarGet("http://grub-terbaruyoutuber-freefiregarena1.duckdns.org/index.php")
     filtDict=filteredDict(result)
     print(pretty_print_dict(filtDict))
     # print(filtDict["Category"])
-    # print(filtDict.keys())
+    print(filtDict.keys())

@@ -1,7 +1,7 @@
 import requests
 import os
 import json
-import statistics
+import numpy as np
 from listMake import list_Maker
 from file_sanitizer import sanitize_filename
 
@@ -44,9 +44,14 @@ if __name__ == "__main__":
     count = len(test_phishing_sites)
     results_Array=[]
     for i, link in enumerate(test_phishing_sites):
-        print("Iter: ", i)
+        print("Iter: ", i) #visualise the api running , will run up to iter 100
         is_indexed, num_Results = check_site_google(link)
         results_Array.append(num_Results)
-print(statistics.median(results_Array))
+
+    test= np.array(results_Array)
+    print(np.percentile(test,25)) #25 percentile (value=0)
+    print(np.percentile(test,50)) #median (value=0)
+    print(np.percentile(test,75)) #75 percentile (value=1)
+
 
 
