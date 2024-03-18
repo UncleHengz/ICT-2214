@@ -103,6 +103,9 @@ def SussyChecker(SimDict): # take the filteredDict as input
             trafficTracker+=SimDict["TrafficSources"][i]
             if trafficTracker==0:
                 Suspicious +=1
+    
+    if len(SimDict["SearchTerms"])==0:
+        Suspicious+=1
 
     return Suspicious
 

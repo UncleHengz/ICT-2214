@@ -38,6 +38,8 @@ def check_site_google(url):
         return (False, f"Request error occurred: {e}")
 
 if __name__ == "__main__":
+    # example usage
+    # 
     # url_to_check = "http://fb.com"
     test_phishing_sites=list_Maker("./SearchAnl/text/phishing_links_rate_limit.txt")
     # is_indexed, num_Results = check_site_google(url_to_check)
@@ -48,6 +50,7 @@ if __name__ == "__main__":
         is_indexed, num_Results = check_site_google(link)
         results_Array.append(num_Results)
 
+    #just to check the median and data distribution of search results from the different links
     test= np.array(results_Array)
     print(np.percentile(test,25)) #25 percentile (value=0)
     print(np.percentile(test,50)) #median (value=0)
