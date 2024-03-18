@@ -26,7 +26,7 @@ class SpellCheckSpider(scrapy.Spider):
         words = re.findall(r'\b[a-zA-Z]+\b', text)
         misspelled = spell.unknown(words)
 
-        status = "Scam website" if len(misspelled) > 100 else "Legit Website"
+        status = "May be a scam website" if len(misspelled) > 100 else "Legit Website"
         print(f"Status: {status}")
         print(f"Number of misspelled words: {len(misspelled)}")
         if misspelled:
