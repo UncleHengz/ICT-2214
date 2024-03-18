@@ -246,29 +246,6 @@ document.addEventListener('DOMContentLoaded', function () {
         scanButtonElement.innerText = 'Start';
     }
 
-    //     // Function to update the allowed domains list in the HTML
-    // function updateAllowedDomainsList(allowedDomains) {
-    //     const allowedDomainsList = document.getElementById('allowedDomainsList');
-
-    //     // Clear existing list items
-    //     allowedDomainsList.innerHTML = '';
-
-    //     // Populate the list with allowed domains
-    //     allowedDomains.forEach(domain => {
-    //         const listItem = document.createElement('li');
-    //         listItem.textContent = domain;
-    //         allowedDomainsList.appendChild(listItem);
-    //     });
-    // }
-
-    // // Function to get and update the allowed domains list from storage
-    // function updateAllowedDomainsListFromStorage() {
-    //     chrome.storage.local.get({ allowedDomains: [] }, function (result) {
-    //         const allowedDomains = result.allowedDomains;
-    //         updateAllowedDomainsList(allowedDomains);
-    //     });
-    // }
-
     // Function to check if the domain is in allowedDomains or maliciousDomains
     function isDomainInLists(domain, allowedDomains, maliciousDomains) {
         return allowedDomains.includes(domain) || maliciousDomains.includes(domain);
