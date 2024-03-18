@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (Array.isArray(data)) {
             scanningInProgress = true;
             // It's an array, call scan-all API
-            fetch('http://127.0.0.1:5000/scan-all', {
+            return fetch('http://127.0.0.1:5000/scan-all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -265,7 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result.results);
                 scanningInProgress = false;
                 return result.results;
             })
@@ -312,7 +311,33 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get the list of unscanned domains
         const unscannedDomains = Array.from(document.querySelectorAll('#unscannedDomainsList .domain-item span'))
                                     .map(item => item.textContent);
-        scanDomains(unscannedDomains);
+
+        const spinner = document.querySelector('.spinner-border');
+        const scanStatus = document.getElementById("scan_status");
+        const scanningMessage = document.getElementById("scanningMessage");
+
+        scanDomains(unscannedDomains)
+        .then(domain_result => {
+            console.log(domain_result);
+
+            var message = '';
+            // Loop through the results and concatenate into the message
+            for (const [domain, result] of Object.entries(domain_result)) {
+                const resultText = result ? 'Malicious' : 'Safe';
+                message += domain + "[" + resultText + "] <br/>";
+            }
+            scanStatus.textContent = "Scan Completed";
+            scanningMessage.innerHTML = message;
+            // Hide the spinner
+            spinner.style.display = 'none';
+        })
+        .catch(error => {
+            console.error(error);
+            scanStatus.textContent = 'Scan Failed';
+            scanningMessage.textContent = "Failed to scan domains";
+            // Hide the spinner
+            spinner.style.display = 'none';
+        });
     });
 
     // Function to send an abort signal to the server

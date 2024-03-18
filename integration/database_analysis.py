@@ -30,25 +30,41 @@ def extract_domain(url):
 
 def database_analysis(received_domain):
     phishing_links = []
-    with open('ALL-phishing-links.txt','r',encoding='utf-8') as file:
-        for item in file:
-            phishing_links.append(item.strip())
+    # Open and read phishing links file
+    try:
+        with open('ALL-phishing-links.txt', 'r', encoding='utf-8') as file:
+            for item in file:
+                phishing_links.append(item.strip())
+            file.close()
+    except Exception as e:
+        print("Error reading phishing links file:", e)
+        # Handle the error, e.g., exit the program or set default phishing links
         file.close()
+        return None
+        
     is_malicious = False
+    match = None
     
-    #Code for the link extraction and comparison start
-    soup = fetch_and_parse_content(received_domain)
-    urls = []
-    for link in soup.find_all('a'):
-        urls.append(link.get('href'))
-    # Extract domain names and filter unique ones
-    unique_domains = set(filter(None, map(extract_domain, urls)))
+    try:
+        #Code for the link extraction and comparison start
+        soup = fetch_and_parse_content(received_domain)
+        urls = []
+        all_links = soup.find_all('a')
+        if all_links:
+            for link in all_links:
+                urls.append(link.get('href'))
+            # Extract domain names and filter unique ones
+            unique_domains = set(filter(None, map(extract_domain, urls)))
 
-    # Comparison with phishing links database
-    match = list(set(phishing_links) & set(unique_domains))
-    #Code for link extraction and comparison end
-    if received_domain in phishing_links or match: #Added or operator to ensure if the links on the site is phishing then its malicious as well
-        is_malicious = True # malicious
+            # Comparison with phishing links database
+            match = list(set(phishing_links) & set(unique_domains))
+            #Code for link extraction and comparison end
+        if received_domain in phishing_links or match: #Added or operator to ensure if the links on the site is phishing then its malicious as well
+            is_malicious = True # malicious
+    except Exception as e:
+        print("Error occurred during link extraction and comparison:", e)
+        return None
+    
     return is_malicious
 
 

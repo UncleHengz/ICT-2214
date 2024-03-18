@@ -109,9 +109,12 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error during scan:', error);
-                clearInterval(loadingInterval);
-                // Call abortScan in case of an error
-                abortScan();
+                timeoutIds.forEach(clearTimeout);
+                statusElement.innerHTML = 'Error during scan! Please try again.';
+                statusElement.classList.remove('alert-warning');
+                statusElement.classList.add('alert-danger');
+                scanning = false;
+                scanButtonElement.innerText = 'Restart';
             });
     }
     

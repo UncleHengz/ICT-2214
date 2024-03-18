@@ -12,6 +12,27 @@ def check_abort_scan():
     global stop_scan
     return stop_scan
 
+# Function that assigns a score to each result if true and perform total calculation
+def malicious_calculation(phishing_checklist):
+    scores = {
+        'database_result': 3,  
+        'domain_result': 2,
+        'cert_result': 2,
+        'content_result': 2,
+        'search_result': 1
+    }
+    
+    total_score = 0
+    
+    for key, value in phishing_checklist.items():
+        if value:  # If the analysis result is True (indicating malicious)
+            total_score += scores[key]
+
+    if total_score >= 5:
+        return True # malicious 
+    else:
+        return False # not malicious
+    
 # Function to perform domain analysis
 def checklist_scan(domain):
     is_malicious = False
@@ -19,25 +40,52 @@ def checklist_scan(domain):
     stop_scan = False
     
     if domain:
-        database_result = None
-        domain_result = None
-        phishing_checklist_dict = {}
+        phishing_checklist = {
+            'database_result': None,
+            'domain_result': None,
+            'cert_result': None,
+            'content_result': None,
+            'search_result': None
+        }
         
-        while(database_result == None and domain_result == None):
-            if (stop_scan):
-                break
-            
-            # # Perform domain analysis
-            if (not domain_result):
-                domain_result = virustotal(domain)
-            
-            # # Perform database analysis
-            if (not database_result):
-                database_result = database_analysis(domain)
-                phishing_checklist_dict["Database"] = database_result 
-                is_malicious = database_result
-                print(is_malicious)
+        if check_abort_scan():
+            return None
+
+        # Perform domain analysis
+        result = virustotal(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['domain_result'] = result
+
+        # Perform database analysis
+        result = database_analysis(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['database_result'] = result
+
+        # Perform SSL Cert analysis
+        result = False
+        # result = ssl_analysis(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['cert_result'] = result
+
+        # Perform Content analysis
+        result = False
+        # result = content_analysis(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['content_result'] = result
+        
+        # Perform Search Engine analysis
+        result = False
+        # result = search_engine_analysis(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['search_engine'] = result
                 
+        is_malicious = malicious_calculation(phishing_checklist)   
+        
     return is_malicious
 
 # Route for scanning all domains
@@ -55,6 +103,7 @@ def scan_all_domains():
             break
         is_malicious = checklist_scan(domain)
         results[domain] = is_malicious
+        print(results[domain])
     return jsonify({'results': results}), 200
 
 # Route for scanning a single domain
@@ -65,6 +114,12 @@ def scan_domain():
     data = request.get_json()
     received_domain = data.get('domain', None)
     is_malicious = checklist_scan(received_domain)
+    
+    if is_malicious is None:
+        # Return error response
+        error_message = "Error occurred during domain scan."
+        return jsonify({'error': error_message}), 500
+    
     return jsonify({'results': is_malicious}), 200
 
 # Route for aborting the scan
