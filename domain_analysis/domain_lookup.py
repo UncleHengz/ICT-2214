@@ -114,7 +114,7 @@ def categorize_threat(categories):
     for category in categories.values():
         for keyword in threat_keywords:
             if re.search(keyword, category, re.IGNORECASE):
-                return 1000  # Very suspicious
+                return 100  # Very suspicious
     return 0  # No threat detected
 
 def group_dns_records(last_dns_records):
@@ -272,7 +272,7 @@ def virustotal(domain):
         cat_sus = categorize_threat(categories)
 
         suspiciousness = age_sus + analysis_sus + cat_sus
-        if suspiciousness >= 1000:
+        if suspiciousness >= 100:
             malicious = True
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
@@ -342,7 +342,7 @@ def virustotal(domain):
 #     "haproxy-vip.quicksign.fr"
 # ]
     
-domain = "something.com"
+domain = "facebook.com"
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):
@@ -352,24 +352,24 @@ domain = "something.com"
 #     else:
 #         print(f"{key}: {value}")
 
-# def print_result(result):
-#     if isinstance(result, str):
-#         print(result)
-#     elif isinstance(result, dict):
-#         for key, value in result.items():
-#             if isinstance(value, dict):
-#                 print(f"{key}:")
-#                 for sub_key, sub_value in value.items():
-#                     print(f"  {sub_key}: {sub_value}")
-#             else:
-#                 print(f"{key}: {value}")
-#     else:
-#         print("Unknown result type")
+def print_result(result):
+    if isinstance(result, str):
+        print(result)
+    elif isinstance(result, dict):
+        for key, value in result.items():
+            if isinstance(value, dict):
+                print(f"{key}:")
+                for sub_key, sub_value in value.items():
+                    print(f"  {sub_key}: {sub_value}")
+            else:
+                print(f"{key}: {value}")
+    else:
+        print("Unknown result type")
 
-# result = virustotal(domain)
-# print_result(result)        
+result = virustotal(domain)
+print_result(result)        
 
-print(virustotal(domain)["Malicious"])
+# print(virustotal(domain)["Malicious"])
 
 # def print_result(result):
 #     if isinstance(result, dict):
