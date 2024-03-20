@@ -68,7 +68,7 @@ def categorize_threat(categories):
     for category in categories.values():
         for keyword in threat_keywords:
             if re.search(keyword, category, re.IGNORECASE):
-                return 1000  # Very suspicious
+                return 100  # Very suspicious
     return 0  # No threat detected
 
 def group_dns_records(last_dns_records):
@@ -226,7 +226,7 @@ def virustotal(domain):
         cat_sus = categorize_threat(categories)
 
         suspiciousness = age_sus + analysis_sus + cat_sus
-        if suspiciousness >= 1000:
+        if suspiciousness >= 100:
             malicious = True
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
