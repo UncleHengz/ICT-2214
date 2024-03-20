@@ -1,33 +1,32 @@
 import scrapy
-from spellchecker import SpellChecker
-import re
-import lxml.html.clean
-import logging
+from scrapy.crawler import CrawlerProcess
+from google.cloud import language_v1
 
-# Disable all logging
-logging.disable(logging.CRITICAL)
+class GoogleLanguageCheckSpider(scrapy.Spider):
+    name = 'google_language_check'
 
-class SpellCheckSpider(scrapy.Spider):
-    name = 'spell_check_spider'
-
-    def start_requests(self):
-        # Get the URL from the command-line argument
-        url = getattr(self, 'url', None)
-        if url is not None:
-            yield scrapy.Request(url, self.parse)
-        else:
-            self.logger.error('URL not provided. Use the -a option to specify the URL. Example: scrapy crawl spell_check_spider -a url=https://www.example.com')
+    def __init__(self, url=None, *args, **kwargs):
+        super(GoogleLanguageCheckSpider, self).__init__(*args, **kwargs)
+        self.start_urls = [url]
 
     def parse(self, response):
-        spell = SpellChecker()
-        cleaner = lxml.html.clean.Cleaner(style=True, scripts=True, javascript=True, comments=True, inline_style=True, links=True, meta=False, page_structure=False, processing_instructions=True, embedded=False, frames=False, forms=False, annoying_tags=False, remove_tags=None, allow_tags=None, kill_tags=None, remove_unknown_tags=True, safe_attrs_only=True)
-        clean_html = cleaner.clean_html(response.text)
-        text = ' '.join(lxml.html.fromstring(clean_html).xpath('//text()'))
-        words = re.findall(r'\b[a-zA-Z]+\b', text)
-        misspelled = spell.unknown(words)
+        text = ' '.join(response.xpath('//text()').extract())
+        client = language_v1.LanguageServiceClient()
 
-        status = "May be a scam website" if len(misspelled) > 100 else "Legit Website"
-        print(f"Status: {status}")
-        print(f"Number of misspelled words: {len(misspelled)}")
-        if misspelled:
-            print(f"Misspelled words: {', '.join(misspelled)}")
+        # Check for syntax errors in the text
+        document = language_v1.Document(content=text, type_=language_v1.Document.Type.PLAIN_TEXT)
+        syntax = client.analyze_syntax(document=document)
+
+        # Count the number of spelling and grammatical errors
+        error_count = sum(token.part_of_speech.tag == language_v1.PartOfSpeech.Tag.AFFIX for token in syntax.tokens)
+
+        if error_count > 10:
+            print(f'The website {response.url} may be a scam website. Detected {error_count} spelling/grammatical errors.')
+        else:
+            print(f'The website {response.url} is likely a legitimate website. Detected {error_count} spelling/grammatical errors.')
+
+if __name__ == "__main__":
+    url = input("Enter the URL to check: ")
+    process = CrawlerProcess()
+    process.crawl(GoogleLanguageCheckSpider, url=url)
+    process.start()
