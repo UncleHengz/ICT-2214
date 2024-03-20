@@ -28,7 +28,7 @@ def extract_domain(url):
     else:
         return None
 
-def database_analysis(received_domain):
+def database_scan(received_domain):
     phishing_links = []
     # Open and read phishing links file
     try:

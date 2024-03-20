@@ -1,7 +1,7 @@
 import requests
 import os
 import json
-import simweb
+import search_engine.simweb as simweb
 
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 
@@ -98,9 +98,9 @@ def assess_phishing_risk(url):
     else:
         return False
 
-if __name__ == '__main__':
-    # url_to_check = "acc-mercari.com" 
-    url_to_check = "fb.com"
-    is_malicious = assess_phishing_risk(url_to_check)
-    print(f"URL: {url_to_check}\nMalicious result: {is_malicious}")
-    # print(f"Risk Assessment for {url_to_check}: {message} with suspicion score of {suspicion_score}")
+# if __name__ == '__main__':
+#     # url_to_check = "acc-mercari.com" 
+#     url_to_check = "fb.com"
+#     is_malicious = assess_phishing_risk(url_to_check)
+#     print(f"URL: {url_to_check}\nMalicious result: {is_malicious}")
+#     # print(f"Risk Assessment for {url_to_check}: {message} with suspicion score of {suspicion_score}")

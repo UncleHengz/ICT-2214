@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from database_analysis import *
-from domain_analysis import *
+from database_analysis import database_scan
+from domain_analysis import virustotal
+from search_engine.search_analysis import assess_phishing_risk
+import os
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
@@ -41,7 +44,20 @@ def ssl_analysis(domain):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         # Access stdout and stderr
         stdout = result.stdout
-        print("Standard Output:", stdout)
+        print(f"Standard Output:\n", stdout)
+        
+        # Split the output into lines
+        lines = stdout.split('\n')
+        # Extract values from each line
+        ssl_cert = lines[0].split(': ')[1]
+        ssl_authorised_ca = lines[1].split(': ')[1]
+        issued_by = lines[2].split(': ')[1]
+        
+        if ssl_cert and ssl_authorised_ca:
+            return True, issued_by
+        else:
+            return False, ""
+        
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
     
@@ -66,18 +82,21 @@ def checklist_scan(domain):
         # Perform domain analysis
         result = virustotal(domain)
         if result is None or check_abort_scan():
+            print("Domain analysis stopped")
             return None
         phishing_checklist['domain_result'] = result
 
         # Perform database analysis
-        result = database_analysis(domain)
+        result = database_scan(domain)
         if result is None or check_abort_scan():
+            print("Database analysis stopped")
             return None
         phishing_checklist['database_result'] = result
 
         # Perform SSL Cert analysis
         result = ssl_analysis(domain)
         if result is None or check_abort_scan():
+            print("SSL analysis stopped")
             return None
         phishing_checklist['cert_result'] = result
 
@@ -88,12 +107,12 @@ def checklist_scan(domain):
         #     return None
         # phishing_checklist['content_result'] = result
         
-        # # Perform Search Engine analysis
-        # result = False
-        # # result = search_engine_analysis(domain)
-        # if result is None or check_abort_scan():
-        #     return None
-        # phishing_checklist['search_engine'] = result
+        # Perform Search Engine analysis
+        result = assess_phishing_risk(domain)
+        if result is None or check_abort_scan():
+            print("Search Engine analysis stopped")
+            return None
+        phishing_checklist['search_engine'] = result
                 
         is_malicious = malicious_calculation(phishing_checklist)   
         
