@@ -62,4 +62,5 @@ service = Service(executable_path="./SearchAnl/chromedriver/chromedriver.exe")
 driver = webdriver.Chrome(service=service)
 domain_url=get_domain("https://www.amazon.com")
 similarweb_url = f"https://www.similarweb.com/website/{domain_url}/#overview"
+print(similarweb_url)
 driver.get(similarweb_url)
