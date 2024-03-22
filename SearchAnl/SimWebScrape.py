@@ -1,8 +1,13 @@
-# from urllib.parse import urlparse
-# from bs4 import BeautifulSoup
-# import requests
-# import time
-# import random
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+import rpa as r
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+import pandas as pd
+from urllib.parse import urlparse
+import requests
+
+
 
 
 
@@ -43,12 +48,12 @@
 # similarweb_url = f"https://www.similarweb.com/website/{domain_url}/#overview"
 # print(test(similarweb_url))
 
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-import pandas as pd
-from urllib.parse import urlparse
-import requests
+#-----------------------------------
+# from selenium import webdriver
+# from selenium.webdriver.chrome.service import Service
+# import pandas as pd
+# from urllib.parse import urlparse
+# import requests
 
 def get_domain(url):
     parsed_url = urlparse(url)
@@ -60,7 +65,8 @@ def get_domain(url):
 # https://storage.googleapis.com/chrome-for-testing-public/123.0.6312.58/win64/chromedriver-win64.zip
 service = Service(executable_path="./SearchAnl/chromedriver/chromedriver.exe")
 driver = webdriver.Chrome(service=service)
-domain_url=get_domain("https://www.amazon.com")
+domain_url=(get_domain("https://www.amazon.com"))[4:]
 similarweb_url = f"https://www.similarweb.com/website/{domain_url}/#overview"
 print(similarweb_url)
 driver.get(similarweb_url)
+
