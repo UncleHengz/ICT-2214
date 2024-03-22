@@ -15,8 +15,8 @@ r.click(500,200)
 # r.url('https://ca.yahoo.com')
 
 r.url('https://www.similarweb.com')
-r.click('hm-hero-search')#, 'facebook.com[enter]')
-r.keyboard(customurl+'[enter]')
+r.click('hm-hero-search') #click on element
+r.keyboard(customurl+'[enter]') #type candidate url and search
 # r.type("app-search__input", 'decentralization[enter]')
 r.wait(5)
 w=r.read("engagement-list__item-value")
