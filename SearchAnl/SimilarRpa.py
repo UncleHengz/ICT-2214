@@ -14,29 +14,6 @@ r.click(500,200)
 # # use url('your_url') to go to web page, url() returns current URL
 # r.url('https://ca.yahoo.com')
 
-# # use type() to enter text into an UI element or x, y location
-# # '[enter]' = enter key, '[clear]' = clear field
-# r.type('ybar-sbq', 'github')
-
-# # use read() to fetch and return text from UI element
-# search_text = r.read('ybar-sbq')
-# print(search_text)
-
-# use click() to click on an UI element or x, y location
-# rclick() = right-click, dclick() = double-click
-# r.click('ybar-search')
-
-# # use wait() to wait for a number of seconds
-# # default wait() is 5 seconds
-# r.wait(6.6)
-
-# # use snap() to save screenshot of page or UI element
-# # page = web page, page.png = computer screen
-# r.snap('page', 'results.png')
-# r.snap('logo', 'logo.png')
-
-# another example of interacting with a web page
-# include http:// or https:// in URL parameter
 r.url('https://www.similarweb.com')
 r.click('hm-hero-search')#, 'facebook.com[enter]')
 r.keyboard(customurl+'[enter]')
