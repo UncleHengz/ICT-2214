@@ -3,9 +3,11 @@ from flask_cors import CORS
 from database_analysis import database_scan
 from domain_analysis import virustotal
 from search_engine.search_analysis import assess_phishing_risk
+from generate_file import create_pdf_report
 import os
 import subprocess
 import requests
+import base64
 
 app = Flask(__name__)
 CORS(app)
@@ -61,14 +63,16 @@ def ssl_analysis(domain):
         ssl_authorised_ca = lines[1].split(': ')[1]
         issued_by = lines[2].split(': ')[1]
         
-        print(ssl_cert)
-        print(ssl_authorised_ca)
-        print(issued_by)
+        result_details = {
+            "SSL": ssl_cert,
+            "Authorised CA": ssl_authorised_ca,
+            "Issued By": issued_by 
+        }
         
         if ssl_cert and ssl_authorised_ca:
-            return True, issued_by
+            return True, result_details
         else:
-            return False, None
+            return False, result_details
         
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
@@ -106,7 +110,7 @@ def checklist_scan(domain):
         phishing_checklist['database_result'] = result
 
         # Perform SSL Cert analysis
-        result, ca = ssl_analysis(domain)
+        result, ssl_result_details = ssl_analysis(domain)
         if result is None or check_abort_scan():
             print("SSL analysis stopped")
             return None
@@ -115,9 +119,9 @@ def checklist_scan(domain):
         # # Perform Content analysis
         result = False
         # result = content_analysis(domain)
-        if result is None or check_abort_scan():
-            return None
-        phishing_checklist['content_result'] = result
+        # if result is None or check_abort_scan():
+        #     return None
+        # phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
         result = assess_phishing_risk(domain)
@@ -134,7 +138,11 @@ def checklist_scan(domain):
 @app.route('/scan-all', methods=['POST', 'OPTIONS'])
 def scan_all_domains():
     if request.method == 'OPTIONS':
-        return '', 204  # Respond with no content for OPTIONS requests
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
     global stop_scan
     stop_scan = False
     data = request.get_json()
@@ -152,7 +160,11 @@ def scan_all_domains():
 @app.route('/scan', methods=['POST', 'OPTIONS'])
 def scan_domain():
     if request.method == 'OPTIONS':
-        return '', 204  # Respond with no content for OPTIONS requests
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
     data = request.get_json()
     received_domain = data.get('domain', None)
 
@@ -175,8 +187,34 @@ def scan_domain():
 @app.route('/abort-scan', methods=['POST', 'OPTIONS'])
 def abort_scan():
     global stop_scan
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
     stop_scan = True
     return jsonify({'message': 'Stop signal received'}), 200
+
+# Route for aborting the scan
+@app.route('/download', methods=['POST', 'OPTIONS'])
+def download_report():
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
+    try:
+        domain = request.json.get('domain')
+        pdf_content = create_pdf_report(domain)
+        pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
+        response = jsonify({'pdf_base64': pdf_base64})
+        return response
+    except Exception as e:
+        print("Error at download:", e)
+        response = jsonify({'error': str(e)})
+        return response, 500
 
 if __name__ == '__main__':
     app.run(debug=True)
