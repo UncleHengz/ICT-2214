@@ -5,6 +5,7 @@ from domain_analysis import virustotal
 from search_engine.search_analysis import assess_phishing_risk
 import os
 import subprocess
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,14 @@ stop_scan = False
 def check_abort_scan():
     global stop_scan
     return stop_scan
+
+# Function to check if a domain exists
+def check_domain_exists(domain):
+    try:
+        response = requests.head("http://" + domain)
+        return response.status_code < 400
+    except requests.exceptions.RequestException:
+        return False
 
 # Function that assigns a score to each result if true and perform total calculation
 def malicious_calculation(phishing_checklist):
@@ -37,14 +46,13 @@ def malicious_calculation(phishing_checklist):
         return False # not malicious
 
 def ssl_analysis(domain):
-    os.chdir("sslchecker")
     command = ["scrapy", "crawl", "ssl_spider", "-a", f"url={domain}"]
     
     try:
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        result = subprocess.run(command, cwd="sslchecker", capture_output=True, text=True, check=True)
         # Access stdout and stderr
         stdout = result.stdout
-        print(f"Standard Output:\n", stdout)
+        # print(f"Standard Output:\n", stdout)
         
         # Split the output into lines
         lines = stdout.split('\n')
@@ -53,10 +61,14 @@ def ssl_analysis(domain):
         ssl_authorised_ca = lines[1].split(': ')[1]
         issued_by = lines[2].split(': ')[1]
         
+        print(ssl_cert)
+        print(ssl_authorised_ca)
+        print(issued_by)
+        
         if ssl_cert and ssl_authorised_ca:
             return True, issued_by
         else:
-            return False, ""
+            return False, None
         
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
@@ -94,18 +106,18 @@ def checklist_scan(domain):
         phishing_checklist['database_result'] = result
 
         # Perform SSL Cert analysis
-        result = ssl_analysis(domain)
+        result, ca = ssl_analysis(domain)
         if result is None or check_abort_scan():
             print("SSL analysis stopped")
             return None
         phishing_checklist['cert_result'] = result
 
         # # Perform Content analysis
-        # result = False
-        # # result = content_analysis(domain)
-        # if result is None or check_abort_scan():
-        #     return None
-        # phishing_checklist['content_result'] = result
+        result = False
+        # result = content_analysis(domain)
+        if result is None or check_abort_scan():
+            return None
+        phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
         result = assess_phishing_risk(domain)
@@ -143,6 +155,13 @@ def scan_domain():
         return '', 204  # Respond with no content for OPTIONS requests
     data = request.get_json()
     received_domain = data.get('domain', None)
+
+    # Check if domain exists
+    if not check_domain_exists(received_domain):
+        error_message = "Domain does not exist or cannot be reached."
+        return jsonify({'error': error_message}), 404
+
+    # Perform the scan
     is_malicious = checklist_scan(received_domain)
     
     if is_malicious is None:

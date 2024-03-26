@@ -1,6 +1,10 @@
 import scrapy
 import socket
 from OpenSSL import SSL
+from twisted.internet.error import DNSLookupError, TCPTimedOutError
+from scrapy.spidermiddlewares.httperror import HttpError
+from OpenSSL.SSL import Error as SSLError
+from urllib.parse import urlparse
 import logging
 
 # # Disable all logging
@@ -8,28 +12,53 @@ logging.disable(logging.CRITICAL)
 
 class SSLSpider(scrapy.Spider):
     name = 'ssl_spider'
+    ssl_certified = False
+    valid_ssl = False
+    issuer_common_name = None
 
     def start_requests(self):
-        try:
-            # Get the URL from the command-line argument
-            url = getattr(self, 'url', None)
-            if url is not None:
-                # Check if the URL starts with http:// or https://, if not, prepend https://
-                if not url.startswith(('http://', 'https://')):
-                    url = 'https://' + url
-                # Use the URL directly in the request
-                yield scrapy.Request(url, self.parse)
-            else:
-                print('URL not provided. Use the -a option to specify the URL. Example: scrapy crawl ssl_spider -a url=https://www.example.com')
-        except Exception as err:
-            print(f"Error: {err}")
-            
+        # Get the URL from the command-line argument
+        url = getattr(self, 'url', None)
+        if url is None or url.strip() == '':
+            print('Please enter a valid URL.')
+            return
+
+        # Check if the URL has a scheme, if not, try with https:// first
+        parsed_url = urlparse(url)
+        if not parsed_url.scheme:
+            url = 'https://' + url
+
+        # Use the URL directly in the request, with dont_redirect set to True
+        yield scrapy.Request(url, self.parse, errback=self.handle_final_error, meta={'dont_redirect': True})
+
+    # def handle_error(self, failure):
+    #     # If HTTP request fails, try with HTTPS
+    #     url = failure.request.url
+    #     if url.startswith('http://'):
+    #         fallback_url = url.replace('http://', 'https://', 1)
+    #         yield scrapy.Request(fallback_url, self.parse, errback=self.handle_final_error)
+    #     else:
+    #         self.handle_final_error(failure)
+
+    def handle_final_error(self, failure):
+        # Handle final errors after all retry attempts
+        if isinstance(failure.value, HttpError):
+            # HTTP error (e.g., 404, 500, etc.)
+            print(f'{failure.request.url} is a valid HTTP URL but returned an error: {failure.value.response.status}')
+        elif isinstance(failure.value, DNSLookupError):
+            # DNS lookup failed
+            print(f'{failure.request.url} is not a valid URL.')
+        elif isinstance(failure.value, SSLError):
+            # SSL error, including expired certificates
+            print(f'This URL is not safe: {failure.request.url}')
+        else:
+            # Other errors
+            print(f'Failed to retrieve {failure.request.url}. Please enter a valid URL.')
+
+
     def parse(self, response):
         # Check if the response is for an HTTPS request
-        SSL_exist = None
-        valid_issuer = None
         if response.url.startswith('https://'):
-            SSL_exist = True
             try:
                 # Extract the hostname from the URL
                 hostname = response.url.split('://')[1].split('/')[0]
@@ -46,57 +75,61 @@ class SSLSpider(scrapy.Spider):
                 # Get the issuer's common name
                 issuer_common_name = issuer.commonName
 
-                # List of trusted CAs
-                trusted_cas = [
-    'DigiCert',
-    'Let\'s Encrypt',
-    'GlobalSign',
-    'Comodo',
-    'GoDaddy',
-    'Thawte',
-    'GeoTrust',
-    'RapidSSL',
-    'Sectigo',
-    'Entrust',
-    'Symantec',
-    'Verisign',
-    'StartCom',
-    'QuoVadis',
-    'Trustwave',
-    'Network Solutions',
-    'SwissSign',
-    'IdenTrust',
-    'Amazon',
-    'Microsoft',
-    'Google'
-]
-                # Check if the issuer is in the list of trusted CAs
-                if any(trusted_ca in issuer_common_name for trusted_ca in trusted_cas):
-                    valid_issuer = True
-                    # print(f"{response.url} is SSL certified with a valid CA: {issuer_common_name}")
+                ssl_certified = True
+
+                # Check if the issuer's common name is similar to the hostname
+                if hostname.endswith(issuer_common_name) or issuer_common_name.endswith(hostname):
+                    # print(f"{response.url} is SSL certified, but the CA is likely self-signed: {issuer_common_name}")
+                    valid_ssl = False
                 else:
-                    # print(f"{response.url} is SSL certified, but the CA '{issuer_common_name}' is not in the list of trusted CAs.")
-                    valid_issuer = False
-                    
+                    # List of trusted CAs
+                    trusted_cas = [
+                        'DigiCert',
+                        'Let\'s Encrypt',
+                        'GlobalSign',
+                        'Comodo',
+                        'GoDaddy',
+                        'Thawte',
+                        'GeoTrust',
+                        'RapidSSL',
+                        'Sectigo',
+                        'Entrust',
+                        'Symantec',
+                        'Verisign',
+                        'StartCom',
+                        'QuoVadis',
+                        'Trustwave',
+                        'Network Solutions',
+                        'SwissSign',
+                        'IdenTrust',
+                        'Amazon',
+                        'Microsoft',
+                        'Google',
+                        'GTS'
+                    ]
+                    # Check if the issuer is in the list of trusted CAs
+                    if any(trusted_ca in issuer_common_name for trusted_ca in trusted_cas):
+                        # print(f"{response.url} is SSL certified with a valid CA: {issuer_common_name}")
+                        valid_ssl = True
+                    else:
+                        # print(f"{response.url} is SSL certified, but the CA '{issuer_common_name}' is not in the list of trusted CAs.")
+                        valid_ssl = False
+
                 # Close the connection
                 connection.shutdown()
                 connection.close()
 
             except SSL.Error:
-                SSL_exist = False
-                valid_issuer = False
-                print(f"{response.url} is not SSL certified.")
+                # print(f"{response.url} is not SSL certified.")
+                ssl_certified = False
             except Exception as e:
                 print(f"An error occurred: {e}")
         else:
-            SSL_exist = False
-            valid_issuer = False
             # print(f"{response.url} is not a HTTPS URL.")
+            ssl_certified = False
+        print(f"SSL Certified: {ssl_certified}")
+        print(f"SSL Validity: {valid_ssl}")
+        if not valid_ssl:
+            issuer_common_name = None
+        print(f"Issued Certificate by: {issuer_common_name}")
             
-        if SSL_exist is not None:
-            output = f"SSL Cert: {SSL_exist}\nSSL Authorised CA: {valid_issuer}"
-            if issuer_common_name is not None:
-                output += f"\nIssued by: {issuer_common_name}"
-            print(output)
-        else:
-            print("Error")
