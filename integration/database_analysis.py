@@ -44,6 +44,10 @@ def database_scan(received_domain):
         
     is_malicious = False
     match = None
+    database_detail = {
+        "Domain": False,
+        "Other Domains": False
+    }
     
     try:
         #Code for the link extraction and comparison start
@@ -59,12 +63,17 @@ def database_scan(received_domain):
             # Comparison with phishing links database
             match = list(set(phishing_links) & set(unique_domains))
             #Code for link extraction and comparison end
-        if received_domain in phishing_links or match: #Added or operator to ensure if the links on the site is phishing then its malicious as well
+        if received_domain in phishing_links: #Added or operator to ensure if the links on the site is phishing then its malicious as well
             is_malicious = True # malicious
+            database_detail["Domain"] = True
+        if match:   
+            is_malicious = True # malicious 
+            database_detail["Other Domains"] = True
+            
     except Exception as e:
         print("Error occurred during link extraction and comparison:", e)
         return None
     
-    return is_malicious
+    return is_malicious, database_detail
 
 

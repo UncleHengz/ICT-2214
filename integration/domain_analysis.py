@@ -243,4 +243,4 @@ def virustotal(domain):
             "Malicious": malicious
         }
 
-        return malicious
+        return malicious, result

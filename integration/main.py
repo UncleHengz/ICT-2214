@@ -13,6 +13,11 @@ app = Flask(__name__)
 CORS(app)
 
 stop_scan = False
+domain_result_details = {}
+database_details = {}
+ssl_result_details = {}
+search_result_details = {}
+content_result_details = {}
 
 def check_abort_scan():
     global stop_scan
@@ -80,7 +85,7 @@ def ssl_analysis(domain):
 # Function to perform domain analysis
 def checklist_scan(domain):
     is_malicious = False
-    global stop_scan
+    global stop_scan, domain_result_details, database_details, ssl_result_details, search_result_details
     stop_scan = False
     
     if domain:
@@ -96,14 +101,14 @@ def checklist_scan(domain):
             return None
 
         # Perform domain analysis
-        result = virustotal(domain)
+        result, domain_result_details = virustotal(domain)
         if result is None or check_abort_scan():
             print("Domain analysis stopped")
             return None
         phishing_checklist['domain_result'] = result
 
         # Perform database analysis
-        result = database_scan(domain)
+        result, database_details = database_scan(domain)
         if result is None or check_abort_scan():
             print("Database analysis stopped")
             return None
@@ -124,7 +129,7 @@ def checklist_scan(domain):
         # phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
-        result = assess_phishing_risk(domain)
+        result, search_result_details = assess_phishing_risk(domain)
         if result is None or check_abort_scan():
             print("Search Engine analysis stopped")
             return None
@@ -206,11 +211,21 @@ def download_report():
         response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
     try:
-        domain = request.json.get('domain')
-        pdf_content = create_pdf_report(domain)
-        pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
-        response = jsonify({'pdf_base64': pdf_base64})
-        return response
+        if domain_result_details is not None:
+            all_details = {
+                "domain": domain_result_details,
+                "database": database_details,
+                "ssl": ssl_result_details,
+                "search": search_result_details
+            }
+            domain = request.json.get('domain')
+            pdf_content = create_pdf_report(domain, all_details)
+            pdf_base64 = base64.b64encode(pdf_content).decode('utf-8')
+            response = jsonify({'pdf_base64': pdf_base64})
+            return response
+        else:
+            print("Download is unable to get details")
+            return response,500
     except Exception as e:
         print("Error at download:", e)
         response = jsonify({'error': str(e)})
