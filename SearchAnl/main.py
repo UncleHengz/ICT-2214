@@ -10,7 +10,7 @@ def assess_phishing_risk(url):
     
     # Use search.py to check if the site is indexed by Google
     is_indexed, num_results = check_site_google(url)
-    if num_results<=2000: #not sure what should i adjust this number to 
+    if num_results<=50: #not sure what should i adjust this number to 
         suspicion_score += 1
 
     # Use safebrowsing.py to check against Google's Safe Browsing API
