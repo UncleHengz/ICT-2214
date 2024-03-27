@@ -1,14 +1,13 @@
 import requests
 import os
 import json
-import search_engine.simweb as simweb
+import simweb as simweb
 
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 search_details = {
     "Site Index": False,
     "Google Safe Browsing": False,
     "Similar Web": False
-    
 }
 
 
@@ -30,6 +29,7 @@ def check_site_google(url):
     except Exception as err:
         print(f"Error: {err}")
         return None
+    
     
 def check_url_safe(url):
     # Google Safe Browsing API endpoint
@@ -81,7 +81,7 @@ def assess_phishing_risk(url):
     num_results = check_site_google(url)
     if num_results is None:
         return None
-    elif num_results<=200: 
+    elif num_results<=50: 
         suspicion_score += 1
         search_details["Site Index"] = True
         

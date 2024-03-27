@@ -342,7 +342,7 @@ def virustotal(domain):
 #     "haproxy-vip.quicksign.fr"
 # ]
     
-domain = "facebook.com"
+domain = "https://testsafebrowsing.appspot.com/s/phishing.html"
 
 # for key, value in whois(domain).items():
 #     if isinstance(value, dict):

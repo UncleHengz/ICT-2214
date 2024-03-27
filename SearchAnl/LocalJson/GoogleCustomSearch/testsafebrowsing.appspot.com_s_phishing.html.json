@@ -8,7 +8,7 @@
         "request": [
             {
                 "title": "Google Custom Search - https://testsafebrowsing.appspot.com/s/phishing.html",
-                "totalResults": "296",
+                "totalResults": "287",
                 "searchTerms": "https://testsafebrowsing.appspot.com/s/phishing.html",
                 "count": 10,
                 "startIndex": 1,
@@ -21,7 +21,7 @@
         "nextPage": [
             {
                 "title": "Google Custom Search - https://testsafebrowsing.appspot.com/s/phishing.html",
-                "totalResults": "296",
+                "totalResults": "287",
                 "searchTerms": "https://testsafebrowsing.appspot.com/s/phishing.html",
                 "count": 10,
                 "startIndex": 11,
@@ -36,10 +36,10 @@
         "title": "Seeker"
     },
     "searchInformation": {
-        "searchTime": 0.152653,
-        "formattedSearchTime": "0.15",
-        "totalResults": "296",
-        "formattedTotalResults": "296"
+        "searchTime": 0.384564,
+        "formattedSearchTime": "0.38",
+        "totalResults": "287",
+        "formattedTotalResults": "287"
     },
     "items": [
         {
@@ -50,6 +50,32 @@
             "displayLink": "testsafebrowsing.appspot.com",
             "formattedUrl": "https://testsafebrowsing.appspot.com/",
             "htmlFormattedUrl": "https://testsafebrowsing.appspot.com/"
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Lookup api return empty",
+            "htmlTitle": "Lookup api return empty",
+            "link": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "displayLink": "groups.google.com",
+            "snippet": "... testsafebrowsing[.]appspot.com/s/phishing.html\"}, {\"url\": \"http://testsafebrowsing[.]appspot.com/s/phishing.html?abc\"}, {\"url\": \"http://testsafebrowsing[.]\u00a0...",
+            "htmlSnippet": "... <b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>?abc&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]&nbsp;...",
+            "cacheId": "SbipipAfzaMJ",
+            "formattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "htmlFormattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
+            "pagemap": {
+                "metatags": [
+                    {
+                        "application-name": "Google Groups",
+                        "referrer": "origin",
+                        "apple-mobile-web-app-status-bar-style": "black",
+                        "msapplication-tap-highlight": "no",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "apple-mobile-web-app-capable": "yes",
+                        "apple-mobile-web-app-title": "Google Groups",
+                        "mobile-web-app-capable": "yes"
+                    }
+                ]
+            }
         },
         {
             "kind": "customsearch#result",
@@ -65,7 +91,7 @@
             "pagemap": {
                 "cse_thumbnail": [
                     {
-                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQYl7zuT3cw_BBRAyhdQEbQuBgqdNHXKHIYKL8S8ly8x9L_XA9sdwSmiHs",
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYl7zuT3cw_BBRAyhdQEbQuBgqdNHXKHIYKL8S8ly8x9L_XA9sdwSmiHs&s",
                         "width": "225",
                         "height": "225"
                     }
@@ -140,7 +166,7 @@
             "pagemap": {
                 "cse_thumbnail": [
                     {
-                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTykt9yRmq-yKG6uaJeykrymGkHfbK6PPX8muXUut06ej44rktnETgAUsdF",
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTykt9yRmq-yKG6uaJeykrymGkHfbK6PPX8muXUut06ej44rktnETgAUsdF&s",
                         "width": "303",
                         "height": "166"
                     }
@@ -284,115 +310,6 @@
                         "item": "https://forum.vivaldi.net/topic/61110.rss",
                         "name": "Can't close fullscreen \"Deceptive site ahead\" warning",
                         "position": "3"
-                    }
-                ]
-            }
-        },
-        {
-            "kind": "customsearch#result",
-            "title": "Lookup api return empty",
-            "htmlTitle": "Lookup api return empty",
-            "link": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
-            "displayLink": "groups.google.com",
-            "snippet": "... testsafebrowsing[.]appspot.com/s/phishing.html\"}, {\"url\": \"http://testsafebrowsing[.]appspot.com/s/phishing.html?abc\"}, {\"url\": \"http://testsafebrowsing[.]\u00a0...",
-            "htmlSnippet": "... <b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>?abc&quot;}, {&quot;url&quot;: &quot;http://<b>testsafebrowsing</b>[.]&nbsp;...",
-            "cacheId": "SbipipAfzaMJ",
-            "formattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
-            "htmlFormattedUrl": "https://groups.google.com/g/google-safe-browsing-api/c/f67al29DteA",
-            "pagemap": {
-                "metatags": [
-                    {
-                        "application-name": "Google Groups",
-                        "referrer": "origin",
-                        "apple-mobile-web-app-status-bar-style": "black",
-                        "msapplication-tap-highlight": "no",
-                        "viewport": "width=device-width, initial-scale=1",
-                        "apple-mobile-web-app-capable": "yes",
-                        "apple-mobile-web-app-title": "Google Groups",
-                        "mobile-web-app-capable": "yes"
-                    }
-                ]
-            }
-        },
-        {
-            "kind": "customsearch#result",
-            "title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue ...",
-            "htmlTitle": "[Bug] <b>Phishing</b> &amp; malware pages are not always blocked \u00b7 Issue ...",
-            "link": "https://github.com/mozilla-mobile/fenix/issues/9026",
-            "displayLink": "github.com",
-            "snippet": "Mar 6, 2020 ... Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site\u00a0...",
-            "htmlSnippet": "Mar 6, 2020 <b>...</b> Steps to reproduce Open Fenix, and access http://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html website</b>. Expected behavior A &quot;deceptive site&nbsp;...",
-            "cacheId": "MBQDt-925QMJ",
-            "formattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
-            "htmlFormattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
-            "pagemap": {
-                "cse_thumbnail": [
-                    {
-                        "src": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTA2dZ03Xn8lpOWoD3ZRejZe-Jb46RIIcmM8ez9ziKnev8DjDkrA2mMaiM",
-                        "width": "318",
-                        "height": "159"
-                    }
-                ],
-                "softwaresourcecode": [
-                    {
-                        "author": "mozilla-mobile",
-                        "name": "fenix"
-                    }
-                ],
-                "metatags": [
-                    {
-                        "octolytics-url": "https://collector.github.com/github/collect",
-                        "apple-itunes-app": "app-id=1477376905, app-argument=https://github.com/_view_fragments/issues/show/mozilla-mobile/fenix/9026/issue_layout",
-                        "og:image": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
-                        "twitter:card": "summary_large_image",
-                        "og:image:width": "1200",
-                        "theme-color": "#1e2327",
-                        "og:site_name": "GitHub",
-                        "hovercard-subject-tag": "issue:576989966",
-                        "turbo-body-classes": "logged-out env-production page-responsive",
-                        "html-safe-nonce": "a79de62c85ca220795ad3eafb0091d1ec010c9ee04242f7da8179777aa2e5241",
-                        "expected-hostname": "github.com",
-                        "og:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
-                        "browser-errors-url": "https://api.github.com/_private/browser/errors",
-                        "octolytics-dimension-user_login": "mozilla-mobile",
-                        "hostname": "github.com",
-                        "twitter:site": "@github",
-                        "browser-stats-url": "https://api.github.com/_private/browser/stats",
-                        "route-pattern": "/_view_fragments/issues/show/:user_id/:repository/:id/issue_layout(.:format)",
-                        "visitor-payload": "eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDMDdCOjNFNzE6MUQ1NkJEODoyQjNGRTNDOjY1RDUzQTUyIiwidmlzaXRvcl9pZCI6IjkxMzcxNzk5NzM0NDIxNTcxMzkiLCJyZWdpb25fZWRnZSI6ImlhZCIsInJlZ2lvbl9yZW5kZXIiOiJpYWQifQ==",
-                        "github-keyboard-shortcuts": "repository,issues,copilot",
-                        "octolytics-dimension-repository_id": "126314606",
-                        "octolytics-dimension-repository_network_root_nwo": "mozilla-mobile/fenix",
-                        "twitter:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
-                        "og:image:alt": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
-                        "og:type": "object",
-                        "og:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
-                        "visitor-hmac": "df7674950d57b08b0b9b81b040032f3d3d83fffec9dc033bd5b6636e8a9aa9f3",
-                        "og:image:height": "600",
-                        "turbo-cache-control": "no-preview",
-                        "route-action": "issue_layout",
-                        "request-id": "C07B:3E71:1D56BD8:2B3FE3C:65D53A52",
-                        "analytics-location": "/<user-name>/<repo-name>/voltron/issues_fragments/issue_layout",
-                        "color-scheme": "light dark",
-                        "octolytics-dimension-repository_is_fork": "false",
-                        "go-import": "github.com/mozilla-mobile/fenix git https://github.com/mozilla-mobile/fenix.git",
-                        "twitter:image:src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
-                        "octolytics-dimension-user_id": "22351667",
-                        "octolytics-dimension-repository_public": "true",
-                        "fb:app_id": "1401488693436528",
-                        "octolytics-dimension-repository_network_root_id": "126314606",
-                        "octolytics-dimension-repository_nwo": "mozilla-mobile/fenix",
-                        "viewport": "width=device-width",
-                        "twitter:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A &quot;deceptive site issue&quot; page is opened. Actual behavior The page ...",
-                        "og:author:username": "lobontiumira",
-                        "route-controller": "voltron_issues_fragments",
-                        "current-catalog-service-hash": "81bb79d38c15960b92d99bca9288a9108c7a47b18f2423d0f6438c5b7bcd2114",
-                        "og:url": "https://github.com/mozilla-mobile/fenix/issues/9026"
-                    }
-                ],
-                "cse_image": [
-                    {
-                        "src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026"
                     }
                 ]
             }
@@ -653,6 +570,131 @@
         },
         {
             "kind": "customsearch#result",
+            "title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue ...",
+            "htmlTitle": "[Bug] <b>Phishing</b> &amp; malware pages are not always blocked \u00b7 Issue ...",
+            "link": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "displayLink": "github.com",
+            "snippet": "Mar 6, 2020 ... Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site\u00a0...",
+            "htmlSnippet": "Mar 6, 2020 <b>...</b> Steps to reproduce Open Fenix, and access http://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html website</b>. Expected behavior A &quot;deceptive site&nbsp;...",
+            "cacheId": "MBQDt-925QMJ",
+            "formattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "htmlFormattedUrl": "https://github.com/mozilla-mobile/fenix/issues/9026",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA2dZ03Xn8lpOWoD3ZRejZe-Jb46RIIcmM8ez9ziKnev8DjDkrA2mMaiM&s",
+                        "width": "318",
+                        "height": "159"
+                    }
+                ],
+                "softwaresourcecode": [
+                    {
+                        "author": "mozilla-mobile",
+                        "name": "fenix"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "octolytics-url": "https://collector.github.com/github/collect",
+                        "apple-itunes-app": "app-id=1477376905, app-argument=https://github.com/_view_fragments/issues/show/mozilla-mobile/fenix/9026/issue_layout",
+                        "og:image": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
+                        "twitter:card": "summary_large_image",
+                        "og:image:width": "1200",
+                        "theme-color": "#1e2327",
+                        "og:site_name": "GitHub",
+                        "hovercard-subject-tag": "issue:576989966",
+                        "turbo-body-classes": "logged-out env-production page-responsive",
+                        "html-safe-nonce": "d38c32e68d2cc6a4b30a5b1f181be5407f7b2eceb6679aacb9572caa2d1b3636",
+                        "expected-hostname": "github.com",
+                        "og:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
+                        "browser-errors-url": "https://api.github.com/_private/browser/errors",
+                        "octolytics-dimension-user_login": "mozilla-mobile",
+                        "hostname": "github.com",
+                        "twitter:site": "@github",
+                        "browser-stats-url": "https://api.github.com/_private/browser/stats",
+                        "route-pattern": "/_view_fragments/issues/show/:user_id/:repository/:id/issue_layout(.:format)",
+                        "visitor-payload": "eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJCQzEwOjIxNDU3ODoxMTY5NzJFOjE5MENBNTA6NjVGQjY0OTYiLCJ2aXNpdG9yX2lkIjoiNTgxMDgwNTM5MTI3Njg2MDU2OCIsInJlZ2lvbl9lZGdlIjoiaWFkIiwicmVnaW9uX3JlbmRlciI6ImlhZCJ9",
+                        "github-keyboard-shortcuts": "repository,issues,copilot",
+                        "octolytics-dimension-repository_id": "126314606",
+                        "octolytics-dimension-repository_network_root_nwo": "mozilla-mobile/fenix",
+                        "twitter:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
+                        "og:image:alt": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A \"deceptive site issue\" page is opened. Actual behavior The page is opened ...",
+                        "og:type": "object",
+                        "og:title": "[Bug] Phishing & malware pages are not always blocked \u00b7 Issue #9026 \u00b7 mozilla-mobile/fenix",
+                        "visitor-hmac": "0094c41ccde65f204af36d089f65d22aa22fac3ad6a684d5e9dbea75b5f28d4f",
+                        "og:image:height": "600",
+                        "turbo-cache-control": "no-preview",
+                        "route-action": "issue_layout",
+                        "request-id": "BC10:214578:116972E:190CA50:65FB6496",
+                        "analytics-location": "/<user-name>/<repo-name>/voltron/issues_fragments/issue_layout",
+                        "color-scheme": "light dark",
+                        "octolytics-dimension-repository_is_fork": "false",
+                        "go-import": "github.com/mozilla-mobile/fenix git https://github.com/mozilla-mobile/fenix.git",
+                        "twitter:image:src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026",
+                        "octolytics-dimension-user_id": "22351667",
+                        "octolytics-dimension-repository_public": "true",
+                        "fb:app_id": "1401488693436528",
+                        "octolytics-dimension-repository_network_root_id": "126314606",
+                        "octolytics-dimension-repository_nwo": "mozilla-mobile/fenix",
+                        "viewport": "width=device-width",
+                        "twitter:description": "Steps to reproduce Open Fenix, and access http://testsafebrowsing.appspot.com/s/phishing.html website. Expected behavior A &quot;deceptive site issue&quot; page is opened. Actual behavior The page ...",
+                        "og:author:username": "lobontiumira",
+                        "route-controller": "voltron_issues_fragments",
+                        "current-catalog-service-hash": "81bb79d38c15960b92d99bca9288a9108c7a47b18f2423d0f6438c5b7bcd2114",
+                        "og:url": "https://github.com/mozilla-mobile/fenix/issues/9026"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://opengraph.githubassets.com/fe5d246b9f95e9f0017964805ab9132444c89dbfb5229152a7b84be7095e0899/mozilla-mobile/fenix/issues/9026"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Malware analysis https://testsafebrowsing.appspot.com/s/phishing ...",
+            "htmlTitle": "Malware analysis <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b> ...",
+            "link": "https://any.run/report/123bc6056c60b2b7d5f8e1b1e74cfc16a4bfdaffe392576070a41b648f662d7c/471cf083-b69b-4b54-a205-ac47733a08c4",
+            "displayLink": "any.run",
+            "snippet": "Jan 21, 2019 ... Online sandbox report for https://testsafebrowsing.appspot.com/s/phishing.html, verdict: No threats detected.",
+            "htmlSnippet": "Jan 21, 2019 <b>...</b> Online sandbox report for <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>, verdict: No threats detected.",
+            "cacheId": "WgPYQvPVr68J",
+            "formattedUrl": "https://any.run/report/.../471cf083-b69b-4b54-a205-ac47733a08c4",
+            "htmlFormattedUrl": "https://any.run/report/.../471cf083-b69b-4b54-a205-ac47733a08c4",
+            "pagemap": {
+                "cse_thumbnail": [
+                    {
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ942-q36ZBjeNkHlJeQ01oPSPnCiN3yN0hl1WCJo8pVJihq-V9omJ1VAR&s",
+                        "width": "285",
+                        "height": "177"
+                    }
+                ],
+                "metatags": [
+                    {
+                        "og:image": "https://any.run/img/anyrun-logo.png",
+                        "og:type": "product",
+                        "twitter:card": "summary",
+                        "twitter:title": "Malware analysis https://testsafebrowsing.appspot.com/s/phishing.html No threats detected | ANY.RUN - Malware Sandbox Online",
+                        "viewport": "width=device-width, initial-scale=1",
+                        "twitter:url": "https://report.any.run/123bc6056c60b2b7d5f8e1b1e74cfc16a4bfdaffe392576070a41b648f662d7c/471cf083-b69b-4b54-a205-ac47733a08c4",
+                        "twitter:description": "Online sandbox report for https://testsafebrowsing.appspot.com/s/phishing.html, verdict: No threats detected",
+                        "og:title": "Malware analysis https://testsafebrowsing.appspot.com/s/phishing.html No threats detected | ANY.RUN - Malware Sandbox Online",
+                        "og:locale": "en_US",
+                        "og:url": "https://report.any.run/123bc6056c60b2b7d5f8e1b1e74cfc16a4bfdaffe392576070a41b648f662d7c/471cf083-b69b-4b54-a205-ac47733a08c4",
+                        "og:description": "Online sandbox report for https://testsafebrowsing.appspot.com/s/phishing.html, verdict: No threats detected",
+                        "twitter:image": "https://any.run/img/logo-anyrun.png"
+                    }
+                ],
+                "cse_image": [
+                    {
+                        "src": "https://any.run/img/anyrun-logo.png"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "customsearch#result",
             "title": "webrisk/README.md at master \u00b7 google/webrisk \u00b7 GitHub",
             "htmlTitle": "webrisk/README.md at master \u00b7 google/webrisk \u00b7 GitHub",
             "link": "https://github.com/google/webrisk/blob/master/README.md",
@@ -665,7 +707,7 @@
             "pagemap": {
                 "cse_thumbnail": [
                     {
-                        "src": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTZZzDgnPZ9UgQqSNZ2_1nPZkq4GOHHZpB10P7kCDKm5dnsS1ErPiKSCHo",
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZZzDgnPZ9UgQqSNZ2_1nPZkq4GOHHZpB10P7kCDKm5dnsS1ErPiKSCHo&s",
                         "width": "318",
                         "height": "159"
                     }
@@ -748,7 +790,7 @@
             "pagemap": {
                 "cse_thumbnail": [
                     {
-                        "src": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQLgiNqRrxI-vqc1xoKofVsUIsqSr7Shg8dFk1MFL1IjZ5vgt7rxo8UFv4",
+                        "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLgiNqRrxI-vqc1xoKofVsUIsqSr7Shg8dFk1MFL1IjZ5vgt7rxo8UFv4&s",
                         "width": "269",
                         "height": "188"
                     }
@@ -772,57 +814,19 @@
         },
         {
             "kind": "customsearch#result",
-            "title": "Warning when going on M.Lichess.org \u2022 page 2/3 \u2022 Lichess ...",
-            "htmlTitle": "Warning when going on M.Lichess.org \u2022 page 2/3 \u2022 Lichess ...",
-            "link": "https://lichess.org/forum/lichess-feedback/warning-when-going-on-mlichessorg?page=2",
-            "displayLink": "lichess.org",
-            "snippet": "Aug 21, 2020 ... Lichess uses HTTPS. HTTPS uses certificates. In the Lichess certificate ... testsafebrowsing.appspot.com/s/phishing.html. +1 -1 laugh thinking",
-            "htmlSnippet": "Aug 21, 2020 <b>...</b> Lichess uses <b>HTTPS</b>. <b>HTTPS</b> uses certificates. In the Lichess certificate ... <b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b>. +1 -1 laugh thinking",
-            "cacheId": "GnuTtwaDjxcJ",
-            "formattedUrl": "https://lichess.org/forum/lichess.../warning-when-going-on-mlichessorg?...2",
-            "htmlFormattedUrl": "https://lichess.org/forum/lichess.../warning-when-going-on-mlichessorg?...2",
+            "title": "Security: Bypassing of security interstitials using debugger API ...",
+            "htmlTitle": "Security: Bypassing of security interstitials using debugger API ...",
+            "link": "https://issues.chromium.org/issues/40057865",
+            "displayLink": "issues.chromium.org",
+            "snippet": "Nov 9, 2021 ... Trigger an interstitial (e.g., by visiting https://expired.badssl.com/ or https://testsafebrowsing.appspot.com/s/phishing.html ). The PoC\u00a0...",
+            "htmlSnippet": "Nov 9, 2021 <b>...</b> Trigger an interstitial (e.g., by visiting <b>https</b>://expired.badssl.com/ or <b>https</b>://<b>testsafebrowsing</b>.<b>appspot.com/s</b>/<b>phishing</b>.<b>html</b> ). The PoC&nbsp;...",
+            "cacheId": "PZ5V3NrSbCgJ",
+            "formattedUrl": "https://issues.chromium.org/issues/40057865",
+            "htmlFormattedUrl": "https://issues.chromium.org/issues/40057865",
             "pagemap": {
                 "metatags": [
                     {
-                        "theme-color": "#2e2a24",
-                        "og:type": "website",
-                        "twitter:card": "summary",
-                        "twitter:title": "Warning when going on M.Lichess.org",
-                        "og:site_name": "lichess.org",
-                        "twitter:site": "@lichess",
-                        "viewport": "width=device-width,initial-scale=1,viewport-fit=cover",
-                        "twitter:description": "@mayukh0401, you can't access the site at all because according to Google its on this SSHTML or something like that and it won't open it unless of cours\u2026",
-                        "og:title": "Warning when going on M.Lichess.org",
-                        "google": "notranslate",
-                        "og:url": "https://lichess.org/forum/lichess-feedback/warning-when-going-on-mlichessorg?page=2",
-                        "og:description": "@mayukh0401, you can't access the site at all because according to Google its on this SSHTML or something like that and it won't open it unless of cours\u2026"
-                    }
-                ]
-            }
-        },
-        {
-            "kind": "customsearch#result",
-            "title": "Google Safe Browsing",
-            "htmlTitle": "Google Safe Browsing",
-            "link": "https://safebrowsing.google.com/",
-            "displayLink": "safebrowsing.google.com",
-            "snippet": "A history of safety. Safe Browsing launched in 2005 to protect users across the web from phishing attacks, and has evolved to give users tools to help protect\u00a0...",
-            "htmlSnippet": "A history of safety. Safe Browsing launched in 2005 to protect users across the <b>web</b> from <b>phishing</b> attacks, and has evolved to give users tools to help protect&nbsp;...",
-            "cacheId": "A1OZljAMxqoJ",
-            "formattedUrl": "https://safebrowsing.google.com/",
-            "htmlFormattedUrl": "https://safebrowsing.google.com/",
-            "pagemap": {
-                "metatags": [
-                    {
-                        "og:image": "safebrowsing.google.com/images/share.png",
-                        "viewport": "initial-scale=1, minimum-scale=1, width=device-width",
-                        "og:title": "Google Safe Browsing",
-                        "og:description": "Making the world\u2019s information safely accessible."
-                    }
-                ],
-                "cse_image": [
-                    {
-                        "src": "safebrowsing.google.com/images/share.png"
+                        "referrer": "origin"
                     }
                 ]
             }
