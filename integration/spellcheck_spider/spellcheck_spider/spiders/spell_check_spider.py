@@ -18,7 +18,7 @@ class SpellingGrammarCheckSpider(scrapy.Spider):
         blob = TextBlob(text)
 
         custom_dictionary = {
-    'assets','charset','ssl','src','href','instanceof','agentID','typeof','init','applicationID', 'ajax', 'api', 'html', 'css', 'javascript', 'json', 'xml', 'http', 'https', 'url', 'uri',
+    'ajax', 'api', 'html', 'css', 'javascript', 'json', 'xml', 'http', 'https', 'url', 'uri',
     'concat', 'const', 'var', 'let', 'function', 'async', 'await', 'promise', 'callback',
     'array', 'object', 'string', 'number', 'boolean', 'null', 'undefined', 'true', 'false',
     'for', 'while', 'do', 'if', 'else', 'switch', 'case', 'break', 'continue', 'return',
