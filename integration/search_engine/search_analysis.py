@@ -81,7 +81,7 @@ def assess_phishing_risk(url):
     num_results = check_site_google(url)
     if num_results is None:
         return None
-    elif num_results<=2000: 
+    elif num_results<=200: 
         suspicion_score += 1
         search_details["Site Index"] = True
         

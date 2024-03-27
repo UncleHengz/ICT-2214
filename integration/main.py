@@ -4,20 +4,23 @@ from database_analysis import database_scan
 from domain_analysis import virustotal
 from search_engine.search_analysis import assess_phishing_risk
 from generate_file import create_pdf_report
+from generative_ai import gen_ai
 import os
 import subprocess
 import requests
 import base64
+
 
 app = Flask(__name__)
 CORS(app)
 
 stop_scan = False
 domain_result_details = {}
-database_details = {}
+database_result_details = {}
 ssl_result_details = {}
-search_result_details = {}
 content_result_details = {}
+search_result_details = {}
+
 
 def check_abort_scan():
     global stop_scan
@@ -59,8 +62,6 @@ def ssl_analysis(domain):
         result = subprocess.run(command, cwd="sslchecker", capture_output=True, text=True, check=True)
         # Access stdout and stderr
         stdout = result.stdout
-        # print(f"Standard Output:\n", stdout)
-        
         # Split the output into lines
         lines = stdout.split('\n')
         # Extract values from each line
@@ -75,17 +76,57 @@ def ssl_analysis(domain):
         }
         
         if ssl_cert and ssl_authorised_ca:
-            return True, result_details
-        else:
             return False, result_details
+        else:
+            return True, result_details
         
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
+        
+def content_analysis(domain):
+    command = ['python', 'spell_check_spider.py', domain]
+    try:
+        result = subprocess.run(command, cwd="spellcheck_spider\spellcheck_spider\spiders", capture_output=True, text=True, check=True)
+        stdout = result.stdout
+        # Split the output into lines
+        lines = stdout.split('\n')
+        # Extract values from each line
+        errors = (lines[0].split(': ')[1]).strip("[]").split(", ")
+        error_pct = lines[1].split(': ')[1]
+        
+        total_errors = len(errors)
+        query = f"This website has a total of {total_errors} errors, which include {errors}. \
+        This accounts for {error_pct}% of the words being misspelled. Be realistic and objective. \
+        Do you think this website is suspicious/phishing? Use only 2 sentences. First sentence to state Yes or No. Second sentence to state the reason"
+        response = gen_ai(query)
+        
+        sentence = response.text
+        # Find the index of the period to split the sentence
+        period_index = sentence.find('.')
+        # Split the sentence into two parts based on the period
+        malicious_part = sentence[:period_index].strip()  # Include the period and remove leading/trailing whitespaces
+        description_part = sentence[period_index + 1:].strip()  # Exclude the period and remove leading/trailing whitespaces
+
+        result_details = {
+            "Total Errors": total_errors,
+            "Percentage Wrongly Spelled": error_pct,
+            "Reason": description_part
+        }
+            
+        if "Yes" in malicious_part:
+            return True, result_details
+        elif "No" in malicious_part:
+            return False, result_details
+        else:
+            return None, ""
+        
+    except subprocess.CalledProcessError as e:
+        print("Subprocess error:", e.stderr)
     
 # Function to perform domain analysis
 def checklist_scan(domain):
     is_malicious = False
-    global stop_scan, domain_result_details, database_details, ssl_result_details, search_result_details
+    global stop_scan, domain_result_details, database_result_details, ssl_result_details, search_result_details, content_result_details
     stop_scan = False
     
     if domain:
@@ -102,13 +143,15 @@ def checklist_scan(domain):
 
         # Perform domain analysis
         result, domain_result_details = virustotal(domain)
+        domain_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Domain analysis stopped")
             return None
         phishing_checklist['domain_result'] = result
 
         # Perform database analysis
-        result, database_details = database_scan(domain)
+        result, database_result_details = database_scan(domain)
+        database_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Database analysis stopped")
             return None
@@ -116,20 +159,23 @@ def checklist_scan(domain):
 
         # Perform SSL Cert analysis
         result, ssl_result_details = ssl_analysis(domain)
+        ssl_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("SSL analysis stopped")
             return None
         phishing_checklist['cert_result'] = result
 
-        # # Perform Content analysis
-        result = False
-        # result = content_analysis(domain)
-        # if result is None or check_abort_scan():
-        #     return None
-        # phishing_checklist['content_result'] = result
+        # Perform Content analysis
+        result, content_result_details = content_analysis(domain)
+        content_result_details["Result"] = result
+        if result is None or check_abort_scan():
+            print("Content analysis stopped")
+            return None
+        phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
         result, search_result_details = assess_phishing_risk(domain)
+        search_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Search Engine analysis stopped")
             return None
@@ -214,8 +260,9 @@ def download_report():
         if domain_result_details is not None:
             all_details = {
                 "domain": domain_result_details,
-                "database": database_details,
+                "database": database_result_details,
                 "ssl": ssl_result_details,
+                "content": content_result_details,
                 "search": search_result_details
             }
             domain = request.json.get('domain')

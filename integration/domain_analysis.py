@@ -41,13 +41,13 @@ def calculate_update_age(updated_date, created_date):
 
 def determine_suspiciousness(age, update_age):
     if age is None or update_age is None:
-        return 0  # Unable to determine suspiciousness
+        return 0, "Unable to determine"  # Unable to determine suspiciousness
     if age < 366 or update_age < 30:
-        return 3  # Very suspicious
+        return 3, "Very suspicious"  # Very suspicious
     elif age < 732 or update_age < 15:
-        return 2  # Moderately suspicious
+        return 2, "Moderately suspicious"  # Moderately suspicious
     else:
-        return 1  # Less suspicious
+        return 1, "Less suspicious"  # Less suspicious
 
 def calculate_suspiciousness(analysis_stats):
     weights = {
@@ -221,7 +221,7 @@ def virustotal(domain):
             if not pattern_matched:  # If no pattern matched, break
                 break
 
-        age_sus = determine_suspiciousness(age, update_age)
+        age_sus, age_result = determine_suspiciousness(age, update_age)
         analysis_sus = calculate_suspiciousness(analysis)
         cat_sus = categorize_threat(categories)
 
@@ -231,16 +231,26 @@ def virustotal(domain):
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
 
+        # result = {
+        #     'Domain': data['id'],
+        #     'Type': data['type'],
+        #     'DNS Records': dns_records,
+        #     'Whois Dates': whois_dates,
+        #     'Popularity': data['attributes']['popularity_ranks'],
+        #     "Analysis Stats": data['attributes']['last_analysis_stats'],
+        #     "Categories": categories,
+        #     "Suspiciousness": suspiciousness,
+        #     "Malicious": malicious
+        # }
+        
+        if cat_sus == 0:
+            cat_result = False
+        
         result = {
-            'Domain': data['id'],
-            'Type': data['type'],
-            'DNS Records': dns_records,
-            'Whois Dates': whois_dates,
-            'Popularity': data['attributes']['popularity_ranks'],
-            "Analysis Stats": data['attributes']['last_analysis_stats'],
-            "Categories": categories,
-            "Suspiciousness": suspiciousness,
-            "Malicious": malicious
+            "Age": age_result,
+            "Anti-Virus Score": analysis_sus,
+            "Category": cat_result
         }
+        
 
         return malicious, result
