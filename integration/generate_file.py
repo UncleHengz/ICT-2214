@@ -2,6 +2,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib import fonts
 import io
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 def to_markdown(text):
 	text = text.replace('•', '  *')
@@ -61,19 +63,33 @@ def create_pdf_report(domain_name, details):
 	section_content = [final_content] 
 	y_position = add_section(pdf_canvas, section_title, section_content, y_position)
 
+	# Define a style for the content paragraphs
+	styles = getSampleStyleSheet()
+	content_style = styles["Normal"]
+
 	# Section 3: SSL Analysis
 	section_title = "SSL Analysis"
-	ssl_content_p1 = "Secure Socket Layer (SSL) does not exist on the domain.<br/>"
-	ssl_content_p2 = "The certificate is by an invalid Certificate Authority.<br />"
-	ssl_content_p3 = "Certificate is not issued. <br />"
+	ssl_content_p1 = "Secure Socket Layer (SSL) does not exist on the domain. "
+	ssl_content_p2 = "The certificate is by an invalid Certificate Authority. "
+	ssl_content_p3 = "Certificate is not issued. "
 	if details["ssl"]["SSL"] == True:
-		ssl_content_p1 = "Secure Socket Layer (SSL) exist on the domain.<br/>"
+		ssl_content_p1 = "Secure Socket Layer (SSL) exist on the domain. "
 	if details["ssl"]["Authorised CA"] == True:
-		ssl_content_p2 = "The certificate is by a valid Certificate Authority.<br/>"
+		ssl_content_p2 = "The certificate is by a valid Certificate Authority. "
 	if details["ssl"]["Issued By"] != "":
-		ssl_content_p3 = f"Issued by {details['ssl']['Issued By']} <br />"
+		ssl_content_p3 = f"Issued by {details['ssl']['Issued By']}"
 	# section_content = ["This is the content of section 2."]
 	ssl_content = ssl_content_p1 + ssl_content_p2 + ssl_content_p3 
+ 
+	# Create a Paragraph object with the SSL content and apply the content style
+	ssl_paragraph = Paragraph(ssl_content, content_style)
+
+	# Add the Paragraph object to the section content list
+	section_content = [ssl_paragraph]
+
+	# Add the section to the PDF canvas
+	y_position = add_section(pdf_canvas, section_title, section_content, y_position)
+ 
 	section_content = [ssl_content]
 	y_position = add_section(pdf_canvas, section_title, section_content, y_position)
  
