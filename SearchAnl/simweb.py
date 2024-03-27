@@ -86,21 +86,26 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
 def SussyChecker(SimDict): # take the filteredDict as input
     Suspicious = 0
 
-    if SimDict["TotalVisits"]==0: #check total visits recorded , if not tracked, could be not well known site
+    if SimDict["TotalVisits"]==0: 
+        #check total visits recorded , if not tracked, could be not well known site
         Suspicious +=1
 
-    if (SimDict["GlobalRank"]['Rank'] is None) or (SimDict["CountryRank"] is None):  #if trackable, the type will be int instead of none
+    if (SimDict["GlobalRank"]['Rank'] is None) or (SimDict["CountryRank"] is None):  
+        #if trackable, the type will be int instead of none
         Suspicious +=1
 
     if SimDict["HQCountry"] is None: #if traceable should be a string instead
         Suspicious +=1
 
-    trafficTracker=0 # used to track the percentage of traffic from a specific media , if untrackable , might have chance of being phising site as not well known 
+    trafficTracker=0 
+    # used to track the percentage of traffic from a specific media ,
+    # if untrackable , might have chance of being phising site as not well known 
     for i in SimDict["TrafficSources"]:
         if (SimDict["TrafficSources"][i] is None):
             Suspicious+=1
         else:    
             trafficTracker+=SimDict["TrafficSources"][i]
+            print(trafficTracker)
             if trafficTracker==0:
                 Suspicious +=1
     
@@ -112,6 +117,6 @@ def SussyChecker(SimDict): # take the filteredDict as input
 if __name__ == "__main__":
     result = similarGet("http://grub-terbaruyoutuber-freefiregarena1.duckdns.org/index.php")
     filtDict=filteredDict(result)
-    print(pretty_print_dict(filtDict))
+    print(SussyChecker(filtDict))
     # print(filtDict["Category"])
     print(filtDict.keys())
