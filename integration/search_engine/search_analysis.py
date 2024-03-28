@@ -1,7 +1,7 @@
 import requests
 import os
 import json
-import simweb as simweb
+import search_engine.simweb as simweb
 
 api_key = 'AIzaSyDJmKncAKqwTofjx3JhdhhVGcQK0eZ3yrU'
 search_details = {

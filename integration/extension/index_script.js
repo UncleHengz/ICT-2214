@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ domain: domainToScan }),
-            timeout: 60000, // 60 seconds (adjust as needed)
+            timeout: 100000, // 100 seconds (adjust as needed)
         })
             .then(response => {
                 if (!response.ok) {
@@ -333,7 +333,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         // If the domain is not in allowedDomains or maliciousDomains, run the scan
                         performScan(domainToCheck);
                     } else {
-                        statusElement.innerHTML = 'Domain has been scanned!';
+                        if (allowedDomains.includes(domainToCheck)){
+                            statusElement.innerHTML = 'Domain has been scanned and is SAFE!';
+                        }else if (maliciousDomains.includes(domainToCheck)){
+                            statusElement.innerHTML = 'Domain is MALICIOUS! Please leave.';
+                        }
+
                         updateProgress(100);
                         scanButtonElement.disabled = false;
                         scanning = false;
