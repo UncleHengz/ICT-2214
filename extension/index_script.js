@@ -312,6 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to check if the domain is in allowedDomains or maliciousDomains
     function isDomainInLists(domain, allowedDomains, maliciousDomains) {
+        console.log(domain);
         return allowedDomains.includes(domain) || maliciousDomains.includes(domain);
     }
 
@@ -330,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const allowedDomains = result.allowedDomains;
                     const maliciousDomains = result.maliciousDomains;
 
-                    if (!isDomainInLists(linkToCheck, allowedDomains, maliciousDomains)) {
+                    if (!isDomainInLists(domainToCheck, allowedDomains, maliciousDomains)) {
                         // If the domain is not in allowedDomains or maliciousDomains, run the scan
                         performScan(linkToCheck);
                     } else {

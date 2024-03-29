@@ -29,16 +29,16 @@ class SSLSpider(scrapy.Spider):
             url = 'https://' + url
 
         # Use the URL directly in the request, with dont_redirect set to True
-        yield scrapy.Request(url, self.parse, errback=self.handle_final_error, meta={'dont_redirect': True})
+        yield scrapy.Request(url, self.parse, errback=self.handle_error, meta={'dont_redirect': True})
 
-    # def handle_error(self, failure):
-    #     # If HTTP request fails, try with HTTPS
-    #     url = failure.request.url
-    #     if url.startswith('http://'):
-    #         fallback_url = url.replace('http://', 'https://', 1)
-    #         yield scrapy.Request(fallback_url, self.parse, errback=self.handle_final_error)
-    #     else:
-    #         self.handle_final_error(failure)
+    def handle_error(self, failure):
+        # If HTTP request fails, try with HTTPS
+        url = failure.request.url
+        if url.startswith('http://'):
+            fallback_url = url.replace('http://', 'https://', 1)
+            yield scrapy.Request(fallback_url, self.parse, errback=self.handle_final_error)
+        else:
+            self.handle_final_error(failure)
 
     def handle_final_error(self, failure):
         # Handle final errors after all retry attempts

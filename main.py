@@ -83,7 +83,7 @@ def ssl_analysis(domain):
         print(f"Error: {e}")
         
 def content_analysis(domain_path):
-    command = ['python', 'spell_check_spider.py', domain_path]
+    command = ['python3', 'spell_check_spider.py', domain_path]
     try:
         result = subprocess.run(command, cwd="spellcheck_spider/spellcheck_spider/spiders", capture_output=True, text=True, check=True)
         stdout = result.stdout
@@ -133,7 +133,6 @@ def checklist_scan(url):
     
     if url:
         if url.startswith("http://") or url.startswith("https://"):
-            print(url)
             parsed_url = urlparse(url)
             # Filter to retrieve the domain name and path
             domain = parsed_url.hostname
