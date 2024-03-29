@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to send an abort signal to the server
     function abortScan() {
-        fetch('http://127.0.0.1:5000/abort-scan', {
+        fetch('http://52.179.4.195:5000/abort-scan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timeoutIds.push(loadingInterval);
     
         // Assuming scanEndpoint is the URL of your Flask /scan endpoint
-        const scanEndpoint = 'http://127.0.0.1:5000/scan';
+        const scanEndpoint = 'http://52.179.4.195:5000/scan';
     
         // Fetch the data from the Flask API
         fetch(scanEndpoint, {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Replace this with your actual download logic
             console.log('Download report clicked');
 
-            const downloadEndpoint = 'http://127.0.0.1:5000/download';
+            const downloadEndpoint = 'http://52.179.4.195:5000/download';
             fetch(downloadEndpoint, {
                 method: 'POST',
                 headers: {
@@ -368,4 +368,12 @@ document.addEventListener('DOMContentLoaded', function () {
             performScan(domainToCheck);
         }
     });
+});
+
+// Add an event listener for the 'unload' event
+window.addEventListener('unload', function(event) {
+    // Perform actions when the plugin screen is closed
+    console.log('Plugin screen is closed');
+    // You can perform additional actions here
+    abortScan();
 });

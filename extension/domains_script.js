@@ -78,19 +78,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to populate domain list, avoiding duplicates
     function populateDomainList(list, domains) {
-        // Iterate over each element and call populateDomainList
-        for (let i = 0; i < domains.length; i++) {
-            if (!isDomainInList(list, domains[i])) {
-                var newDomainItem = document.createElement("div");
-                newDomainItem.className = "domain-item";
-                newDomainItem.innerHTML = '<span>' + domains[i] + '</span>' +
-                    '<div class="btn-group">' +
-                    '<button class="btn btn-sm btn-danger remove-btn">Remove</button>' +
-                    '<button class="btn btn-sm btn-primary scan-btn">Scan</button>' +
-                    '</div>';
-                list.appendChild(newDomainItem);
+        if (domains != undefined){
+            // Iterate over each element and call populateDomainList
+            for (let i = 0; i < domains.length; i++) {
+                if (!isDomainInList(list, domains[i])) {
+                    var newDomainItem = document.createElement("div");
+                    newDomainItem.className = "domain-item";
+                    newDomainItem.innerHTML = '<span>' + domains[i] + '</span>' +
+                        '<div class="btn-group">' +
+                        '<button class="btn btn-sm btn-danger remove-btn">Remove</button>' +
+                        '<button class="btn btn-sm btn-primary scan-btn">Scan</button>' +
+                        '</div>';
+                    list.appendChild(newDomainItem);
+                }
             }
         }
+        
     }
 
     // Event listener for history toggle button

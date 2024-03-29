@@ -85,7 +85,7 @@ def ssl_analysis(domain):
 def content_analysis(domain_path):
     command = ['python', 'spell_check_spider.py', domain_path]
     try:
-        result = subprocess.run(command, cwd="spellcheck_spider\spellcheck_spider\spiders", capture_output=True, text=True, check=True)
+        result = subprocess.run(command, cwd="spellcheck_spider/spellcheck_spider/spiders", capture_output=True, text=True, check=True)
         stdout = result.stdout
         # Split the output into lines
         lines = stdout.split('\n')
@@ -295,4 +295,4 @@ def download_report():
         return response, 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
