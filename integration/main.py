@@ -9,6 +9,7 @@ import os
 import subprocess
 import requests
 import base64
+from urllib.parse import urlparse
 
 
 app = Flask(__name__)
@@ -25,14 +26,6 @@ search_result_details = {}
 def check_abort_scan():
     global stop_scan
     return stop_scan
-
-# Function to check if a domain exists
-def check_domain_exists(domain):
-    try:
-        response = requests.head("http://" + domain)
-        return response.status_code < 400
-    except requests.exceptions.RequestException:
-        return False
 
 # Function that assigns a score to each result if true and perform total calculation
 def malicious_calculation(phishing_checklist):
@@ -64,10 +57,16 @@ def ssl_analysis(domain):
         stdout = result.stdout
         # Split the output into lines
         lines = stdout.split('\n')
-        # Extract values from each line
-        ssl_cert = lines[0].split(': ')[1]
-        ssl_authorised_ca = lines[1].split(': ')[1]
-        issued_by = lines[2].split(': ')[1]
+        print(lines)
+        if len(lines) >= 3:
+            # Extract values from each line
+            ssl_cert = lines[0].split(': ')[1]
+            ssl_authorised_ca = lines[1].split(': ')[1]
+            issued_by = lines[2].split(': ')[1]
+        else:
+            ssl_cert = lines[0].split(': ')[1]
+            ssl_authorised_ca = None
+            issued_by = None
         
         result_details = {
             "SSL": ssl_cert,
@@ -83,8 +82,8 @@ def ssl_analysis(domain):
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         
-def content_analysis(domain):
-    command = ['python', 'spell_check_spider.py', domain]
+def content_analysis(domain_path):
+    command = ['python', 'spell_check_spider.py', domain_path]
     try:
         result = subprocess.run(command, cwd="spellcheck_spider\spellcheck_spider\spiders", capture_output=True, text=True, check=True)
         stdout = result.stdout
@@ -95,7 +94,7 @@ def content_analysis(domain):
         error_pct = lines[1].split(': ')[1]
         
         total_errors = len(errors)
-        query = f"This website has a total of {total_errors} errors, which include {errors}. \
+        query = f"This website is {domain_path} and has a total of {total_errors} errors, which include {errors}. \
         This accounts for {error_pct}% of the words being misspelled. Be realistic and objective. \
         Do you think this website is suspicious/phishing? Use only 2 sentences. First sentence to state Yes or No. Second sentence to state the reason"
         response = gen_ai(query)
@@ -124,12 +123,28 @@ def content_analysis(domain):
         print("Subprocess error:", e.stderr)
     
 # Function to perform domain analysis
-def checklist_scan(domain):
+def checklist_scan(url):
     is_malicious = False
     global stop_scan, domain_result_details, database_result_details, ssl_result_details, search_result_details, content_result_details
     stop_scan = False
     
-    if domain:
+    if isinstance(url, bytes):
+        url = url.decode('utf-8')  # or 'utf-8-sig' depending on your encoding
+    
+    if url:
+        if url.startswith("http://") or url.startswith("https://"):
+            print(url)
+            parsed_url = urlparse(url)
+            # Filter to retrieve the domain name and path
+            domain = parsed_url.hostname
+            path = parsed_url.path
+            
+            # Combine eg. www.google.com
+            domain_path = domain + path
+        else:
+            domain_path = url
+            domain = url
+
         phishing_checklist = {
             'database_result': None,
             'domain_result': None,
@@ -150,7 +165,7 @@ def checklist_scan(domain):
         phishing_checklist['domain_result'] = result
 
         # Perform database analysis
-        result, database_result_details = database_scan(domain)
+        result, database_result_details = database_scan(domain_path)
         database_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Database analysis stopped")
@@ -166,7 +181,7 @@ def checklist_scan(domain):
         phishing_checklist['cert_result'] = result
 
         # Perform Content analysis
-        result, content_result_details = content_analysis(domain)
+        result, content_result_details = content_analysis(domain_path)
         content_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Content analysis stopped")
@@ -174,12 +189,12 @@ def checklist_scan(domain):
         phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
-        result, search_result_details = assess_phishing_risk(domain)
+        result, search_result_details = assess_phishing_risk(domain_path)
         search_result_details["Result"] = result
         if result is None or check_abort_scan():
             print("Search Engine analysis stopped")
             return None
-        phishing_checklist['search_engine'] = result
+        phishing_checklist['search_result'] = result
                 
         is_malicious = malicious_calculation(phishing_checklist)   
         
@@ -196,6 +211,7 @@ def scan_all_domains():
         return response
     global stop_scan
     stop_scan = False
+    
     data = request.get_json()
     received_domains = data.get('domains', [])
     results = {}
@@ -217,19 +233,19 @@ def scan_domain():
         response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
     data = request.get_json()
-    received_domain = data.get('domain', None)
+    received_link = data.get('link', None)
 
-    # Check if domain exists
-    if not check_domain_exists(received_domain):
-        error_message = "Domain does not exist or cannot be reached."
-        return jsonify({'error': error_message}), 404
+    if received_link is None:
+        # Return error response
+        error_message = "Error occurred during scan."
+        return jsonify({'error': error_message}), 500
 
     # Perform the scan
-    is_malicious = checklist_scan(received_domain)
+    is_malicious = checklist_scan(received_link)
     
     if is_malicious is None:
         # Return error response
-        error_message = "Error occurred during domain scan."
+        error_message = "Error occurred during scan."
         return jsonify({'error': error_message}), 500
     
     return jsonify({'results': is_malicious}), 200

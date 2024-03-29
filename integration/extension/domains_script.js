@@ -154,12 +154,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Call scanDomains, which returns a promise
                     scanDomains(scannedDomainText)
                     .then(domain_result => {
-                        // console.log(domain_result);
+                        console.log(domain_result);
                         if (domain_result != null) {
-                            scanStatus.textContent = 'Scan Completed';
+                            // scanStatus.textContent = 'Scan Completed';
                             var resultText = domain_result ? 'Malicious' : 'Safe';
                             scanningMessage.textContent = scannedDomainText + " [" + resultText + "]";
                             completeScan({ [scannedDomainText]: domain_result});
+                            downloadReport(scannedDomainText, scanningMessage)
                         } else {
                             scanStatus.textContent = 'Scan Failed';
                             scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText;
@@ -302,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ domain: data }),
+                body: JSON.stringify({ link: data }),
             })
             .then(response => response.json())
             .then(result => {
@@ -435,8 +436,71 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
+    function downloadReport(domainToDownload, statusElement){
+        // Create a download button
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download Report';
+        downloadButton.classList.add('btn', 'btn-primary');
+        downloadButton.onclick = function() {
+            // Functionality to download the report
+            // Replace this with your actual download logic
+            console.log('Download report clicked');
+
+            const downloadEndpoint = 'http://127.0.0.1:5000/download';
+            fetch(downloadEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({domain: domainToDownload}),
+            })
+            .then(response =>{
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data =>{
+                pdfData = data.pdf_base64;
+                // Decode the base64 string to binary data
+                const binaryData = atob(pdfData);
+                const arrayBuffer = new ArrayBuffer(binaryData.length);
+                const uint8Array = new Uint8Array(arrayBuffer);
+                for (let i = 0; i < binaryData.length; i++) {
+                    uint8Array[i] = binaryData.charCodeAt(i);
+                }
+
+                // Create a Blob from the binary data
+                const blob = new Blob([uint8Array], { type: 'application/pdf' });
+
+                // Create a download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = domainToDownload + '_report.pdf'; // Set the filename for the download
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error =>{
+                console.error('Error during download:', error);
+            })
+        };
+
+        // Append the download button to the status element
+        statusElement.appendChild(downloadButton);
+
+        // Float the button to the right
+        downloadButton.style.float = 'right';
+        // Make the button smaller
+        downloadButton.classList.add('btn-sm');
+    }
 
 });
+
+
 
 // Add an event listener for the 'unload' event
 window.addEventListener('unload', function(event) {

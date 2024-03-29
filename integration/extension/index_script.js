@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         scanButtonElement.innerText = 'Start';
     }
 
-    function performScan(domainToScan) {
+    function performScan(linkToScan) {
         scanning = true;
         statusElement.innerHTML = 'Scanning...';
         statusElement.classList.remove('alert-info');
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ domain: domainToScan }),
+            body: JSON.stringify({ link: linkToScan }),
             timeout: 100000, // 100 seconds (adjust as needed)
         })
             .then(response => {
@@ -324,14 +324,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Attempt to construct the URL from the input
                 const url = new URL(websiteLink);
                 const domainToCheck = url.hostname;
+                const linkToCheck = url.href;
 
                 chrome.storage.local.get({ allowedDomains: [], maliciousDomains: [] }, function (result) {
                     const allowedDomains = result.allowedDomains;
                     const maliciousDomains = result.maliciousDomains;
 
-                    if (!isDomainInLists(domainToCheck, allowedDomains, maliciousDomains)) {
+                    if (!isDomainInLists(linkToCheck, allowedDomains, maliciousDomains)) {
                         // If the domain is not in allowedDomains or maliciousDomains, run the scan
-                        performScan(domainToCheck);
+                        performScan(linkToCheck);
                     } else {
                         if (allowedDomains.includes(domainToCheck)){
                             statusElement.innerHTML = 'Domain has been scanned and is SAFE!';

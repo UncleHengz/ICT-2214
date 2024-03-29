@@ -28,7 +28,7 @@ def extract_domain(url):
     else:
         return None
 
-def database_scan(received_domain):
+def database_scan(received_link):
     phishing_links = []
     # Open and read phishing links file
     try:
@@ -51,7 +51,7 @@ def database_scan(received_domain):
     
     try:
         #Code for the link extraction and comparison start
-        soup = fetch_and_parse_content(received_domain)
+        soup = fetch_and_parse_content(received_link)
         urls = []
         all_links = soup.find_all('a')
         if all_links:
@@ -63,7 +63,7 @@ def database_scan(received_domain):
             # Comparison with phishing links database
             match = list(set(phishing_links) & set(unique_domains))
             #Code for link extraction and comparison end
-        if received_domain in phishing_links: #Added or operator to ensure if the links on the site is phishing then its malicious as well
+        if received_link in phishing_links: #Added or operator to ensure if the links on the site is phishing then its malicious as well
             is_malicious = True # malicious
             database_detail["Domain"] = True
         if match:   

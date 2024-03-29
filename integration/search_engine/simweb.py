@@ -3,6 +3,7 @@ from requests import get
 import random
 import os
 import json 
+import re
 
 user_agents_list = [ #allows going through 403 error
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
@@ -10,19 +11,11 @@ user_agents_list = [ #allows going through 403 error
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36'
 ]
 
-# def pretty_print_dict(d, indent=0):
-#     res = ""
-#     for k, v in d.items():
-#         res += "\t"*indent + str(k) + "\n"
-#         if isinstance(v, dict):
-#             res += pretty_print_dict(v, indent+1)
-#         else:
-#             res += "\t"*(indent+1) + str(v) + "\n"
-#     return res
+def similarAPI(domain_link):
+    pattern = r'(?:(?:https?:\/\/)?(?:www\.)?([^\/\n]+))'
+    # Use re.search to find the domain part in the link
+    domain = re.search(pattern, domain_link).group(1)
 
-def similarAPI(domain):
-    # domain = '{uri.netloc}'.format(uri=urlparse(website))
-    # domain = domain.replace("www.", "")
     ENDPOINT = 'https://data.similarweb.com/api/v1/data?domain=' + domain
     try:
         resp = get(ENDPOINT, headers={'User-Agent': random.choice(user_agents_list)})

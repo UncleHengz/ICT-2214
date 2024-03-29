@@ -109,10 +109,3 @@ def assess_phishing_risk(url):
         return True, search_details
     else:
         return False, search_details
-
-# if __name__ == '__main__':
-#     # url_to_check = "acc-mercari.com" 
-#     url_to_check = "fb.com"
-#     is_malicious = assess_phishing_risk(url_to_check)
-#     print(f"URL: {url_to_check}\nMalicious result: {is_malicious}")
-#     # print(f"Risk Assessment for {url_to_check}: {message} with suspicion score of {suspicion_score}")
