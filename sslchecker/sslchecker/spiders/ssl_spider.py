@@ -12,6 +12,9 @@ logging.disable(logging.CRITICAL)
 
 class SSLSpider(scrapy.Spider):
     name = 'ssl_spider'
+    ssl_certified = False
+    valid_ssl = False
+    issuer_common_name = None
 
     def start_requests(self):
         # Get the URL from the command-line argument
@@ -20,22 +23,22 @@ class SSLSpider(scrapy.Spider):
             print('Please enter a valid URL.')
             return
 
-        # Check if the URL has a scheme, if not, try with http:// first
+        # Check if the URL has a scheme, if not, try with https:// first
         parsed_url = urlparse(url)
         if not parsed_url.scheme:
-            url = 'http://' + url
+            url = 'https://' + url
 
         # Use the URL directly in the request, with dont_redirect set to True
-        yield scrapy.Request(url, self.parse, errback=self.handle_error, meta={'dont_redirect': True})
+        yield scrapy.Request(url, self.parse, errback=self.handle_final_error, meta={'dont_redirect': True})
 
-    def handle_error(self, failure):
-        # If HTTP request fails, try with HTTPS
-        url = failure.request.url
-        if url.startswith('http://'):
-            fallback_url = url.replace('http://', 'https://', 1)
-            yield scrapy.Request(fallback_url, self.parse, errback=self.handle_final_error)
-        else:
-            self.handle_final_error(failure)
+    # def handle_error(self, failure):
+    #     # If HTTP request fails, try with HTTPS
+    #     url = failure.request.url
+    #     if url.startswith('http://'):
+    #         fallback_url = url.replace('http://', 'https://', 1)
+    #         yield scrapy.Request(fallback_url, self.parse, errback=self.handle_final_error)
+    #     else:
+    #         self.handle_final_error(failure)
 
     def handle_final_error(self, failure):
         # Handle final errors after all retry attempts
@@ -72,9 +75,12 @@ class SSLSpider(scrapy.Spider):
                 # Get the issuer's common name
                 issuer_common_name = issuer.commonName
 
+                ssl_certified = True
+
                 # Check if the issuer's common name is similar to the hostname
                 if hostname.endswith(issuer_common_name) or issuer_common_name.endswith(hostname):
-                    print(f"{response.url} is SSL certified, but the CA is likely self-signed: {issuer_common_name}")
+                    # print(f"{response.url} is SSL certified, but the CA is likely self-signed: {issuer_common_name}")
+                    valid_ssl = False
                 else:
                     # List of trusted CAs
                     trusted_cas = [
@@ -103,17 +109,27 @@ class SSLSpider(scrapy.Spider):
                     ]
                     # Check if the issuer is in the list of trusted CAs
                     if any(trusted_ca in issuer_common_name for trusted_ca in trusted_cas):
-                        print(f"{response.url} is SSL certified with a valid CA: {issuer_common_name}")
+                        # print(f"{response.url} is SSL certified with a valid CA: {issuer_common_name}")
+                        valid_ssl = True
                     else:
-                        print(f"{response.url} is SSL certified, but the CA '{issuer_common_name}' is not in the list of trusted CAs.")
+                        # print(f"{response.url} is SSL certified, but the CA '{issuer_common_name}' is not in the list of trusted CAs.")
+                        valid_ssl = False
 
                 # Close the connection
                 connection.shutdown()
                 connection.close()
 
             except SSL.Error:
-                print(f"{response.url} is not SSL certified.")
+                # print(f"{response.url} is not SSL certified.")
+                ssl_certified = False
             except Exception as e:
                 print(f"An error occurred: {e}")
         else:
-            print(f"{response.url} is not a HTTPS URL.")
+            # print(f"{response.url} is not a HTTPS URL.")
+            ssl_certified = False
+        print(f"SSL Certified: {ssl_certified}")
+        print(f"SSL Validity: {valid_ssl}")
+        if not valid_ssl:
+            issuer_common_name = None
+        print(f"Issued Certificate by: {issuer_common_name}")
+            
