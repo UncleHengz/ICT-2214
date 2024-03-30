@@ -32,7 +32,7 @@ def database_scan(received_link):
     phishing_links = []
     # Open and read phishing links file
     try:
-        with open('ALL-phishing-links.txt', 'r', encoding='utf-8') as file:
+        with open('external_database_update/Links/ALL-phishing-links.txt', 'r', encoding='utf-8') as file:
             for item in file:
                 phishing_links.append(item.strip())
             file.close()
