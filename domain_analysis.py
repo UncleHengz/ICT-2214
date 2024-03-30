@@ -245,6 +245,8 @@ def virustotal(domain):
         
         if cat_sus == 0:
             cat_result = False
+        else:
+            cat_result = True
         
         result = {
             "Age": age_result,

@@ -68,7 +68,7 @@ def filteredDict(SimWebJSON): #input is the output from similarGet()
 def SimWebChecker(resultDict): # take the filteredDict as input
     suspicion_score = 0
 
-    if resultDict["TotalVisits"] == 0: #check total visits recorded , if not tracked, could be not well known site
+    if resultDict["TotalVisits"] < 100: #check total visits recorded , if not tracked, could be not well known site
         suspicion_score +=1
 
     if (resultDict["GlobalRank"]['Rank'] is None) or (resultDict["CountryRank"] is None):  #if trackable, the type will be int instead of none
@@ -86,7 +86,7 @@ def SimWebChecker(resultDict): # take the filteredDict as input
             if trafficTracker==0:
                 suspicion_score +=1
     
-    if len(resultDict["SearchTerms"])==0:
+    if len(resultDict["SearchTerms"]) <=20:
         suspicion_score+=1
         
     if suspicion_score >= 3:
