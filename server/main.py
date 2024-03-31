@@ -156,6 +156,7 @@ def checklist_scan(url):
             return None
 
         # Perform domain analysis
+        print("start domain analysis..")
         result, domain_result_details = virustotal(domain)
         domain_result_details["Result"] = result
         if result is None or check_abort_scan():
@@ -164,6 +165,7 @@ def checklist_scan(url):
         phishing_checklist['domain_result'] = result
 
         # Perform database analysis
+        print("start database analysis..")
         result, database_result_details = database_scan(domain_path)
         database_result_details["Result"] = result
         if result is None or check_abort_scan():
@@ -172,6 +174,7 @@ def checklist_scan(url):
         phishing_checklist['database_result'] = result
 
         # Perform SSL Cert analysis
+        print("start SSL analysis..")
         result, ssl_result_details = ssl_analysis(domain)
         ssl_result_details["Result"] = result
         if result is None or check_abort_scan():
@@ -180,6 +183,7 @@ def checklist_scan(url):
         phishing_checklist['cert_result'] = result
 
         # Perform Content analysis
+        print("start content analysis..")
         result, content_result_details = content_analysis(domain_path)
         content_result_details["Result"] = result
         if result is None or check_abort_scan():
@@ -188,6 +192,7 @@ def checklist_scan(url):
         phishing_checklist['content_result'] = result
         
         # Perform Search Engine analysis
+        print("start search analysis..")
         result, search_result_details = assess_phishing_risk(domain_path)
         search_result_details["Result"] = result
         if result is None or check_abort_scan():
@@ -238,6 +243,15 @@ def scan_domain():
         # Return error response
         error_message = "Error occurred during scan."
         return jsonify({'error': error_message}), 500
+
+    # Check if the URL is reachable
+    try:
+        response = requests.head(received_link)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
+    except requests.exceptions.RequestException as e:
+        # Return error response if the URL is not reachable
+        error_message = f"Error occurred while reaching the link: {e}"
+        return jsonify({'error': error_message}), 404
 
     # Perform the scan
     is_malicious = checklist_scan(received_link)

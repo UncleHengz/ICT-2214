@@ -158,16 +158,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     scanDomains(scannedDomainText)
                     .then(domain_result => {
                         console.log(domain_result);
-                        if (domain_result != null) {
+                        if (domain_result == 404){
+                            scanStatus.textContent = 'Scan Failed';
+                            scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText + "[URL not found]";
+                        }else if (domain_result == 500){
+                            scanStatus.textContent = 'Scan Failed';
+                            scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText + "[Server Error]";
+                        }else {
                             // scanStatus.textContent = 'Scan Completed';
                             var resultText = domain_result ? 'Malicious' : 'Safe';
                             scanningMessage.textContent = scannedDomainText + " [" + resultText + "]";
                             completeScan({ [scannedDomainText]: domain_result});
                             downloadReport(scannedDomainText, scanningMessage)
-                        } else {
-                            scanStatus.textContent = 'Scan Failed';
-                            scanningMessage.textContent = "Failed to scan domain: " + scannedDomainText;
-                        }
+                        } 
                         // Hide the spinner
                         spinner.style.display = 'none';
                     })
@@ -281,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (Array.isArray(data)) {
             scanningInProgress = true;
             // It's an array, call scan-all API
-            return fetch('http://52.179.4.195:5000/scan-all', {
+            return fetch('http://127.0.0.1:5000/scan-all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -301,29 +304,43 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (typeof data === 'string') {
             scanningInProgress = true;
             // It's a string, call scan API
-            return fetch('http://52.179.4.195:5000/scan', {
+            return fetch('http://127.0.0.1:5000/scan', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ link: data }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        // Handle 404 error (Page not found)
+                        throw new Error('Page not found');
+                    } else {
+                        // Handle other errors
+                        throw new Error('Network response was not ok');
+                    }
+                }
+            })
             .then(result => {
                 console.log(result.results);
                 scanningInProgress = false;
                 return result.results;
             })
             .catch(error => {
-                console.error('Error:', error);
-                scanningInProgress = false;
-                return null;
+                if (error.message === 'Page not found') {
+                    // Handle 404 error (Page not found)
+                    return 404
+                } else {
+                    // Handle other errors
+                    return 500
+                }
             });
         } else {
             console.error('Invalid input type');
             // Handle invalid input type
             scanningInProgress = false;
-            return null;
+            return 500;
         }
     }
     
@@ -372,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to send an abort signal to the server
     function abortScan() {
-        fetch('http://52.179.4.195:5000/abort-scan', {
+        fetch('http://127.0.0.1:5000/abort-scan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -449,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Replace this with your actual download logic
             console.log('Download report clicked');
 
-            const downloadEndpoint = 'http://52.179.4.195:5000/download';
+            const downloadEndpoint = 'http://127.0.0.1:5000/download';
             fetch(downloadEndpoint, {
                 method: 'POST',
                 headers: {

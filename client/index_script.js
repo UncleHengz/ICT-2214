@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to send an abort signal to the server
     function abortScan() {
-        fetch('http://52.179.4.195:5000/abort-scan', {
+        fetch('http://127.0.0.1:5000/abort-scan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let i = 0;
         const loadingInterval = setInterval(function () {
             updateProgress(i);
-            i += 5;
+            i += 1;
             if (i > 100) {
                 clearInterval(loadingInterval);
                 console.log('Scan still in progress');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timeoutIds.push(loadingInterval);
     
         // Assuming scanEndpoint is the URL of your Flask /scan endpoint
-        const scanEndpoint = 'http://52.179.4.195:5000/scan';
+        const scanEndpoint = 'http://127.0.0.1:5000/scan';
     
         // Fetch the data from the Flask API
         fetch(scanEndpoint, {
@@ -97,7 +97,13 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    if (response.status === 404) {
+				        // Handle 404 error (Page not found)
+				        throw new Error('Page not found');
+				    } else {
+				        // Handle other errors
+				        throw new Error('Network response was not ok');
+				    }
                 }
                 return response.json();
             })
@@ -110,7 +116,14 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error during scan:', error);
                 timeoutIds.forEach(clearTimeout);
-                statusElement.innerHTML = 'Error during scan! Please try again.';
+                if (error.message === 'Page not found') {
+				    // Handle 404 error (Page not found)
+				    statusElement.innerHTML = 'Page not found! Please enter a valid URL.';
+				} else {
+				    // Handle other errors
+				    statusElement.innerHTML = 'Error during scan! Please try again.';
+				}
+                
                 statusElement.classList.remove('alert-warning');
                 statusElement.classList.add('alert-danger');
                 scanning = false;
@@ -218,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Replace this with your actual download logic
             console.log('Download report clicked');
 
-            const downloadEndpoint = 'http://52.179.4.195:5000/download';
+            const downloadEndpoint = 'http://127.0.0.1:5000/download';
             fetch(downloadEndpoint, {
                 method: 'POST',
                 headers: {
@@ -327,13 +340,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const domainToCheck = url.hostname;
                 const linkToCheck = url.href;
 
-                chrome.storage.local.get({ allowedDomains: [], maliciousDomains: [] }, function (result) {
+                chrome.storage.local.get({ unscannedDomains: [], allowedDomains: [], maliciousDomains: [] }, function (result) {
                     const allowedDomains = result.allowedDomains;
                     const maliciousDomains = result.maliciousDomains;
+                    const unscannedDomains = result.unscannedDomains;
+                    
 
                     if (!isDomainInLists(domainToCheck, allowedDomains, maliciousDomains)) {
                         // If the domain is not in allowedDomains or maliciousDomains, run the scan
                         performScan(linkToCheck);
+                        // Add the domainToCheck to the unscannedDomains list
+						unscannedDomains.push(domainToCheck);
+						// Update the chrome.storage.local with the modified unscannedDomains list
+						chrome.storage.local.set({ unscannedDomains: unscannedDomains });
                     } else {
                         if (allowedDomains.includes(domainToCheck)){
                             statusElement.innerHTML = 'Domain has been scanned and is SAFE!';
