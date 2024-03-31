@@ -30,11 +30,11 @@ def check_abort_scan():
 # Function that assigns a score to each result if true and perform total calculation
 def malicious_calculation(phishing_checklist):
     scores = {
-        'database_result': 3,  
+        'database_result': 4,  
         'domain_result': 2,
-        'cert_result': 2,
-        'content_result': 2,
-        'search_result': 1
+        'cert_result': 1,
+        'content_result': 0.5,
+        'search_result': 2
     }
     
     total_score = 0
@@ -43,7 +43,7 @@ def malicious_calculation(phishing_checklist):
         if value:  # If the analysis result is True (indicating malicious)
             total_score += scores[key]
 
-    if total_score >= 5:
+    if total_score >= 4.5:
         return True # malicious 
     else:
         return False # not malicious
