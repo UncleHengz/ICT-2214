@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to send an abort signal to the server
     function abortScan() {
-        fetch('http://13.68.132.159:5000/abort-scan', {
+        fetch('http://20.185.144.144:5000/abort-scan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timeoutIds.push(loadingInterval);
     
         // Assuming scanEndpoint is the URL of your Flask /scan endpoint
-        const scanEndpoint = 'http://13.68.132.159:5000/scan';
+        const scanEndpoint = 'http://20.185.144.144:5000/scan';
     
         // Fetch the data from the Flask API
         fetch(scanEndpoint, {
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Replace this with your actual download logic
             console.log('Download report clicked');
 
-            const downloadEndpoint = 'http://13.68.132.159:5000/download';
+            const downloadEndpoint = 'http://20.185.144.144:5000/download';
             fetch(downloadEndpoint, {
                 method: 'POST',
                 headers: {
