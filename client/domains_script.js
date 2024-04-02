@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (Array.isArray(data)) {
             scanningInProgress = true;
             // It's an array, call scan-all API
-            return fetch('http://52.179.4.195:5000/scan-all', {
+            return fetch('http://13.68.132.159:5000/scan-all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (typeof data === 'string') {
             scanningInProgress = true;
             // It's a string, call scan API
-            return fetch('http://52.179.4.195:5000/scan', {
+            return fetch('http://13.68.132.159:5000/scan', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to send an abort signal to the server
     function abortScan() {
-        fetch('http://52.179.4.195:5000/abort-scan', {
+        fetch('http://13.68.132.159:5000/abort-scan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -466,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Replace this with your actual download logic
             console.log('Download report clicked');
 
-            const downloadEndpoint = 'http://52.179.4.195:5000/download';
+            const downloadEndpoint = 'http://13.68.132.159:5000/download';
             fetch(downloadEndpoint, {
                 method: 'POST',
                 headers: {
