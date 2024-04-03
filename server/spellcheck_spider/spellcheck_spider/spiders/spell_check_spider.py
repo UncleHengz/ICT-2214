@@ -73,7 +73,11 @@ if __name__ == "__main__":
         print("Usage: python script.py <domain>")
         sys.exit(1)
         
-    url = "https://" + sys.argv[1]
-    process = CrawlerProcess()
-    process.crawl(SpellingGrammarCheckSpider, url=url)
-    process.start()
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+    try:
+        url = "https://" + sys.argv[1]
+        process = CrawlerProcess()
+        process.crawl(SpellingGrammarCheckSpider, url=url, headers=headers)
+        process.start()
+    except Exception as e:
+        print(e)

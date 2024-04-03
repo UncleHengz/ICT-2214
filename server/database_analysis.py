@@ -2,17 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+
 def fetch_and_parse_content(url):
     try:
         # Try with https://
-        response = requests.get('https://' + url)
+        response = requests.get('https://' + url, headers=headers)
         response.raise_for_status()  # Check for HTTP errors
         soup = BeautifulSoup(response.text, 'html.parser')
         return soup
     except requests.RequestException:
         try:
             # Try with http://
-            response = requests.get('http://' + url)
+            response = requests.get('http://' + url, headers=headers)
             response.raise_for_status()  # Check for HTTP errors
             soup = BeautifulSoup(response.text, 'html.parser')
             return soup
