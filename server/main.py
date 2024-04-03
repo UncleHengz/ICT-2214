@@ -67,14 +67,17 @@ def ssl_analysis(domain):
             ssl_cert = lines[0].split(': ')[1]
             ssl_authorised_ca = None
             issued_by = None
-        
         result_details = {
             "SSL": ssl_cert,
             "Authorised CA": ssl_authorised_ca,
             "Issued By": issued_by 
         }
         
-        if ssl_cert and ssl_authorised_ca:
+        if ssl_authorised_ca is None:
+            return True, result_details
+        
+        if ssl_cert is True and ssl_authorised_ca is True:
+            print("here?")
             return False, result_details
         else:
             return True, result_details

@@ -99,7 +99,7 @@ def create_pdf_report(domain_name, details):
 		pdf_canvas.setFont("Helvetica", 12)
 
 		# Section 1: Domain Analysis
-		section_title = "Domain Analysis"
+		section_title = "Domain Analysis [Weight: 2]"
 		domain_result_p1 = f"WHOIS date is {details['domain']['Age']}"
 		domain_result_p2 = "Anti-virus tools did not find the domain suspicious. "
 		domain_result_p3 = "Domain website's category is legitimate"
@@ -111,7 +111,7 @@ def create_pdf_report(domain_name, details):
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
   
 		# Section 2: Database Analysis
-		section_title = "Database Analysis"
+		section_title = "Database Analysis [Weight: 4]"
 		database_content_p1 = "Current domain is not detected as malicious."
 		database_content_p2 = "Other domains on the website are not detected as malicious."
 		if details["database"]["Domain"] == True:
@@ -122,7 +122,7 @@ def create_pdf_report(domain_name, details):
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
   
 		# Section 3: SSL Analysis
-		section_title = "SSL Analysis"
+		section_title = "SSL Analysis [Weight: 1]"
 		ssl_content_p1 = "Secure Socket Layer (SSL) exist on the domain."
 		ssl_content_p2 = "The certificate is by a valid Certificate Authority."
 		ssl_content_p3 = f"Issued by {details['ssl']['Issued By']}"
@@ -135,7 +135,7 @@ def create_pdf_report(domain_name, details):
 		section_content = ["SSL: " + ssl_content_p1, "Validity of Certificate Authority: " + ssl_content_p2, "Issued By: " + ssl_content_p3, "Malicious: " + str(details['ssl']['Result'])]
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
 		
-		section_title = "Search Engine Analysis"
+		section_title = "Search Engine Analysis [Weight: 2]"
 		search_engine_p1 = "Results from site indexing shows valid number of results results."
 		search_engine_p2 = "Google Safe Browsing has found URL to be safe."
 		search_engine_p3 = "Similar Web has not found any suspicious statistics."
@@ -149,7 +149,7 @@ def create_pdf_report(domain_name, details):
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
 
 		# Section 5: Content Analysis
-		section_title = "Content Analysis"
+		section_title = "Content Analysis [Weight: 0.5]"
 		content = "Low numbers of misspelled words"
 		section_content = ["Mispelled Words: " + content, "Percentage of Mispelled Words: " + details['content']['Percentage Wrongly Spelled'], "Explanation: ", details['content']['Reason'], "Malicious: " + str(details['content']['Result'])]
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
@@ -196,6 +196,8 @@ def create_pdf_report(domain_name, details):
 
 		# Update the vertical position for the next section
 		y_position -= 20  # Add extra spacing between sections
+
+
 
 		pdf_canvas.save()
 		pdf_content = pdf_buffer.getvalue()
