@@ -67,7 +67,6 @@ def ssl_analysis(domain):
             ssl_cert = lines[0].split(': ')[1]
             ssl_authorised_ca = None
             issued_by = None
-        
         result_details = {
             "SSL": ssl_cert,
             "Authorised CA": ssl_authorised_ca,
@@ -75,12 +74,12 @@ def ssl_analysis(domain):
         }
         
         if ssl_authorised_ca is None:
+            return True, result_details
+        
+        if ssl_cert is True and ssl_authorised_ca is True:
             return False, result_details
         else:
-            if ssl_cert and ssl_authorised_ca:
-                return False, result_details
-            else:
-                return True, result_details
+            return True, result_details
         
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
