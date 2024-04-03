@@ -74,10 +74,13 @@ def ssl_analysis(domain):
             "Issued By": issued_by 
         }
         
-        if ssl_cert and ssl_authorised_ca:
+        if ssl_authorised_ca is None:
             return False, result_details
         else:
-            return True, result_details
+            if ssl_cert and ssl_authorised_ca:
+                return False, result_details
+            else:
+                return True, result_details
         
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")

@@ -226,7 +226,7 @@ def virustotal(domain):
         cat_sus = categorize_threat(categories)
 
         suspiciousness = age_sus + analysis_sus + cat_sus
-        if suspiciousness >= 100:
+        if suspiciousness >= 60:
             malicious = True
 
         dns_records = group_dns_records(data['attributes']['last_dns_records'])
