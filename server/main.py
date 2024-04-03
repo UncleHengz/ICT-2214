@@ -244,23 +244,18 @@ def scan_domain():
         error_message = "Error occurred during scan."
         return jsonify({'error': error_message}), 500
 
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-    
-    # Check if the URL is reachable
-    try:
-        response = requests.head("https://" + received_link, headers=headers)
-        response.raise_for_status()  # Raise an error for non-2xx status codes
-    except requests.exceptions.RequestException as e:
-        try:
-            response = requests.head("http://" + received_link, headers=headers)
-            response.raise_for_status()  # Raise an error for non-2xx status codes
-        except requests.exceptions.RequestException as e:
-            # Return error response if the URL is not reachable
-            error_message = f"Error occurred while reaching the link: {e}"
-            return jsonify({'error': error_message}), 404
-        # Return error response if the URL is not reachable
-        error_message = f"Error occurred while reaching the link: {e}"
-        return jsonify({'error': error_message}), 404
+    # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+    #            'Connection': 'keep-alive'}
+    # # Check if the URL is reachable
+    # print(received_link)
+    # try:
+    #     response = requests.head(received_link, headers=headers)
+    #     response.raise_for_status()  # Raise an error for non-2xx status codes
+    # except requests.exceptions.RequestException as e:
+    #     # Return error response if the URL is not reachable
+    #     print(e)
+    #     error_message = f"Error occurred while reaching the link: {e}"
+    #     return jsonify({'error': error_message}), 404
     
     # Perform the scan
     is_malicious = checklist_scan(received_link)
