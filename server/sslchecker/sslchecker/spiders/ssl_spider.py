@@ -11,6 +11,7 @@ import logging
 logging.disable(logging.CRITICAL)
 
 class SSLSpider(scrapy.Spider):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
     name = 'ssl_spider'
     ssl_certified = False
     valid_ssl = False
@@ -29,8 +30,11 @@ class SSLSpider(scrapy.Spider):
             url = 'https://' + url
 
         # Use the URL directly in the request, with dont_redirect set to True
-        yield scrapy.Request(url, self.parse, errback=self.handle_error, meta={'dont_redirect': True})
-
+        yield scrapy.Request(url,
+                            self.parse,
+                            errback=self.handle_error,
+                            meta={'dont_redirect': True},
+                            headers=self.headers)  # Pass headers here
     def handle_error(self, failure):
         # If HTTP request fails, try with HTTPS
         url = failure.request.url
