@@ -385,7 +385,8 @@ document.addEventListener('DOMContentLoaded', function () {
             scanButtonElement.innerText = 'Stop';
             const url = new URL(websiteLinkElement.value);
             const domainToCheck = url.hostname;
-            performScan(domainToCheck);
+            const linkToCheck = url.href;
+            performScan(linkToCheck);
         }
     });
 });
