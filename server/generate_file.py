@@ -7,7 +7,7 @@ from generative_ai import gen_ai
 def generate_summary(details):
 	# Construct the query string using f-strings
 	query = f"""
-	Please provide details for each analysis metric:
+	Please provide details for each analysis metric's result with relation to phishing:
 
 	Domain Analysis (WHOIS date, anti-virus score, category):
 	1.1 WHOIS date: {details['domain']['Age']}
