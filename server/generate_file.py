@@ -136,7 +136,7 @@ def create_pdf_report(domain_name, details):
 		y_position = add_section(pdf_canvas, section_title, section_content, y_position)
 		
 		section_title = "Search Engine Analysis [Weight: 2]"
-		search_engine_p1 = "Results from site indexing shows valid number of results results."
+		search_engine_p1 = "Results from site indexing shows an appropriate and valid number of results."
 		search_engine_p2 = "Google Safe Browsing has found URL to be safe."
 		search_engine_p3 = "Similar Web has not found any suspicious statistics."
 		if details["search"]["Site Index"] == True:
