@@ -103,7 +103,7 @@ def create_pdf_report(domain_name, details):
 		domain_result_p1 = f"WHOIS date is {details['domain']['Age']}"
 		domain_result_p2 = "Anti-virus tools did not find the domain suspicious. "
 		domain_result_p3 = "Domain website's category is legitimate"
-		if details['domain']['Anti-Virus Score'] > 0:
+		if details['domain']['Anti-Virus Score'] >= 100:
 			domain_result_p2 = f"Anti-virus tools has detected domain to be suspicious with score {details['domain']['Anti-Virus Score']}"
 		if details['domain']['Category'] == True:
 			domain_result_p3 = "Domain website's category is flagged as suspicious."

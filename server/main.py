@@ -10,6 +10,7 @@ import subprocess
 import requests
 import base64
 from urllib.parse import urlparse
+import psutil
 
 
 app = Flask(__name__)
@@ -280,6 +281,15 @@ def abort_scan():
         response.headers.add('Access-Control-Allow-Methods', 'POST')
         return response
     stop_scan = True
+    
+    import psutil
+
+    for proc in psutil.process_iter(['pid', 'name']):
+        # Check if the process is a subprocess
+        if proc.info['name'] == 'python3' and 'spell_check_spider.py' in proc.cmdline():
+            # Kill the subprocess
+            proc.kill()
+    
     return jsonify({'message': 'Stop signal received'}), 200
 
 # Route for aborting the scan
